@@ -1,0 +1,46 @@
+backend/node_modules
+frontend/node_modules
+
+# build e dist
+frontend/build/
+backend/dist/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ambiente e secrets
+.env
+.env.local
+.env.*.local
+
+# sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs e editores
+.vscode/
+.idea/
+
+# testes e coverage
+coverage/
+*.lcov
+
+# cache do npm/yarn/pnpm
+frontend/.parcel-cache/
+frontend/.next/
+frontend/.turbo/
+frontend/.eslintcache
+backend/.eslintcache
+
+# arquivos de lock se não quiser versionar (opcional)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# output do React (em projetos criados com create-react-app)
+frontend/node_modules/
+frontend/build/
