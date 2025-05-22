@@ -1,0 +1,117 @@
+/* Header */
+#header-options .nav-link {
+  color: var(--lessdark-blue-color) !important;
+}
+#header-options .nav-link:hover{
+  color: var(--hover-lessdark-blue-color) !important;
+  text-decoration-line: underline;
+  text-decoration-color: var(--hover-lessdark-blue-color);
+}
+
+
+/* Hero Section */
+.hero-section{
+  background-color: var(--dark-blue-color);
+  color: white;
+}
+#herosec-icon{
+  fill: var(--yellow-color);
+  border-color: white !important;
+  border-width: 20px;
+  width: 190px;
+  height: 190px;
+}
+.hero-section h1 {
+  font-size: 3rem;
+}
+.hero-section p {
+  font-size: 20px;
+}
+
+
+/* Features Section */
+#features-section {
+
+}
+.feature-icon-back {
+  background-color: var(--lessdark-blue-color);
+  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
+
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.feature-icon {
+  width: 24px;  
+  height: 24px;
+  fill: white;
+}
+.feature h4 {
+  margin-bottom: 0 !important;
+}
+.feature p {
+  margin-bottom: 0.4rem !important;
+}
+
+
+/* Downloads Section */
+.download-tabs .nav-tabs {
+  border-bottom: 2px solid #ccc; /* linha divisória */
+}
+.download-tabs .nav-link {
+  border: none;
+  background-color: transparent;
+  color: #0B5ED7 !important;
+  border-color:#0B5ED7 !important;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+}
+.download-tabs .nav-link:hover {
+  background-color: #e0e0e0;
+  border-radius: 6px;
+}
+.download-tabs .nav-link.active {
+  border: none;
+  border-bottom: 3px solid; /* azul da aba ativa */
+  font-weight: 600;
+  background-color: transparent;
+}
+#tabcontent {
+  color: white;
+}
+
+
+
+/*Buttons*/
+.btn-outline-custom {
+  color: var(--lessdark-blue-color) !important;          
+  border-color: var(--lessdark-blue-color) !important;    
+}
+.btn-outline-custom:hover {
+  background-color: rgb(238, 238, 238) !important;       
+}
+#register-btn {
+  color: white;
+  background-color: var(--lessdark-blue-color);
+}
+#register-btn:hover {
+  background-color: var(--hover-lessdark-blue-color);
+}
+#getstarted-btn {
+  border: none;
+  background-color: var(--green-color);
+}
+#getstarted-btn:hover {
+  background-color: #064646;
+}
+#aboutus-btn {
+  color: #0842bd !important;
+  border-color:#0842bd !important;
+}
+#aboutus-btn:hover {
+  color: var(--lessdark-blue-color) !important;
+}

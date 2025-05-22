@@ -1,0 +1,28 @@
+:root{
+  --dark-blue-color: #001542;
+  --green-color: #085454;
+  --hover-green-color: #064646;
+  --lessdark-blue-color: #0d3a9b;
+  --hover-lessdark-blue-color: #052770;
+  --yellow-color: #FFB30D;
+  --dark-yellow-color: #d8970b;
+  --whitetext-to-yellow: rgb(212, 212, 212);
+}
+
+.sidebar {
+  width: 250px;
+  transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.main-content {
+  transition: margin-left 0.3s;
+  margin-left: 250px;
+}
+
+.main-content.expanded {
+  margin-left: 60px;
+}

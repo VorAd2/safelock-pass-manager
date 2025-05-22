@@ -1,12 +1,10 @@
 import { Container, Row, Col } from 'react-bootstrap';
 
-export default function SponsorsSection() {
+export default function SponsorsContainer() {
   return (
-    <section className="py-5" style={{backgroundColor:'var(dark-blue-color)'}}>
-      <Container>
-        <h5 className="text-center mb-4">Nossos Patrocinadores</h5>
+      <Container className='py-1'>
+        <h5 className="text-center mb-4">Our sponsors</h5>
         <Row className="justify-content-center align-items-center">
-          {/* Substitua os src pelos caminhos reais das suas logos */}
           <Col xs={6} md={3} className="text-center mb-4">
             <img src="src/assets/sponsors/bootstrap-logo.png" alt="Patrocinador 4" className="img-fluid" style={{ maxHeight: '60px' }} />
           </Col>
@@ -21,7 +19,6 @@ export default function SponsorsSection() {
           </Col>
         </Row>
       </Container>
-    </section>
   );
 }
 

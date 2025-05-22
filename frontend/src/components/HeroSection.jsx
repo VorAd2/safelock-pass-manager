@@ -1,13 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import {SponsorsSection} from './';
+import {SponsorsContainer} from './';
 import SiteIcon from '../assets/site-icon.svg?react';
-import '../index.css';
 
 export default function HeroSection() {
   return (
     <section className="py-5 hero-section">
-      <Container>
+      <Container className='pb-4'>
         <Row className="align-items-center">
           {/* Texto à esquerda */}
           <Col md={6} className="text-start">
@@ -21,13 +20,14 @@ export default function HeroSection() {
             </div>
           </Col>
 
-          {/* Imagem / Logo à direita */}
           <Col md={6} className="text-center">
             <SiteIcon id='herosec-icon'/>
           </Col>
         </Row>
       </Container>
-      <SponsorsSection/>
+
+      <hr className="mt-5 mb-4 mx-auto" style={{ width: '85%' }} />
+      <SponsorsContainer/>
     </section>
   );
 }
