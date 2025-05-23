@@ -1,5 +1,7 @@
-import SiteIcon from '../assets/site-icon.svg?react';
+import SiteIcon from '../../assets/site-icon.svg?react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../routes';
 
 function Header() {
   return (
@@ -21,8 +23,21 @@ function Header() {
           </Nav>
 
           <div className="d-flex gap-2 pe-3">
-            <button type='button' id='login-btn' className='btn btn-outline-custom' style={{color: 'var(--dark-blue-color)'}}>Log in</button>
-            <button type='button' id='register-btn' className='btn'>Register</button>
+            <Link
+              to={SIGNIN_ROUTE} 
+              id='login-btn'
+              className='btn btn-outline-custom' 
+              style={{ color: 'var(--dark-blue-color)' }}
+            >
+            Sign In
+            </Link>
+            <Link
+              to={SIGNUP_ROUTE} 
+              id='register-btn'
+              className='btn'
+            >
+            Sign Up
+            </Link>
           </div>
         </Navbar.Collapse>
       </Container>

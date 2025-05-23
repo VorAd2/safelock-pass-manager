@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import {SponsorsContainer} from './';
-import SiteIcon from '../assets/site-icon.svg?react';
+import {SponsorsContainer} from '..';
+import SiteIcon from '../../assets/site-icon.svg?react';
 
 export default function HeroSection() {
   return (
@@ -16,7 +16,7 @@ export default function HeroSection() {
             </p>
             <div className="d-flex gap-3 mt-4">
               <Button size="lg" id='getstarted-btn'>Get Started</Button>
-              <Button variant="outline-custom" size="lg" id='aboutus-btn'>About Us</Button>
+              <Button href='#footer' variant="outline-custom" size="lg" id='aboutus-btn'>About Us</Button>
             </div>
           </Col>
 

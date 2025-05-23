@@ -1,8 +1,8 @@
 import { Container, Row} from 'react-bootstrap';
-import FeatureCol from './partials/FeatureCol';
-import VaultIcon from '../assets/features/vault-icon.svg?react';
-import CredentialIcon from '../assets/features/credential-icon.svg?react';
-import PeopleIcon from '../assets/features/people-icon.svg?react';
+import FeatureCol from '../partials/FeatureCol';
+import VaultIcon from '../../assets/features/vault-icon.svg?react';
+import CredentialIcon from '../../assets/features/credential-icon.svg?react';
+import PeopleIcon from '../../assets/features/people-icon.svg?react';
 
 
 export default function FeaturesSection() {
