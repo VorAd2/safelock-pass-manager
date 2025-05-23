@@ -1,5 +1,5 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import ArrowRightIcon from '../assets/features/arrow-right.svg?react';
+import { Container, Row} from 'react-bootstrap';
+import FeatureCol from './partials/FeatureCol';
 import VaultIcon from '../assets/features/vault-icon.svg?react';
 import CredentialIcon from '../assets/features/credential-icon.svg?react';
 import PeopleIcon from '../assets/features/people-icon.svg?react';
@@ -14,30 +14,27 @@ export default function FeaturesSection() {
             </div>
             <Container className='pb-5'>
                 <Row className='align-items-center'>
-                    <Col className='feature'>
-                        <div className='feature-icon-back'>
-                            <VaultIcon style={{fill: 'white'}} className='feature-icon'/>
-                        </div>
-                        <h4>Safe storage</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.</p>
-                        <a href="#">Learn more <ArrowRightIcon/></a>
-                    </Col>
-                    <Col className='feature'>
-                        <div className='feature-icon-back'>
-                            <CredentialIcon style={{fill: 'white'}} className='feature-icon'/>
-                        </div>
-                        <h4>Credentials generator</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.</p>
-                        <a href="#">Learn more  <ArrowRightIcon/></a>
-                    </Col>
-                    <Col className='feature'>
-                        <div className='feature-icon-back'>
-                            <PeopleIcon style={{fill: 'white'}} className='feature-icon'/>
-                        </div>
-                        <h4>Shareable data</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.</p>
-                        <a href="#">Learn more  <ArrowRightIcon/></a>
-                    </Col>
+                    <FeatureCol
+                    icon={VaultIcon}
+                    title="Safe storage"
+                    description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
+                    linkText="Learn more"
+                    linkHref="#"
+                    />
+                    <FeatureCol
+                    icon={CredentialIcon}
+                    title="Credentials generator"
+                    description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
+                    linkText="Learn more"
+                    linkHref="#"
+                    />
+                    <FeatureCol
+                    icon={PeopleIcon}
+                    title="Shareable data"
+                    description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
+                    linkText="Learn more"
+                    linkHref="#"
+                    />
                 </Row>
             </Container>
         </section>

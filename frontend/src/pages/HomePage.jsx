@@ -1,4 +1,4 @@
-import {Header, Footer, HeroSection, FeaturesSection, DownloadsSection} from '../components';
+import {Header, Footer, HeroSection, FeaturesSection, DownloadsSection, PrincingSection} from '../components';
 
 export default function Home() {
     return (
@@ -7,7 +7,7 @@ export default function Home() {
             <HeroSection />
             <FeaturesSection/>
             <DownloadsSection/>
-            <FeaturesSection/>
+            <PrincingSection/>
         <Footer/>
         
     </>

@@ -23,37 +23,38 @@ export default function DownloadsSection() {
   };
 
     return (
-    <Container fluid className="py-5 text-center bg-dark">
-      <h2 className="mb-4 text-white">Escolha seu sistema para download</h2>
-      
-      <Tab.Container activeKey={key} onSelect={(k) => setKey(k)}>
-        <div className='download-tabs'>
-            <Nav variant="tabs" className="justify-content-center mb-4">
-                <Nav.Item>
-                    <Nav.Link eventKey="windows">Windows</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="macos">macOS</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="linux">Linux</Nav.Link>
-                </Nav.Item>
-            </Nav>
-        </div>
-        
+      <section id='downloads'>
+        <Container fluid className="py-5 text-center bg-dark">
+          <h2 className="mb-4 text-white">Escolha seu sistema para download</h2>  
+          <Tab.Container activeKey={key} onSelect={(k) => setKey(k)}>
+            <div className='download-tabs'>
+                <Nav variant="tabs" className="justify-content-center mb-4">
+                    <Nav.Item>
+                        <Nav.Link eventKey="windows">Windows</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="macos">macOS</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="linux">Linux</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+            </div>
+            
+            <Tab.Content id='tabcontent'>
+              {Object.entries(downloadInfo).map(([os, info]) => (
+                <Tab.Pane eventKey={os} key={os}>
+                  <h4>{info.title}</h4>
+                  <p>{info.description}</p>
+                  <a href={info.link} className="btn btn-primary" download>
+                    Baixar agora
+                  </a>
+                </Tab.Pane>
+              ))}
+            </Tab.Content>
 
-        <Tab.Content id='tabcontent'>
-          {Object.entries(downloadInfo).map(([os, info]) => (
-            <Tab.Pane eventKey={os} key={os}>
-              <h4>{info.title}</h4>
-              <p>{info.description}</p>
-              <a href={info.link} className="btn btn-primary" download>
-                Baixar agora
-              </a>
-            </Tab.Pane>
-          ))}
-        </Tab.Content>
-      </Tab.Container>
-    </Container>
+          </Tab.Container>
+        </Container>
+      </section>
   );
 }

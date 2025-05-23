@@ -26,7 +26,7 @@ export default function HeroSection() {
         </Row>
       </Container>
 
-      <hr className="mt-5 mb-4 mx-auto" style={{ width: '85%' }} />
+      <hr className="mt-5 mb-4 mx-auto" style={{width: '85%'}} />
       <SponsorsContainer/>
     </section>
   );

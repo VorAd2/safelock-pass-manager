@@ -27,12 +27,14 @@
 .hero-section p {
   font-size: 20px;
 }
+.hero-section hr {
+  border: none;
+  background-color: white;
+  height: 2px;
+}
 
 
 /* Features Section */
-#features-section {
-
-}
 .feature-icon-back {
   background-color: var(--lessdark-blue-color);
   border-radius: 12px;
@@ -85,13 +87,91 @@
 }
 
 
+/* Princing Section */
+#free-card {
+  border-color: var(--green-color) !important;
+}
+#free-card h5 {
+  color: var(--green-color) !important;
+}
+#free-card .btn{
+  background-color: var(--green-color);
+  border: none;
+}
+#free-card .btn:hover{
+  background-color: #094d4d;
+  color: white;
+}
+#free-card .btn:active{
+  background-color: var(--hover-green-color);
+}
+
+#family-card {
+  border-color:#0950b9;
+}
+#family-card h5 {
+  color: #0950b9;
+}
+#family-btn1 {
+  background-color: #0950b9;
+}
+#family-btn1:hover {
+  background-color: #094aaa;
+}
+#family-btn1:active{
+  background-color: #09439b;
+}
+#family-btn2 {
+  color: #0950b9;
+  border-color: #0950b9;
+}
+#family-btn2:hover {
+  color: white;
+  background-color: #0950b9;
+}
+#family-btn2:active {
+   background-color: #09439b;
+}
+
+#business-card {
+  background-color: var(--dark-blue-color) !important;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.06), 
+    rgba(255, 255, 255, 0.06)
+  );
+}
+#business-card h5 {
+  text-decoration: underline;
+  text-decoration-color: var(--yellow-color);
+}
+#business-features .list-group-item {
+  background-color: var(--dark-blue-color);
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.06), 
+    rgba(255, 255, 255, 0.06)
+  );
+}
+#demo-btn {
+  color: white;          
+  border-color: var(--lessdark-blue-color) !important; 
+  background-color: #0950b9;
+  transition: background-color 0.1s ease;
+}
+#demo-btn:hover {
+  background-color: #094aaa;
+}
+#demo-btn:active {
+  background-color: #09439b;
+}
+
+
 
 /*Buttons*/
-.btn-outline-custom {
+#aboutus-btn {
   color: var(--lessdark-blue-color) !important;          
   border-color: var(--lessdark-blue-color) !important;    
 }
-.btn-outline-custom:hover {
+#aboutus-btn:hover {
   background-color: rgb(238, 238, 238) !important;       
 }
 #register-btn {
