@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { SIGNIN_ROUTE } from '../routes';
@@ -7,6 +7,14 @@ function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  useEffect(() => {
+        fetch('http://localhost:3001/signup')
+            .then(res => res.text())
+            .then(data => {console.log('Resposta do back: ', data)})
+            .catch(err => {
+                console.error('Erro na requisição: ', err)
+            })
+    }, []);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -15,9 +23,7 @@ function SignupPage() {
       alert('Passwords do not match!');
       return;
     }
-    // Here you would typically send the registration data to your backend.
     console.log('Register attempt with:', { email, password });
-    // After successful registration, you might redirect to the login page or directly log them in.
     alert('Registration successful! (Simulated)');
     navigate('/login'); // Redirect to login after registration
   };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { SIGNUP_ROUTE } from '../routes';
@@ -6,6 +6,14 @@ import { SIGNUP_ROUTE } from '../routes';
 function SigninPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  useEffect(() => {
+        fetch('http://localhost:3001/signin')
+            .then(res => res.text())
+            .then(data => {console.log('Resposta do back: ', data)})
+            .catch(err => {
+                console.error('Erro na requisição: ', err)
+            })
+    }, []);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
