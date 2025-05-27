@@ -1,32 +1,43 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom'; //useNavigate
 import { SIGNIN_ROUTE } from '../routes';
+import axios from 'axios';
+const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignupPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  //const navigate = useNavigate();
+
   useEffect(() => {
-        fetch('http://localhost:3001/signup')
+        fetch(backUrl + '/signup')
             .then(res => res.text())
             .then(data => {console.log('Resposta do back: ', data)})
             .catch(err => {
                 console.error('Erro na requisição: ', err)
             })
     }, []);
-  const navigate = useNavigate();
-
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+    if (password != confirmPassword) {
+      alert('As senhas devem ser iguais');
       return;
     }
-    console.log('Register attempt with:', { email, password });
-    alert('Registration successful! (Simulated)');
-    navigate('/login'); // Redirect to login after registration
+    const form = {name: name, email: email, password: password};
+    try {
+      const res = await axios.post(backUrl + '/signup', form);
+      setMessage(res.data.message);
+    } catch (err) {
+      setMessage('Erro ao registrar usuário: ' + err);
+    }
+    //navigate('/'); // Redirect to login after registration
   };
+
 
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
@@ -34,6 +45,17 @@ function SignupPage() {
         <Card.Body>
           <Card.Title className="text-center mb-4">Register</Card.Title>
           <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicNameRegister">
+              <Form.Label>Account Name</Form.Label>
+              <Form.Control
+                type="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="formBasicEmailRegister">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -70,6 +92,7 @@ function SignupPage() {
             <Button variant="success" type="submit" className="w-100">
               Register
             </Button>
+            <p>{message}</p>
           </Form>
           <div className="mt-3 text-center">
             Already have an account? <Link to={SIGNIN_ROUTE}>Login here</Link>
