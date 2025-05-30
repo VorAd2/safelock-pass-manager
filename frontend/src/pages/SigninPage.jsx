@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { SIGNUP_ROUTE } from '../routes';
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,7 +29,11 @@ function SigninPage() {
     const form = {email, password}
     try {
       const res = await axios.post(backUrl + '/signin', form)
-      const name = res.data.name
+      const {token} = res.data
+      localStorage.setItem('authToken', token)
+      const payload = jwtDecode(token);      
+      const userData = payload.userData
+      const name = userData.name
       console.log(name)
       navigate(`/myvaults/${name}`);
     } catch (err) {

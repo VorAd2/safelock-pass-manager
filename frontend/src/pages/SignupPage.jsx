@@ -6,7 +6,7 @@ import axios from 'axios';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignupPage() {
-  const [name, setName] = useState('');
+  const [username, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,11 +29,11 @@ function SignupPage() {
       alert('As senhas devem ser iguais');
       return;
     }
-    const form = {name: name, email: email, password: password};
+    const form = {username: username, email: email, password: password};
     try {
       const res = await axios.post(backUrl + '/signup', form);
       setMessage(res.data.message);
-      navigate(`/myvaults/${name}`);
+      navigate(`/myvaults/${username}`);
     } catch (err) {
       if (err.response) {
         const errorStatus = err.response.status
@@ -59,7 +59,7 @@ function SignupPage() {
               <Form.Control
                 type="name"
                 placeholder="Enter name"
-                value={name}
+                value={username}
                 onChange={(e) => setName(e.target.value)}
                 required
               />

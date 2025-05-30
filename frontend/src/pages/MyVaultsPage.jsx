@@ -8,14 +8,19 @@ function MyVaultsPage() {
     const {isLoading, setLoading} = useState(true);
 
     useEffect(() => {
-        axios.get(backUrl + '/myvaults/' + name)
-            .then(response => {
-                setLoading(false)
-                console.log('Resposta do back: ' + response.data)
-            })
-            .catch(err => {
-                alert(err)
-            })
+        const authToken = localStorage.getItem('authToken')
+        axios.get(backUrl + '/myvaults/' + name, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        })
+        .then(response => {
+            setLoading(false)
+            console.log('Resposta do back: ' + response.data)
+        })
+        .catch(err => {
+            alert(err)
+        })
     }, [])
 
     if (isLoading) {

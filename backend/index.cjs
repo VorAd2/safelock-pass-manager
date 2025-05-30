@@ -18,17 +18,18 @@ const client = new MongoClient(process.env.MONGO_URI);
     const homeRouter = require('./routes/home.cjs');
     const signinRouter = require('./routes/signin.cjs')(db);
     const signupRouter = require('./routes/signup.cjs')(db);
-    //const myvaultsRouter = require('./routes/myvaults.cjs');
+    const myvaultsRouter = require('./routes/myvaults.cjs');
 
     app.use('/', homeRouter);
     app.use('/signin', signinRouter);
     app.use('/signup', signupRouter);
-    //app.use('/myvaults/:name', myvaultsRouter);
+    app.use('/myvaults/:username', myvaultsRouter);
 
     app.get('/', (req, res) => res.send('API funcionando!'));
     app.listen(port, () => console.log('Servidor na porta ' + port));
 } catch (err) {
-    console.log('Erro')
+    console.log('Erro\n')
+    console.log(err)
 }
 })();
 

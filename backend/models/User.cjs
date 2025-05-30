@@ -7,13 +7,14 @@ class UserModel {
     }
 
     async insertUser(userData, db) {
-        const {name, email, password} = userData
+        const {username, email, password} = userData
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = {
-            name,
+            username,
             email,
             password: hashedPassword,
+            role: 'standard',
             createdAt: new Date(), 
         };
         await db.collection('users').insertOne(user)

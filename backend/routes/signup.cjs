@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const UserModel = require('../models/User.cjs');
 
@@ -8,15 +9,15 @@ module.exports = (db) => {
   });
 
   router.post('/', async (req, res) => {
-    const {name, email, password} = req.body;
+    const {username, email, password} = req.body;
     try {
-      const existsUser = await UserModel.existsUser(name, email, db)
+      const existsUser = await UserModel.existsUser(username, email, db)
       if (existsUser) {
         res.status(409).json({error: 'Nome ou Email já está em uso'});
         return;
       };
-      await UserModel.insertUser({name, email, password}, db);
-      res.send({name, email, password});
+      await UserModel.insertUser({username, email, password}, db);
+      res.send({username, email, password});
       console.log('Inserção de usuário autorizada');
     } catch (err) {
       res.status(500).json({message: err.message});

@@ -1,7 +1,11 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const UserModel = require('../models/User.cjs');
+dotenv.config();
 
+const authenticateToken = require('../middlewares/authMiddleware.cjs');
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
@@ -15,7 +19,22 @@ module.exports = (db) => {
       if (user) {
         const isMatch = await UserModel.matchPassword(user, password, db)
         if (isMatch) {
-          res.send({name: user.name})
+          const payload = {
+            userData: {
+              id: user._id,
+              username: user.username,
+              role: user.role,
+            }
+          }
+          jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            {'expiresIn': '1h'},
+            (err, token) => {
+                if (err) throw err;
+                res.json({token: token}) // Envia o token de volta ao cliente
+            }
+          )
           console.log('Login autorizado')
         } else {
           res.status(401).json({message: 'Email ou senha inválidos'})
