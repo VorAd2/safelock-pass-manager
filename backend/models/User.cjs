@@ -19,9 +19,13 @@ class UserModel {
         await db.collection('users').insertOne(user)
     }
 
-    async findUser(email, db) {
+    async findUserByEmail(email, db) {
         const user = await db.collection('users').findOne({email: email})
         return user;
+    }
+
+    async matchPassword(user, potentialPass, db) {
+        return (await bcrypt.compare(potentialPass, user.password))
     }
 }
 

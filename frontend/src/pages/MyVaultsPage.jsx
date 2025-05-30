@@ -8,10 +8,13 @@ function MyVaultsPage() {
     const {isLoading, setLoading} = useState(true);
 
     useEffect(() => {
-        axios.get(backUrl + name)
+        axios.get(backUrl + '/myvaults/' + name)
             .then(response => {
                 setLoading(false)
                 console.log('Resposta do back: ' + response.data)
+            })
+            .catch(err => {
+                alert(err)
             })
     }, [])
 

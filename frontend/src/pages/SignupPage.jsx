@@ -14,12 +14,13 @@ function SignupPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-        fetch(backUrl + '/signup')
-            .then(res => res.text())
-            .then(data => {console.log('Resposta do back: ', data)})
-            .catch(err => {
-                console.error('Erro na requisição: ', err)
-            })
+        axios.get(backUrl + '/signup')
+          .then(response => {
+            console.log('Mensagem do back: ' + response)
+          })
+          .catch(err => {
+            alert(err)
+          })
     }, []);
   
   const handleSubmit = async (event) => {
@@ -34,9 +35,16 @@ function SignupPage() {
       setMessage(res.data.message);
       navigate(`/myvaults/${name}`);
     } catch (err) {
-      setMessage('Erro ao registrar usuário: ' + err.message);
+      if (err.response) {
+        const errorStatus = err.response.status
+        const errorMessage = err.response.data.message
+        setMessage(`Erro(${errorStatus}) ao tentar registro de usuário: ${errorMessage}`)
+      } else if (err.request){
+        alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão')
+      } else {
+        alert('Erro ao enviar requisição')
+      }
     }
-    
   };
 
 

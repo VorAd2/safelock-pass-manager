@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/User.cjs');
 
-// Como encontrar um usuario com base no email e senha
-module.exports = (db) => {
 
+module.exports = (db) => {
   router.get('/', (req, res) => {
     res.json({ message: 'Bem-vindo à API de signin!' })
   })
@@ -12,14 +11,20 @@ module.exports = (db) => {
   router.post('/', async (req, res) => {
     const {email, password} = req.body
     try {
-      const user = UserModel.findUser(email, db)
+      const user = await UserModel.findUserByEmail(email, db)
       if (user) {
-        res.send({name: user.name})
+        const isMatch = await UserModel.matchPassword(user, password, db)
+        if (isMatch) {
+          res.send({name: user.name})
+          console.log('Login autorizado')
+        } else {
+          res.status(401).json({message: 'Email ou senha inválidos'})
+        }
       } else {
-        res.status(404).json({error: 'Usuário não encontrado'})
+        res.status(401).json({message: 'Email ou senha inválidos'})
       }
     } catch (err) {
-      res.status(500).json({error: err.message})
+      res.status(500).json({message: err.message})
       console.log('Erro inesperado no login')
     }
   })

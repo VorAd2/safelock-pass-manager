@@ -10,16 +10,16 @@ module.exports = (db) => {
   router.post('/', async (req, res) => {
     const {name, email, password} = req.body;
     try {
-      const existsUser = UserModel.existsUser(name, email, db)
+      const existsUser = await UserModel.existsUser(name, email, db)
       if (existsUser) {
         res.status(409).json({error: 'Nome ou Email já está em uso'});
         return;
       };
       await UserModel.insertUser({name, email, password}, db);
       res.send({name, email, password});
-      console.log('Inserção de usuário bem sucedida');
+      console.log('Inserção de usuário autorizada');
     } catch (err) {
-      res.status(500).json({error: err.message});
+      res.status(500).json({message: err.message});
       console.log('Erro inesperado na inserção de usuário')
     }
   });

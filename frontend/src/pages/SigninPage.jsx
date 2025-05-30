@@ -8,19 +8,18 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 function SigninPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+
   useEffect(() => {
-        fetch(backUrl + '/signin')
-            .then(res => res.text())
-            .then(data => {
-              console.log('Resposta do back: ', data)
-              setName(data);
-            })
-            .catch(err => {
-                console.error('Erro na requisição: ', err)
-            })
+        axios.get(backUrl + '/signin')
+          .then(response => {
+            console.log('Mensagem do back: ' + response)
+          })
+          .catch(err => {
+            alert(err)
+          })
     }, []);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -29,12 +28,20 @@ function SigninPage() {
     const form = {email, password}
     try {
       const res = await axios.post(backUrl + '/signin', form)
-      console.log('Login efetuado: ' + res.data.message);
+      const name = res.data.name
+      console.log(name)
       navigate(`/myvaults/${name}`);
     } catch (err) {
-      setMessage('Erro ao logar: ' + err.message);
+      if (err.response) {
+        const errorStatus = err.response.status
+        const errorMsg = err.response.data.message
+        setMessage(`Erro(${errorStatus}) ao logar: ${errorMsg}`);
+      } else if (err.request) {
+        alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão')
+      } else {
+        alert('Erro ao tentar enviar requisição')
+      }
     }
-    
   };
 
   return (
