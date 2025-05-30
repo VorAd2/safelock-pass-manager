@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
-import { Link} from 'react-router-dom'; //useNavigate
+import { Link, useNavigate} from 'react-router-dom'; 
 import { SIGNIN_ROUTE } from '../routes';
 import axios from 'axios';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
@@ -11,7 +11,7 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
         fetch(backUrl + '/signup')
@@ -32,10 +32,11 @@ function SignupPage() {
     try {
       const res = await axios.post(backUrl + '/signup', form);
       setMessage(res.data.message);
+      navigate(`/myvaults/${name}`);
     } catch (err) {
-      setMessage('Erro ao registrar usuário: ' + err);
+      setMessage('Erro ao registrar usuário: ' + err.message);
     }
-    //navigate('/'); // Redirect to login after registration
+    
   };
 
 

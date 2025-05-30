@@ -2,25 +2,39 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { SIGNUP_ROUTE } from '../routes';
+import axios from 'axios';
+const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SigninPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
   useEffect(() => {
-        fetch('http://localhost:3001/signin')
+        fetch(backUrl + '/signin')
             .then(res => res.text())
-            .then(data => {console.log('Resposta do back: ', data)})
+            .then(data => {
+              console.log('Resposta do back: ', data)
+              setName(data);
+            })
             .catch(err => {
                 console.error('Erro na requisição: ', err)
             })
     }, []);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Login attempt with:', { email, password });
-    alert('Login successful! (Simulated)');
-    navigate('/dashboard'); // Example redirection after login
+    const form = {email, password}
+    try {
+      const res = await axios.post(backUrl + '/signin', form)
+      console.log('Login efetuado: ' + res.data.message);
+      navigate(`/myvaults/${name}`);
+    } catch (err) {
+      setMessage('Erro ao logar: ' + err.message);
+    }
+    
   };
 
   return (
@@ -54,6 +68,7 @@ function SigninPage() {
             <Button variant="primary" type="submit" className="w-100">
               Login
             </Button>
+            <p>{message}</p>
           </Form>
           <div className="mt-3 text-center">
             Don't have an account? <Link to={SIGNUP_ROUTE}>Register here</Link>
