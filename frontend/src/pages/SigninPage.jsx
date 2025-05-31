@@ -33,9 +33,9 @@ function SigninPage() {
       localStorage.setItem('authToken', token)
       const payload = jwtDecode(token);      
       const userData = payload.userData
-      const name = userData.name
-      console.log(name)
-      navigate(`/myvaults/${name}`);
+      const username = userData.username
+      console.log(username)
+      navigate(`/myvaults/${username}`);
     } catch (err) {
       if (err.response) {
         const errorStatus = err.response.status

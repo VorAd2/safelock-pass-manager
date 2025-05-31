@@ -17,7 +17,22 @@ module.exports = (db) => {
         return;
       };
       await UserModel.insertUser({username, email, password}, db);
-      res.send({username, email, password});
+
+      const payload = {
+        userData: {
+          username: username,
+        }
+      }
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        {'expiresIn': '1h'},
+        (err, token) => {
+            if (err) throw err;
+            res.json({token: token})
+        }
+      )
       console.log('Inserção de usuário autorizada');
     } catch (err) {
       res.status(500).json({message: err.message});

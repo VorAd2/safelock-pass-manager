@@ -3,6 +3,7 @@ import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate} from 'react-router-dom'; 
 import { SIGNIN_ROUTE } from '../routes';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignupPage() {
@@ -32,7 +33,12 @@ function SignupPage() {
     const form = {username: username, email: email, password: password};
     try {
       const res = await axios.post(backUrl + '/signup', form);
-      setMessage(res.data.message);
+      const {token} = res.data
+      localStorage.setItem('authToken', token)
+      const payload = jwtDecode(token)
+      const userData = payload.userData
+      const username = userData.username
+      console.log(username)
       navigate(`/myvaults/${username}`);
     } catch (err) {
       if (err.response) {

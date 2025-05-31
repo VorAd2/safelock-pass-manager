@@ -2,17 +2,16 @@ const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
 
-router.get('/', authenticateToken, (req, res) => {
-    console.log('Nome do usuário autenticado (do token):', req.user.name);
-    console.log('Nome da URL (req.params.name):', req.params.name);
+router.get('/:username', authenticateToken, (req, res) => {
+    console.log('Nome do usuário autenticado (do token):', req.user.username);
+    console.log('Nome da URL (req.params.username):', req.params.username);
     if (req.user.username !== req.params.username) {
-        // O usuário autenticado (do token) não corresponde ao nome de usuário na URL
+        console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
         return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
     }
 
     res.json({
-        message: `Bem-vindo ao cofre de ${req.user.name}!`,
-        // Aqui você buscará os dados reais do cofre para req.user.id
+        message: `Bem-vindo ao cofre de ${req.user.username}!`,
         data: {
             item1: 'Conteúdo Secreto 1',
             item2: 'Conteúdo Secreto 2'
