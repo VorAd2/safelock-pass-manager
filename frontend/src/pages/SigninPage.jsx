@@ -35,7 +35,7 @@ function SigninPage() {
       const userData = payload.userData
       const username = userData.username
       console.log(username)
-      navigate(`/myvaults/${username}`);
+      navigate(`/dashboard/${username}`);
     } catch (err) {
       if (err.response) {
         const errorStatus = err.response.status

@@ -20,7 +20,6 @@ export default function PricingSection() {
                 <ListGroup variant="flush" className="flex-grow-1">
                   <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Acesso limitado a recursos</ListGroup.Item>
                   <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Suporte por e-mail</ListGroup.Item>
-                  <ListGroup.Item><i className="bi bi-x-circle-fill text-danger me-2"></i>Sem recursos premium</ListGroup.Item>
                 </ListGroup>
                 <div className="mt-auto text-center">
                   <Button className="w-75">Começar Grátis</Button>
@@ -39,9 +38,8 @@ export default function PricingSection() {
                 <Card.Text className="text-center mb-4">Perfeito para grupos pequenos e uso pessoal.</Card.Text>
                 <ListGroup variant="flush" className="flex-grow-1">
                   <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Todos os recursos do plano Gratuito</ListGroup.Item>
-                  <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Até 5 usuários</ListGroup.Item>
-                  <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Suporte prioritário</ListGroup.Item>
-                  <ListGroup.Item><i className="bi bi-x-circle-fill text-danger me-2"></i>Sem recursos empresariais</ListGroup.Item>
+                  <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Até 2 grupos</ListGroup.Item>
+                  <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Compartilhamento</ListGroup.Item>
                 </ListGroup>
                 <div className="mt-auto text-center">
                   <Button className="w-75 mb-2" id='family-btn1'>Assinar Agora</Button>
@@ -61,10 +59,9 @@ export default function PricingSection() {
                 <Card.Text className="text-center mb-4">Maximize a produtividade da sua equipe.</Card.Text>
                 <ListGroup variant="flush" className="flex-grow-1 mb-3" id='business-features'>
                   <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Todos os recursos dos planos anteriores</ListGroup.Item>
-                  <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Usuários ilimitados</ListGroup.Item>
-                  <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Integrações avançadas</ListGroup.Item>
-                  <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Gerenciamento de equipes</ListGroup.Item>
-                    <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Suporte 24/7</ListGroup.Item>
+                  <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Grupos ilimitados</ListGroup.Item>
+                  <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Usuários ilimitados por grupo</ListGroup.Item>
+                    <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Suporte prioritário</ListGroup.Item>
                 </ListGroup>
                 <div className="mt-auto text-center">
                   <Button variant="light" className="w-75 mb-2">Assinar Agora</Button>

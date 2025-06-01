@@ -1,21 +1,14 @@
-// index.cjs
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.FRONT_URI,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
-
-app.use((req, res, next) => {
-    console.log(`[DEBUG_GLOBAL] Requisição Recebida: ${req.method} ${req.originalUrl}`);
-    console.log('Headers:', req.headers);
-    next(); // CHAME next() para passar a requisição para o próximo middleware/rota
-});
 
 app.use(express.json()); 
 dotenv.config();
@@ -23,7 +16,6 @@ const port = process.env.PORT;
 
 const { MongoClient } = require('mongodb');
 const client = new MongoClient(process.env.MONGO_URI);
-
 
 const homeRouter = require('./routes/home.cjs');
 let db; 
@@ -36,11 +28,11 @@ let db;
 
         const signinRouter = require('./routes/signin.cjs')(db);
         const signupRouter = require('./routes/signup.cjs')(db);
-        const myvaultsRouter = require('./routes/myvaults.cjs');
+        const dashboardRouter = require('./routes/dashboard.cjs');
         
         app.use('/signin', signinRouter);
         app.use('/signup', signupRouter);
-        app.use('/myvaults', myvaultsRouter);
+        app.use('/dashboard', dashboardRouter);
         app.use('/', homeRouter);
 
         
@@ -48,11 +40,10 @@ let db;
         app.listen(port, () => console.log('Servidor na porta ' + port));
     } catch (err) {
         console.log('Erro ao conectar ao MongoDB ou iniciar servidor:\n', err);
-        process.exit(1); // Sai do processo se houver um erro crítico
+        process.exit(1); 
     }
 })();
 
-// Se você tiver rotas que NÃO dependem do DB, pode defini-las aqui FORA do async block.
-// Ex: app.get('/health', (req, res) => res.status(200).send('OK'));
+
 
 

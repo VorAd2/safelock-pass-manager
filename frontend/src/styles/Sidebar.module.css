@@ -1,0 +1,18 @@
+.customOffcanvas {
+  width: 280px !important;
+  background-color: #343a40 !important;
+  color: white !important;
+  transition: width 0.3s ease;
+}
+
+@media (min-width: 992px) {
+  .customOffcanvas .offcanvas {
+    transform: none !important;
+    visibility: visible !important;
+    position: relative !important;
+    height: 100vh;
+  }
+  .customOffcanvas .offcanvas-header {
+    display: none;
+  }
+}

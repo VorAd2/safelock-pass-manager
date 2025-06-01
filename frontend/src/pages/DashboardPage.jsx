@@ -1,11 +1,11 @@
-
 import {useEffect, useState} from 'react';
+import { Sidebar } from '../components'
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-function MyVaultsPage() {
+function DashboardPage() {
     const { username } = useParams()
     const [isLoading, setLoading] = useState(true)
     const navigate = useNavigate();
@@ -51,10 +51,20 @@ function MyVaultsPage() {
     }
 
     return (
-        <>
-            <h1>Cofres de {username}</h1>
-        </>
+        <div style={{ display: 'flex', minHeight: '100vh' }}>
+            <Sidebar />
+            {/* Conteúdo principal da sua aplicação */}
+            <Container fluid className="flex-grow-1 p-4">
+                <Row>
+                <Col>
+                    <h1>Bem-vindo ao Dashboard!</h1>
+                    <p>Este é o conteúdo principal da sua aplicação. A sidebar à esquerda controla a navegação.</p>
+                    <p>Cofres de {username}</p>
+                </Col>
+                </Row>
+            </Container>
+        </div>  
     )
 }
 
-export default MyVaultsPage;
+export default DashboardPage;
