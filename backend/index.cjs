@@ -3,17 +3,17 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const app = express();
 
+dotenv.config();
+
 app.use(cors({
   origin: process.env.FRONT_URI,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
-
 app.use(express.json()); 
-dotenv.config();
-const port = process.env.PORT;
 
+const port = process.env.PORT;
 const { MongoClient } = require('mongodb');
 const client = new MongoClient(process.env.MONGO_URI);
 
