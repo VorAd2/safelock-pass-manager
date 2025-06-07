@@ -1,18 +1,75 @@
-.customOffcanvas {
-  width: 280px !important;
-  background-color: #343a40 !important;
-  color: white !important;
+.sidebarContainer {
+  height: 100vh;
+  background-color: var(--dark-blue-color);
+  color: white;
+  display: flex;
+  flex-direction: column;
   transition: width 0.3s ease;
+  overflow-x: hidden;
+  flex-shrink: 0;
 }
 
-@media (min-width: 992px) {
-  .customOffcanvas .offcanvas {
-    transform: none !important;
-    visibility: visible !important;
-    position: relative !important;
-    height: 100vh;
-  }
-  .customOffcanvas .offcanvas-header {
-    display: none;
-  }
+.sidebarExpanded {
+  width: var(--sidebar-width-expanded);
+}
+
+.sidebarCollapsed {
+  width: var(--sidebar-width-collapsed);
+}
+
+.sidebarText {
+  opacity: 0;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.1s ease, width 0.1s ease;
+}
+
+/* Quando .sidebarExpanded está ativo, mostre o texto */
+.sidebarExpanded .sidebarText {
+  opacity: 1;
+  width: auto;
+  transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s;
+}
+
+/* Estilos para os links. Usamos :global(.nav-link) para atingir a classe Bootstrap. */
+.sidebarContainer :global(.nav-link) {
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  /* Usamos !important para sobrescrever estilos do Bootstrap se necessário */
+  font-weight: 500 !important; /* Exemplo de sobrescrita */
+}
+
+.sidebarContainer :global(.nav-link):hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebarIcon {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
+/* Quando .sidebarCollapsed está ativo, remova a margem do ícone */
+.sidebarCollapsed .sidebarIcon {
+  margin-right: 0;
+}
+
+.sidebarToggleBtn {
+  border: none;
+  background-color: transparent;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sidebarToggleBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }

@@ -1,4 +1,5 @@
 import { Container, Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
+import styles from '../../styles/HomePage.module.css';
 
 export default function PricingSection() {
   return (
@@ -11,7 +12,7 @@ export default function PricingSection() {
 
           {/* Plano Gratuito */}
           <Col md={4} className="mb-4">
-            <Card className="h-100 border border-primary" id='free-card'> {/* Apenas borda azul */}
+            <Card className={`h-100 ${styles.freeCard}`}>
               <Card.Body className="d-flex flex-column">
                 <Card.Title as="h5" className="text-center">Gratuito</Card.Title>
                 <Card.Subtitle className="mb-2 text-center text-muted">Ideal para começar</Card.Subtitle>
@@ -30,7 +31,7 @@ export default function PricingSection() {
 
           {/* Plano Família e Amigos */}
           <Col md={4} className="mb-4">
-            <Card className="h-100 border border-primary" id='family-card'> {/* Apenas borda azul claro */}
+            <Card className={`h-100 border border-primary ${styles.familyCard}`}> {/* Apenas borda azul claro */}
               <Card.Body className="d-flex flex-column">
                 <Card.Title as="h5" className="text-center text-primary">Família e Amigos</Card.Title>
                 <Card.Subtitle className="mb-2 text-center text-muted">Compartilhe com quem você ama</Card.Subtitle>
@@ -42,8 +43,8 @@ export default function PricingSection() {
                   <ListGroup.Item><i className="bi bi-check-circle-fill text-success me-2"></i>Compartilhamento</ListGroup.Item>
                 </ListGroup>
                 <div className="mt-auto text-center">
-                  <Button className="w-75 mb-2" id='family-btn1'>Assinar Agora</Button>
-                  <Button variant="outline-custom" className="w-75" id='family-btn2'>Saber Mais</Button>
+                  <Button className={`w-75 mb-2 ${styles.familyBtn1}`}>Assinar Agora</Button>
+                  <Button variant="outline-custom" className={`w-75 ${styles.familyBtn2}`}>Saber Mais</Button>
                 </div>
               </Card.Body>
             </Card>
@@ -51,13 +52,13 @@ export default function PricingSection() {
 
           {/* Plano Empresarial */}
           <Col md={4} className="mb-4">
-            <Card text="white" className="h-100" id='business-card'> {/* Fundo azul escuro e sombra */}
+            <Card text="white" className={`h-100 ${styles.businessCard}`}> {/* Fundo azul escuro e sombra */}
               <Card.Body className="d-flex flex-column">
                 <Card.Title as="h5" className="text-center">Empresarial</Card.Title>
                 <Card.Subtitle className="mb-2 text-center text-light">Soluções completas para empresas</Card.Subtitle>
                 <h3 className="text-center my-3">R$99<small className="text-light">/mês</small></h3>
                 <Card.Text className="text-center mb-4">Maximize a produtividade da sua equipe.</Card.Text>
-                <ListGroup variant="flush" className="flex-grow-1 mb-3" id='business-features'>
+                <ListGroup variant="flush" className={`flex-grow-1 mb-3 ${styles.businessFeatures}`}>
                   <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Todos os recursos dos planos anteriores</ListGroup.Item>
                   <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Grupos ilimitados</ListGroup.Item>
                   <ListGroup.Item className="text-white"><i className="bi bi-check-circle-fill text-white me-2"></i>Usuários ilimitados por grupo</ListGroup.Item>
@@ -65,7 +66,7 @@ export default function PricingSection() {
                 </ListGroup>
                 <div className="mt-auto text-center">
                   <Button variant="light" className="w-75 mb-2">Assinar Agora</Button>
-                  <Button className="w-75" id='demo-btn'>Solicitar Demonstração</Button>
+                  <Button className={`w-75 ${styles.demoBtn}`} id='demo-btn'>Solicitar Demonstração</Button>
                 </div>
               </Card.Body>
             </Card>

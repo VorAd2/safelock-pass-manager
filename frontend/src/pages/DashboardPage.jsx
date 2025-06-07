@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { Sidebar } from '../components'
+import { Sidebar, MainContent } from '../components'
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
@@ -7,8 +7,13 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function DashboardPage() {
     const { username } = useParams()
+    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isLoading, setLoading] = useState(true)
     const navigate = useNavigate();
+
+    const toggleSidebar = () => {
+        setIsSidebarExpanded(!isSidebarExpanded);
+    };
 
     useEffect(() => {
         console.log('useEffect executado')
@@ -22,7 +27,7 @@ function DashboardPage() {
                 return;
             }
             try {
-                const response = await axios.get(backUrl + '/myvaults/' + username, {
+                const response = await axios.get(backUrl + '/dashboard/' + username, {
                     headers: {
                         Authorization: `Bearer ${authToken}`
                     }
@@ -46,24 +51,16 @@ function DashboardPage() {
     fetchVaults();
 }, [username, navigate]);
 
+
     if (isLoading) {
         return <h1>Carregando...</h1>
     }
-
     return (
-        <div style={{ display: 'flex', minHeight: '100vh' }}>
-            <Sidebar />
-            {/* Conteúdo principal da sua aplicação */}
-            <Container fluid className="flex-grow-1 p-4">
-                <Row>
-                <Col>
-                    <h1>Bem-vindo ao Dashboard!</h1>
-                    <p>Este é o conteúdo principal da sua aplicação. A sidebar à esquerda controla a navegação.</p>
-                    <p>Cofres de {username}</p>
-                </Col>
-                </Row>
-            </Container>
-        </div>  
+        <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
+            <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
+            <MainContent isSidebarExpanded={isSidebarExpanded} />
+        </div>
+ 
     )
 }
 

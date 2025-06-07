@@ -1,8 +1,8 @@
 /* Header */
-#header-options .nav-link {
+.headerOptions :global(.nav-link) {
   color: var(--lessdark-blue-color) !important;
 }
-#header-options .nav-link:hover{
+.headerOptions :global(.nav-link):hover{
   color: var(--hover-lessdark-blue-color) !important;
   text-decoration-line: underline;
   text-decoration-color: var(--hover-lessdark-blue-color);
@@ -10,24 +10,24 @@
 
 
 /* Hero Section */
-.hero-section{
+.heroSection{
   background-color: var(--dark-blue-color);
   color: white;
 }
-#herosec-icon{
+.heroSecIcon{
   fill: var(--yellow-color);
   border-color: white !important;
   border-width: 20px;
   width: 190px;
   height: 190px;
 }
-.hero-section h1 {
+.heroSection h1 {
   font-size: 3rem;
 }
-.hero-section p {
+.heroSection p {
   font-size: 20px;
 }
-.hero-section hr {
+.heroSection hr {
   border: none;
   background-color: white;
   height: 2px;
@@ -35,7 +35,7 @@
 
 
 /* Features Section */
-.feature-icon-back {
+.featureIconBack {
   background-color: var(--lessdark-blue-color);
   border-radius: 12px;
   width: 50px;
@@ -46,7 +46,7 @@
   align-items: center; 
   justify-content: center; 
 }
-.feature-icon {
+.featureIcon {
   width: 24px;  
   height: 24px;
   fill: white;
@@ -60,10 +60,10 @@
 
 
 /* Downloads Section */
-.download-tabs .nav-tabs {
+.downloadTabs :global(.nav-tabs) {
   border-bottom: 2px solid #ccc; /* linha divisória */
 }
-.download-tabs .nav-link {
+.downloadTabs :global(.nav-link) {
   border: none;
   background-color: transparent;
   color: #0B5ED7 !important;
@@ -72,135 +72,141 @@
   padding: 0.75rem 1.5rem;
   transition: all 0.2s ease;
 }
-.download-tabs .nav-link:hover {
+.downloadTabs :global(.nav-link):hover {
   background-color: #e0e0e0;
   border-radius: 6px;
 }
-.download-tabs .nav-link.active {
+.downloadTabs :global(.nav-link.active) {
   border: none;
   border-bottom: 3px solid; /* azul da aba ativa */
   font-weight: 600;
   background-color: transparent;
 }
-#tabcontent {
+.tabContent {
   color: white;
 }
 
 
 /* Princing Section */
-#free-card {
+.freeCard {
   border-color: var(--green-color) !important;
+  border-width: 1px;
 }
-#free-card h5 {
+.freeCard h5 {
   color: var(--green-color) !important;
 }
-#free-card .btn{
+.freeCard :global(.btn) {
   background-color: var(--green-color);
   border: none;
 }
-#free-card .btn:hover{
+.freeCard :global(.btn):hover {
   background-color: #094d4d;
   color: white;
 }
-#free-card .btn:active{
+.freeCard :global(.btn):active {
   background-color: var(--hover-green-color);
 }
 
-#family-card {
+.familyCard {
   border-color:#0950b9;
 }
-#family-card h5 {
+.familyCard h5 {
   color: #0950b9;
 }
-#family-btn1 {
-  background-color: #0950b9;
+.familyBtn1 {
+  background-color: #0950b9 !important;
 }
-#family-btn1:hover {
-  background-color: #094aaa;
+.familyBtn1:hover {
+  background-color: #0a4bad !important;
 }
-#family-btn1:active{
-  background-color: #09439b;
+.familyBtn1:active{
+  background-color: #09439b !important;
 }
-#family-btn2 {
-  color: #0950b9;
-  border-color: #0950b9;
+.familyBtn2 {
+  color: #0950b9 !important;
+  border-color: #0950b9 !important;
+  transition: all 0.2s ease !important;
 }
-#family-btn2:hover {
-  color: white;
-  background-color: #0950b9;
+.familyBtn2:hover {
+  color: white !important;
+  background-color: #0950b9 !important;
 }
-#family-btn2:active {
-   background-color: #09439b;
+.familyBtn2:active {
+   background-color: #09439b !important;
 }
 
-#business-card {
+.businessCard {
   background-color: var(--dark-blue-color) !important;
   background-image: linear-gradient(
     rgba(255, 255, 255, 0.06), 
     rgba(255, 255, 255, 0.06)
   );
 }
-#business-card h5 {
+.businessCard h5 {
   text-decoration: underline;
   text-decoration-color: var(--yellow-color);
 }
-#business-features .list-group-item {
+.businessFeatures :global(.list-group-item) {
   background-color: var(--dark-blue-color);
   background-image: linear-gradient(
     rgba(255, 255, 255, 0.06), 
     rgba(255, 255, 255, 0.06)
   );
 }
-#demo-btn {
+.demoBtn {
   color: white;          
   border-color: var(--lessdark-blue-color) !important; 
   background-color: #0950b9;
   transition: background-color 0.1s ease;
 }
-#demo-btn:hover {
+.demoBtn:hover {
   background-color: #094aaa;
 }
-#demo-btn:active {
+.demoBtn:active {
   background-color: #09439b;
 }
 
 
 
 /*Buttons*/
-#aboutus-btn {
+.aboutUsBtn {
   color: var(--lessdark-blue-color) !important;          
   border-color: var(--lessdark-blue-color) !important;    
 }
-#aboutus-btn:hover {
+.aboutUsBtn:hover {
   background-color: rgb(238, 238, 238) !important;       
 }
-#login-btn {
-  border-color: var(--dark-blue-color);
+.loginBtn {
+  border-color: var(--dark-blue-color) !important;
 }
-#login-btn:hover{
-  background-color: rgb(240, 240, 240);
+.loginBtn:hover{
+  background-color: rgb(240, 240, 240) !important;
 }
-#login-btn:active{
-  background-color: rgb(228, 227, 227);
+.loginBtn:active{
+  background-color: rgb(228, 227, 227) !important;
 }
-#register-btn {
-  color: white;
-  background-color: var(--lessdark-blue-color);
+.registerBtn {
+  color: white !important;
+  background-color: var(--lessdark-blue-color) !important;
 }
-#register-btn:hover {
-  background-color: var(--hover-lessdark-blue-color);
+.registerBtn:hover {
+  background-color: var(--hover-lessdark-blue-color) !important;
 }
-#getstarted-btn {
-  border: none;
-  background-color: var(--green-color);
+.getStartedBtn {
+  border: none !important;
+  background-color: var(--green-color) !important;
 }
-#getstarted-btn:hover {
-  background-color: #064646;
+.getStartedBtn:hover {
+  background-color: #064646 !important;
 }
-#aboutus-btn {
+.aboutUsBtn {
   color: #0842bd !important;
   border-color:#0842bd !important;
+  transition: all 0.2s ease !important;
 }
-#aboutus-btn:hover {
+.aboutUsBtn:hover {
   color: var(--lessdark-blue-color) !important;
+}
+.aboutUsBtn:active {
+  background-color: rgb(219, 218, 218) !important; 
 }

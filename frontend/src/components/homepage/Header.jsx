@@ -2,6 +2,7 @@ import SiteIcon from '../../assets/site-icon.svg?react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../routes';
+import styles from '../../styles/HomePage.module.css';
 
 function Header() {
   return (
@@ -16,7 +17,7 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
-          <Nav className="mx-auto gap-4" id='header-options'>
+          <Nav className={`mx-auto gap-4 ${styles.headerOptions}`}>
             <Nav.Link href="#features">Tools & Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
             <Nav.Link href="#downloads">Downloads</Nav.Link>
@@ -25,16 +26,14 @@ function Header() {
           <div className="d-flex gap-2 pe-3">
             <Link
               to={SIGNIN_ROUTE} 
-              id='login-btn'
-              className='btn btn-outline-custom' 
+              className={`btn btn-outline-custom ${styles.loginBtn}`} 
               style={{ color: 'var(--dark-blue-color)' }}
             >
             Sign In
             </Link>
             <Link
               to={SIGNUP_ROUTE} 
-              id='register-btn'
-              className='btn'
+              className={`btn ${styles.registerBtn}`}
             >
             Sign Up
             </Link>

@@ -6,3 +6,4 @@ export { default as FeaturesSection } from './homepage/FeaturesSection';
 export { default as DownloadsSection } from './homepage/DownloadsSection';
 export { default as PrincingSection } from './homepage/PrincingSection';
 export { default as  Sidebar } from './dashboard/Sidebar';
+export { default as MainContent } from './dashboard/MainContent'
