@@ -1,7 +1,7 @@
-import { Form, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import SidebarSection from './partials/SidebarSection';
 import SidebarFooter from './partials/SidebarFooter';
-import {SearchIcon } from '../../assets/dashboard';
+import SiteIcon from '../../assets/site-icon.svg?react';
 import styles from '../../styles/Sidebar.module.css'; 
 
 function Sidebar({ isExpanded, toggleSidebar }) {
@@ -9,16 +9,10 @@ function Sidebar({ isExpanded, toggleSidebar }) {
 
   return (
     <div className={`${styles.sidebarContainer} ${sidebarClassName}`}>
-      <Form className="d-flex p-3">
-        <Form.Control
-          type="search"
-          placeholder={isExpanded ? "Search..." : SearchIcon}
-          className={`me-2 ${styles.searchBox}`}
-          aria-label="Search"
-          style={{ minWidth: isExpanded ? '100px' : 'auto', fill: 'black' }}
-        />
-      </Form>
-
+      <div className={styles.logoSection}>
+        <SiteIcon className={styles.siteIcon} />
+        <span className={styles.siteNameText}>SafeLock</span>
+      </div>
 
       <Nav className="flex-column flex-grow-1">
         <SidebarSection

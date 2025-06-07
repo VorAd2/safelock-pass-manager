@@ -6,7 +6,9 @@
   flex-direction: column;
   transition: width 0.3s ease;
   overflow-x: hidden;
+  overflow-y: auto; 
   flex-shrink: 0;
+  box-sizing: border-box; 
 }
 .sidebarExpanded {
   width: var(--sidebar-width-expanded);
@@ -14,13 +16,6 @@
 .sidebarCollapsed {
   width: var(--sidebar-width-collapsed);
 }
-
-
-.searchBox {
-  height: 30px !important;
-}
-
-
 .sidebarText {
   opacity: 0;
   width: 0;
@@ -33,59 +28,214 @@
   width: auto;
   transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s;
 }
-
-
 .sidebarContainer :global(.nav-link) {
   color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  font-weight: 500 !important; 
+  font-weight: 500 !important;
   font-size: small;
+  min-height: 40px; 
 }
 .sidebarContainer :global(.nav-link):hover {
   color: white;
-  background-color: rgba(97, 97, 97, 0.1)
+  background-color: rgba(97, 97, 97, 0.1);
 }
-
-
 .sidebarIcon {
   margin-right: 7px;
   width: 24px;
-  text-align: center;
+  height: 24px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   flex-shrink: 0; /* Impede que o ícone encolha */
 }
 .sidebarCollapsed .sidebarIcon {
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sidebarDivider { 
+  border: none;
+  border-top: 1.3px solid rgb(255, 255, 255); 
+  margin: 0.5rem 0; 
+  width: 100%; 
+  box-sizing: border-box; /* Inclui padding/border na largura */
 }
 
 
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem; 
+  margin-bottom: 1rem;
+  flex-shrink: 0; 
+}
+.siteIcon {
+  width: 32px; /* Adjust logo size as needed */
+  height: 32px; /* Adjust logo size as needed */
+  fill: var(--yellow-color); /* Example: If your SVG logo needs a fill color */
+  flex-shrink: 0; /* Ensures the logo itself doesn't shrink */
+  transition: margin-right 0.3s ease; /* Smooth transition for margin */
+}
+.siteNameText {
+  color: white;
+  font-size: 1.2rem; 
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 1; 
+  width: auto; 
+  overflow: hidden;
+  transition: opacity 0.3s ease, width 0.3s ease, margin-left 0.3s ease; 
+}
+
+
+
+.sidebarFooter {
+  display: flex;
+  margin-top: auto;
+  flex-direction: column !important;
+  align-items: flex-start;
+  gap: 5px;              
+  padding: 0 1rem 0.5rem;        
+  width: 100%;            
+  box-sizing: border-box; 
+}
+.upgradeContainer {
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease, width 0.3s ease, max-width 0.3s ease, padding 0.3s ease, margin-right 0.3s ease;
+  box-sizing: border-box; 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.8rem 1rem; 
+  width: 100%; 
+  margin-right: 0; 
+}
+.upgradeContainer:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.upgradeElements {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  font-size: medium;
+}
+.upgradeLink {
+  color: whitesmoke;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Evita que o texto quebre linha */
+  margin-bottom: 5px; 
+}
+.upgradeLink:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dark-yellow-color);
+}
+.upgradeIcon {
+  width: 18px; 
+  height: 18px;  
+  margin-right: 8px;
+  color: var(--yellow-color);
+  flex-shrink: 0; 
+}
+.upgradeLink:hover .upgradeIcon {
+  color: var(--dark-yellow-color);
+}
+.currentPlan {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  margin: 0;
+  align-self: flex-start;
+}
 .sidebarToggleBtn {
   border: none;
   background-color: transparent;
-  color: white; 
+  color: white;
   cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
   display: flex;
-  justify-content: center; 
-  align-items: center;   
-  min-height: 40px; 
-  transition: width 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
-  padding: 0 10px; 
-  box-sizing: border-box; 
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+  flex-shrink: 0; 
+  margin-left: 0; 
+  margin-right: 0;
 }
-
 .sidebarToggleBtn:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
+}
+.toggleBtnIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
-.toggleBtnIcon {
-  width: 24px;  
-  height: 24px;  
-  flex-shrink: 0; /* Impede que o ícone encolha se o espaço for limitado */
-  margin-right: 0; 
-  fill: currentColor; 
+
+
+.sidebarExpanded .logoSection {
+  padding: 1rem 1rem; 
+  margin-left: 2rem;
+}
+.sidebarCollapsed .logoSection {
+  justify-content: center; 
+  padding: 1rem 0;
+}
+.sidebarExpanded .siteIcon {
+  margin-right: 3px; 
+}
+.sidebarCollapsed .siteIcon {
+  margin-right: 0;
+}
+.sidebarExpanded .siteNameText {
+  opacity: 1; 
+  width: auto; 
+  margin-left: 10px;
+  transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s, margin-left 0.3s ease 0.1s; 
+}
+.sidebarCollapsed .siteNameText {
+  opacity: 0; 
+  width: 0; 
+  margin-left: 0; 
+  transition: opacity 0.3s ease, width 0.3s ease, margin-left 0.3s ease;
+}
+.sidebarExpanded .upgradeContainer {
+  opacity: 1;
+  pointer-events: auto;
+  width: 100%; 
+  padding: 0.8rem 1rem;
+  margin-right: 0;
+}
+.sidebarCollapsed .upgradeContainer {
+  opacity: 0;
+  pointer-events: none;
+  max-width: 0; 
+  padding: 0;
+  overflow: hidden;
+  margin-right: 0;
+  transition: opacity 0.3s ease, max-width 0.3s ease, padding 0.3s ease, margin-right 0.3s ease;
+}
+.sidebarExpanded .sidebarToggleBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-self: flex-end;
+}
+.sidebarCollapsed .sidebarToggleBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-self: center; /* Centraliza o botão na largura total da sidebar colhida */
+  margin: 0 auto; 
+}
+.sidebarCollapsed .upgradeElements {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
 }

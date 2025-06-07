@@ -26,7 +26,7 @@ const iconMap = {
 function SidebarSection({ title, options, isExpanded, iconClassName, textClassName }) {
   return (
     <div className="mb-2">
-      {isExpanded && <h5 className={`px-3 pt-2 text-white ${sectionStyles.sectionTitle}`}>{title}</h5>}
+      {isExpanded && <h5 className={`px-3  text-white ${sectionStyles.sectionTitle}`}>{title}</h5>}
       <Nav className="flex-column">
         {options.map((option, index) => {
           const iconKey = option.name.toLowerCase()
