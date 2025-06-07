@@ -15,5 +15,4 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden; /* Evita scroll na tela toda se o conteúdo for maior que a viewport */
 }

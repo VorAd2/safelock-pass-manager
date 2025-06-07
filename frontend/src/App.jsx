@@ -3,7 +3,6 @@ import { HOME_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE, DASHBOARD_ROUTE } from './route
 import {HomePage, DashboardPage, SigninPage, SignupPage} from './pages';
 
 
-
 function App() {
   return (
     <Router>
