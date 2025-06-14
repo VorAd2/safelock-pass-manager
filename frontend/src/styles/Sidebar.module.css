@@ -35,11 +35,32 @@
   padding: 10px 15px;
   font-weight: 500 !important;
   font-size: small;
-  min-height: 40px; 
+  min-height: 40px;
+  position: relative;
+  transition: background-color 0.3s ease; 
+  overflow: hidden;
 }
-.sidebarContainer :global(.nav-link):hover {
+.sidebarContainer :global(.nav-link.inactive):hover {
   color: white;
-  background-color: rgba(97, 97, 97, 0.1);
+  background-color: rgba(97, 97, 97, 0.15);
+}
+.sidebarContainer :global(.nav-link.active) {
+  color: white;
+  background-color: rgba(97, 97, 97, 0.15);
+}
+.sidebarContainer :global(.nav-link.inactive) {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #1f1f1f;
+}
+.activeRectangle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0; 
+  width: 4px; 
+  background-color: var(--lessdark-blue-color); 
+  border-radius: 0 2px 2px 0; 
+  transition: transform 0.3s ease, background-color 0.3s ease; 
 }
 .sidebarIcon {
   margin-right: 7px;
@@ -124,6 +145,10 @@
   width: 100%;
   font-size: medium;
 }
+.upgradeElements:hover .upgradeLink {
+  text-decoration: underline;
+  text-decoration-color: var(--yellow-color);
+}
 .upgradeLink {
   color: whitesmoke;
   text-decoration: none;
@@ -133,19 +158,12 @@
   white-space: nowrap; /* Evita que o texto quebre linha */
   margin-bottom: 5px; 
 }
-.upgradeLink:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--dark-yellow-color);
-}
 .upgradeIcon {
   width: 18px; 
   height: 18px;  
   margin-right: 8px;
   color: var(--yellow-color);
   flex-shrink: 0; 
-}
-.upgradeLink:hover .upgradeIcon {
-  color: var(--dark-yellow-color);
 }
 .currentPlan {
   color: rgba(255, 255, 255, 0.7);

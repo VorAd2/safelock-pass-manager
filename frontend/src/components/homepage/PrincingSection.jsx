@@ -52,7 +52,7 @@ export default function PricingSection() {
 
           {/* Plano Empresarial */}
           <Col md={4} className="mb-4">
-            <Card text="white" className={`h-100 ${styles.businessCard}`}> {/* Fundo azul escuro e sombra */}
+            <Card text="white" className={`h-100 ${styles.businessCard}`}> 
               <Card.Body className="d-flex flex-column">
                 <Card.Title as="h5" className="text-center">Empresarial</Card.Title>
                 <Card.Subtitle className="mb-2 text-center text-light">Soluções completas para empresas</Card.Subtitle>

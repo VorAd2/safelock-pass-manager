@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import SidebarSection from './partials/SidebarSection';
 import SidebarFooter from './partials/SidebarFooter';
@@ -6,6 +7,10 @@ import styles from '../../styles/Sidebar.module.css';
 
 function Sidebar({ isExpanded, toggleSidebar }) {
   const sidebarClassName = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
+  const [activeNavLink, setActiveNavLink] = useState('#')
+  const handleNavLinkClick = (name) => {
+    setActiveNavLink(name)
+  }
 
   return (
     <div className={`${styles.sidebarContainer} ${sidebarClassName}`}>
@@ -25,6 +30,8 @@ function Sidebar({ isExpanded, toggleSidebar }) {
           isExpanded={isExpanded}
           iconClassName={styles.sidebarIcon}
           textClassName={styles.sidebarText}
+          activeNavLink={activeNavLink}
+          onNavLinkClick={handleNavLinkClick}
         />
         <SidebarSection
           title="Wallet"
@@ -35,16 +42,20 @@ function Sidebar({ isExpanded, toggleSidebar }) {
           isExpanded={isExpanded}
           iconClassName={styles.sidebarIcon}
           textClassName={styles.sidebarText}
+          activeNavLink={activeNavLink}
+          onNavLinkClick={handleNavLinkClick}
         />
         <SidebarSection
           title="Support"
           options={[
             { name: 'Settings', href: '#settings' },
-            { name: 'Contact Us', href: '#contactus' },
+            { name: 'ContactUs', href: '#contactus' },
           ]}
           isExpanded={isExpanded}
           iconClassName={styles.sidebarIcon}
           textClassName={styles.sidebarText}
+          activeNavLink={activeNavLink}
+          onNavLinkClick={handleNavLinkClick}
         />
       </Nav>
 

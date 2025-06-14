@@ -1,11 +1,20 @@
 /* Header */
 .headerOptions :global(.nav-link) {
   color: var(--lessdark-blue-color) !important;
+  position: relative;
 }
-.headerOptions :global(.nav-link):hover{
-  color: var(--hover-lessdark-blue-color) !important;
-  text-decoration-line: underline;
-  text-decoration-color: var(--hover-lessdark-blue-color);
+.headerOptions :global(.nav-link::after) {
+  content: ''; 
+  position: absolute;
+  width: 0; 
+  height: 2px; 
+  bottom: 0; 
+  left: 0; 
+  background-color: var(--hover-lessdark-blue-color); 
+  transition: width 0.3s ease;
+}
+.headerOptions :global(.nav-link:hover::after) {
+  width: 100%; 
 }
 
 
@@ -96,15 +105,16 @@
   color: var(--green-color) !important;
 }
 .freeCard :global(.btn) {
-  background-color: var(--green-color);
+  background-color: rgb(12, 104, 104);
+  transition: all 0.3s ease !important;
   border: none;
 }
 .freeCard :global(.btn):hover {
-  background-color: #094d4d;
+  background-color: var(--green-color);
   color: white;
 }
 .freeCard :global(.btn):active {
-  background-color: var(--hover-green-color);
+  background-color: var(--hover-green-color) !important;
 }
 
 .familyCard {
@@ -115,6 +125,7 @@
 }
 .familyBtn1 {
   background-color: #0950b9 !important;
+  transition: all 0.3s ease !important;
 }
 .familyBtn1:hover {
   background-color: #0a4bad !important;
@@ -125,7 +136,7 @@
 .familyBtn2 {
   color: #0950b9 !important;
   border-color: #0950b9 !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.3s ease !important;
 }
 .familyBtn2:hover {
   color: white !important;
@@ -157,7 +168,7 @@
   color: white;          
   border-color: var(--lessdark-blue-color) !important; 
   background-color: #0950b9;
-  transition: background-color 0.1s ease;
+  transition: all 0.3s ease !important;
 }
 .demoBtn:hover {
   background-color: #094aaa;
@@ -167,17 +178,22 @@
 }
 
 
+/*Footer*/
+.myFooter a {
+  color: whitesmoke;
+}
+.myFooter a:hover {
+  color: rgb(19, 110, 248);
+}
+.myFooter a:active {
+  color: rgb(16, 83, 184);
+}
+
 
 /*Buttons*/
-.aboutUsBtn {
-  color: var(--lessdark-blue-color) !important;          
-  border-color: var(--lessdark-blue-color) !important;    
-}
-.aboutUsBtn:hover {
-  background-color: rgb(238, 238, 238) !important;       
-}
 .loginBtn {
   border-color: var(--dark-blue-color) !important;
+  transition: all 0.2s ease !important;
 }
 .loginBtn:hover{
   background-color: rgb(240, 240, 240) !important;
@@ -188,6 +204,7 @@
 .registerBtn {
   color: white !important;
   background-color: var(--lessdark-blue-color) !important;
+  transition: all 0.2s ease !important;
 }
 .registerBtn:hover {
   background-color: var(--hover-lessdark-blue-color) !important;
@@ -195,6 +212,7 @@
 .getStartedBtn {
   border: none !important;
   background-color: var(--green-color) !important;
+  transition: all 0.2s ease !important;
 }
 .getStartedBtn:hover {
   background-color: #064646 !important;
@@ -202,11 +220,33 @@
 .aboutUsBtn {
   color: #0842bd !important;
   border-color:#0842bd !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.4s ease !important;
 }
 .aboutUsBtn:hover {
   color: var(--lessdark-blue-color) !important;
+  background-color: rgb(238, 238, 238) !important; 
 }
 .aboutUsBtn:active {
   background-color: rgb(219, 218, 218) !important; 
+}
+.scrollTopBtn {
+  transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--lessdark-blue-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scrollTopBtn:hover {
+  background-color: var(--hover-lessdark-blue-color);
 }

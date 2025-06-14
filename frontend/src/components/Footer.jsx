@@ -1,13 +1,12 @@
+import GithubIcon from '../assets/github.svg?react';
+import styles from '../styles/HomePage.module.css';
+
 export default function Footer() {
     return (
-        <footer id="footer" class="text-white py-4 mt-auto" style={{backgroundColor:'var(--dark-blue-color)'}}>
+        <footer id="footer" className={`text-white py-4 mt-auto ${styles.myFooter} `} style={{backgroundColor:'var(--dark-blue-color)'}}>
             <div class="container text-center">
                 <p class="mb-1">&copy; 2025 SafeLock. Todos os direitos reservados.</p>
-                <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#" class="text-white">Início</a></li>
-                    <li class="list-inline-item"><a href="#" class="text-white">Sobre</a></li>
-                    <li class="list-inline-item"><a href="#" class="text-white">Contato</a></li>
-                </ul>
+                <a href="https://github.com/VorAd2" target='_blank'> <GithubIcon className='me-1'/>VorAd2 </a>
             </div>
         </footer>
 
