@@ -5,11 +5,12 @@ import SidebarFooter from './partials/SidebarFooter';
 import SiteIcon from '../../assets/site-icon.svg?react';
 import styles from '../../styles/Sidebar.module.css'; 
 
-function Sidebar({ isExpanded, toggleSidebar }) {
+function Sidebar({ isExpanded, toggleSidebar, setMainContent }) {
   const sidebarClassName = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
-  const [activeNavLink, setActiveNavLink] = useState('#')
+  const [activeNavLink, setActiveNavLink] = useState('vaults')
   const handleNavLinkClick = (name) => {
     setActiveNavLink(name)
+    setMainContent(activeNavLink)
   }
 
   return (

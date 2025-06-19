@@ -1,10 +1,19 @@
-export { default as  Header } from './homepage/Header';
-export { default as  Footer } from './Footer';
-export { default as HeroSection } from './homepage/HeroSection';
-export { default as SponsorsContainer } from './homepage/SponsorsContainer';
-export { default as FeaturesSection } from './homepage/FeaturesSection';
-export { default as DownloadsSection } from './homepage/DownloadsSection';
-export { default as PrincingSection } from './homepage/PrincingSection';
-export { default as  Sidebar } from './dashboard/Sidebar';
-export { default as MainContent } from './dashboard/MainContent'
+export { default as  Header } from './homepage/Header'
+export { default as  Footer } from './Footer'
+export { default as HeroSection } from './homepage/HeroSection'
+export { default as SponsorsContainer } from './homepage/SponsorsContainer'
+export { default as FeaturesSection } from './homepage/FeaturesSection'
+export { default as DownloadsSection } from './homepage/DownloadsSection'
+export { default as PrincingSection } from './homepage/PrincingSection'
 export { default as ScrollTopBtn } from './homepage/ScrollTopBtn'
+
+
+export { default as  Sidebar } from './dashboard/Sidebar'
+export { default as DashboardHeader } from './dashboard/partials/DashboardHeader'
+export { default as MainContent } from './dashboard/MainContent'
+export { default as VaultsContent } from './dashboard/contents/VaultsContent'
+export { default as SendContent } from './dashboard/contents/SendContent'
+export { default as CardsContent } from './dashboard/contents/CardsContent'
+export { default as ReceiptsContent } from './dashboard/contents/ReceiptsContent'
+export { default as SettingsContent } from './dashboard/contents/SettingsContent'
+export { default as ContactUsContent } from './dashboard/contents/ContactUsContent'

@@ -69,7 +69,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0; /* Impede que o ícone encolha */
+  flex-shrink: 0;
 }
 .sidebarCollapsed .sidebarIcon {
   margin-left: auto;
@@ -82,7 +82,17 @@
   width: 100%; 
   box-sizing: border-box; /* Inclui padding/border na largura */
 }
-
+.sectionDividerCollapsed {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); 
+  margin: 0rem auto;
+  width: 70%;
+  opacity: 0;
+  transition: opacity 0.3s ease; 
+}
+.sidebarCollapsed .sectionDividerCollapsed {
+  opacity: 1; 
+}
 
 
 .logoSection {

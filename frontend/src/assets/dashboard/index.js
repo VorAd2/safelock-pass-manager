@@ -10,6 +10,7 @@ import SearchIcon from './search.svg?react';
 import ArrowLeftIcon from './arrow-left.svg?react';
 import ArrowRightIcon from './arrow-right.svg?react';
 import PremiumIcon from './premium.svg?react';
+import UserAvatar from './person.svg?react';
 
 console.log('Teste')
 
@@ -27,4 +28,5 @@ export {
     ArrowLeftIcon,
     ArrowRightIcon,
     PremiumIcon,
+    UserAvatar,
 }

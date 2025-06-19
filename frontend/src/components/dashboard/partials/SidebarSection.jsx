@@ -40,7 +40,7 @@ function SidebarSection(
             <Nav.Link key={option.href} href={option.href} className={isActive ? 'active' : 'inactive'} onClick={() => onNavLinkClick(iconKey)}>
               {isActive && <div className={styles.activeRectangle}></div>}
               <span className={iconClassName}>
-              {IconComponent ? <IconComponent /> : <span>?</span>}
+                {IconComponent ? <IconComponent/> : <span>?</span>}
               </span>
               <span className={textClassName}>
                 {option.name}
@@ -50,6 +50,7 @@ function SidebarSection(
           })
         } 
       </Nav>
+      {(!isExpanded && title != 'Support') && <hr className={styles.sectionDividerCollapsed}/>}
     </div>
   );
 }
