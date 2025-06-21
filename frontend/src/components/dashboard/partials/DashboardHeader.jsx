@@ -1,11 +1,11 @@
 import { UserAvatar } from '../../../assets/dashboard'
 
-function DashboardHeader({title}) {
+function DashboardHeader({title, username}) {
     return (
-        <header className='d-flex justify-content-between align-items-center px-4'>
-            <h1 style={{color:'var(--lessdark-blue-color'}}>{title}</h1>
+        <header className='d-flex justify-content-between align-items-center px-4 pt-2 mb-3'>
+            <h2>{title}</h2>
             <div className='d-flex align-items-center'>
-                <p className='mb-0'>VorAd2</p>
+                <p className='mb-0'>{username}</p>
                 <div
                     style={{
                         width: '30px',

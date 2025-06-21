@@ -1,0 +1,120 @@
+.floatingBoxContainer {
+    background-color: #2e2e2e; 
+    border-radius: 8px; 
+    padding: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    display: flex;
+    flex-direction: column; 
+    color: #f0f0f0; 
+}
+.searchVaultSection {
+    margin-bottom: 20px; 
+    font-weight: bold;
+}
+.optionsList div {
+    padding: 8px 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.optionsList div:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+
+
+.vaultPanelContainer {
+  background-color: #1f1f1f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  color: #f0f0f0;
+  flex-grow: 1;
+  height: 100%;
+  min-height: 0; 
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.vaultPanelContainer h2 {
+    color: #007bff; 
+    margin-bottom: 15px;
+}
+.vaultPanelContainer p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+.vaultPanelContainer::-webkit-scrollbar {
+  width: 8px;
+}
+.vaultPanelContainer::-webkit-scrollbar-track {
+  background: #333; 
+  border-radius: 4px;
+}
+.vaultPanelContainer::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+.vaultPanelContainer::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+
+.vaultCard {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+.vaultCard:hover {
+  background-color: #333333;
+  border-color: #555;
+}
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.iconArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+.vaultIcon {
+  margin-bottom: 4px;
+  width: 65px;
+  height: 65px;
+}
+.bottomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.vaultName {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ddd;
+}
+.avatarCircle {
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--lessdark-blue-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

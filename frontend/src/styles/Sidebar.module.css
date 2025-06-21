@@ -28,30 +28,6 @@
   width: auto;
   transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s;
 }
-.sidebarContainer :global(.nav-link) {
-  color: rgba(255, 255, 255, 0.7);
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  font-weight: 500 !important;
-  font-size: small;
-  min-height: 40px;
-  position: relative;
-  transition: background-color 0.3s ease; 
-  overflow: hidden;
-}
-.sidebarContainer :global(.nav-link.inactive):hover {
-  color: white;
-  background-color: rgba(97, 97, 97, 0.15);
-}
-.sidebarContainer :global(.nav-link.active) {
-  color: white;
-  background-color: rgba(97, 97, 97, 0.15);
-}
-.sidebarContainer :global(.nav-link.inactive) {
-  color: rgba(255, 255, 255, 0.7);
-  background-color: #1f1f1f;
-}
 .activeRectangle {
   position: absolute;
   left: 0;
@@ -95,6 +71,27 @@
 }
 
 
+.navLink {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  font-weight: 500 !important;
+  font-size: small;
+  min-height: 40px;
+  position: relative;
+  transition: background-color 0.3s ease; 
+  overflow: hidden;
+}
+.navLink:hover {
+  color: white;
+  background-color: rgba(97, 97, 97, 0.15);
+}
+.activeNavLink {
+  color: white;
+  background-color: rgba(97, 97, 97, 0.15);
+}
 .logoSection {
   display: flex;
   align-items: center;

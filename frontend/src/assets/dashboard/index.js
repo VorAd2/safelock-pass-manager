@@ -11,9 +11,13 @@ import ArrowLeftIcon from './arrow-left.svg?react';
 import ArrowRightIcon from './arrow-right.svg?react';
 import PremiumIcon from './premium.svg?react';
 import UserAvatar from './person.svg?react';
-
-console.log('Teste')
-
+import StarIcon from './star.svg?react';
+import PeopleIcon from './people.svg?react';
+import FolderIcon from './folder.svg?react';
+import TrashIcon from './trash.svg?react';
+import EmptySquareIcon from './square.svg?react';
+import PlusIcon from './plus.svg?react';
+import EllipsisIcon from './ellipsis.svg?react';
 
 export {
     VaultIcon,
@@ -29,4 +33,11 @@ export {
     ArrowRightIcon,
     PremiumIcon,
     UserAvatar,
+    StarIcon,
+    PeopleIcon,
+    FolderIcon,
+    TrashIcon,
+    EmptySquareIcon,
+    PlusIcon,
+    EllipsisIcon
 }

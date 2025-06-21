@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Nav } from 'react-bootstrap';
+import { NavLink as RouterNavLink} from 'react-router-dom';
 import {VaultIcon,
     FeaturesIcon,
     SendIcon,
@@ -26,26 +27,37 @@ const iconMap = {
 }
 
 function SidebarSection(
-  { title, options, isExpanded, iconClassName, textClassName, activeNavLink, onNavLinkClick })
+  { title, options, isExpanded, iconClassName, textClassName })
   {
   return (
     <div className="mb-2">
       {isExpanded && <h5 className={`px-3  text-white ${sectionStyles.sectionTitle}`}>{title}</h5>}
       <Nav className="flex-column">
         {options.map((option, _) => {
-          const iconKey = option.name.toLowerCase()
-          const isActive = iconKey == activeNavLink
-          const IconComponent = iconMap[iconKey]
+          const iconName = option.name.toLowerCase()
+          const IconComponent = iconMap[iconName]
+          const toPath = option.href
           return (
-            <Nav.Link key={option.href} href={option.href} className={isActive ? 'active' : 'inactive'} onClick={() => onNavLinkClick(iconKey)}>
-              {isActive && <div className={styles.activeRectangle}></div>}
-              <span className={iconClassName}>
-                {IconComponent ? <IconComponent/> : <span>?</span>}
-              </span>
-              <span className={textClassName}>
-                {option.name}
-              </span>
-            </Nav.Link>
+            <RouterNavLink 
+              key={toPath} 
+              to={toPath} 
+              className={({isActive}) => `${styles.navLink} ${isActive ? styles.activeNavLink : ''}`}
+            >
+              {({isActive}) => {
+                  return (
+                    <>
+                      {isActive && <div className={styles.activeRectangle}></div>}
+                      <span className={iconClassName}>
+                        {IconComponent ? <IconComponent/> : <span>?</span>}
+                      </span>
+                      <span className={textClassName}>
+                        {option.name}
+                      </span>
+                    </>
+                  )
+                }
+              }
+            </RouterNavLink>
           )
           })
         } 
