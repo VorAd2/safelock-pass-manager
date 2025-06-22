@@ -10,9 +10,9 @@ import {VaultIcon,
     SettingsIcon,
     ArrowLeftIcon,
     ArrowRightIcon,
-  } from '../../../assets/dashboard';
-import styles from '../../../styles/Sidebar.module.css';
-import sectionStyles from '../../../styles/SidebarSection.module.css'; 
+  } from '../../../../assets/dashboard';
+import styles from '../../../../styles/Sidebar.module.css';
+import sectionStyles from '../../../../styles/SidebarSection.module.css'; 
 
 const iconMap = {
   'vaults': VaultIcon,

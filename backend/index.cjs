@@ -29,10 +29,12 @@ let db;
         const signinRouter = require('./routes/signin.cjs')(db);
         const signupRouter = require('./routes/signup.cjs')(db);
         const dashboardRouter = require('./routes/dashboard.cjs');
+        const vaultRouter = require('./routes/vault.cjs')(db);
         
         app.use('/signin', signinRouter);
         app.use('/signup', signupRouter);
         app.use('/dashboard', dashboardRouter);
+        app.use('/dashboard/vault', vaultRouter);
         app.use('/', homeRouter);
 
         

@@ -1,8 +1,8 @@
 import { Nav } from 'react-bootstrap';
-import SidebarSection from './partials/SidebarSection';
-import SidebarFooter from './partials/SidebarFooter';
-import SiteIcon from '../../assets/site-icon.svg?react';
-import styles from '../../styles/Sidebar.module.css'; 
+import SidebarSection from '../../partials/dashboard/sidebar/SidebarSection';
+import SidebarFooter from '../../partials/dashboard/sidebar/SidebarFooter';
+import SiteIcon from '../../../assets/shared/site-icon.svg?react';
+import styles from '../../../styles/Sidebar.module.css'; 
 
 function Sidebar({ isExpanded, toggleSidebar }) {
   const sidebarClassName = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;

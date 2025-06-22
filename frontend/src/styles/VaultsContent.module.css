@@ -11,8 +11,11 @@
     margin-bottom: 20px; 
     font-weight: bold;
 }
+.optionsList svg {
+  margin-right: 0.3rem;
+}
 .optionsList div {
-    padding: 8px 0;
+    padding: 8px 11px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -37,12 +40,12 @@
   flex-direction: column;
 }
 .vaultPanelContainer h2 {
-    color: #007bff; 
-    margin-bottom: 15px;
+  color: #007bff; 
+  margin-bottom: 15px;
 }
 .vaultPanelContainer p {
-    margin-bottom: 8px;
-    line-height: 1.5;
+  margin-bottom: 8px;
+  line-height: 1.5;
 }
 .vaultPanelContainer::-webkit-scrollbar {
   width: 8px;
@@ -58,6 +61,8 @@
 .vaultPanelContainer::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+
 
 
 .vaultCard {
@@ -117,4 +122,23 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+
+.newVaultBtn {
+  font-size: small;
+  border: none;
+  border-radius: 10%;
+  background-color: var(--green-color);
+  color: white;
+  transition: background-color 0.2s ease;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+.newVaultBtn:hover {
+  background-color: #086161;
+}
+.newVaultBtn:active {
+  background-color: var(--hover-green-color);
 }

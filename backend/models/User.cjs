@@ -28,6 +28,13 @@ class UserModel {
     async matchPassword(user, potentialPass, db) {
         return (await bcrypt.compare(potentialPass, user.password))
     }
+
+    async addVault(originUser, vaultId, db) {
+        await db.collection('users').updateOne(
+            {username: originUser},
+            {$addToSet: {allVaults: vaultId} }
+        )
+    }
 }
 
 module.exports = new UserModel();

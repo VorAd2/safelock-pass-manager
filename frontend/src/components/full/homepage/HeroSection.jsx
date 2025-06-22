@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import {SponsorsContainer} from '..';
-import SiteIcon from '../../assets/site-icon.svg?react';
-import styles from '../../styles/HomePage.module.css';
+import {SponsorsContainer} from '../..';
+import SiteIcon from '../../../assets/shared/site-icon.svg?react';
+import styles from '../../../styles/HomePage.module.css';
 
 export default function HeroSection() {
   return (

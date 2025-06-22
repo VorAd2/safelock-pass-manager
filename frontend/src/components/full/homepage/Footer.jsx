@@ -1,5 +1,5 @@
-import GithubIcon from '../assets/github.svg?react';
-import styles from '../styles/HomePage.module.css';
+import GithubIcon from '../../../assets/shared/github.svg?react';
+import styles from '../../../styles/HomePage.module.css';
 
 export default function Footer() {
     return (

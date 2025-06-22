@@ -1,5 +1,4 @@
-import { Container, Col} from 'react-bootstrap';
-import { StarIcon, PeopleIcon, FolderIcon, TrashIcon } from '../../../../assets/dashboard'
+import { BoxesIcon, StarIcon, PeopleIcon, TrashIcon } from '../../../../assets/dashboard'
 import styles from '../../../../styles/VaultsContent.module.css'
 
 function FloatingBox() {
@@ -9,6 +8,7 @@ function FloatingBox() {
                 <div>Pesquisar cofre</div>
             </div>
             <div className={styles.optionsList}>
+                <div> <BoxesIcon/> Todos os cofres</div>
                 <div> <StarIcon/> Favoritos</div> 
                 <div> <PeopleIcon/> Compartilhados</div>
                 <div> <TrashIcon/> Lixeira</div>

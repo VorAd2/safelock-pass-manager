@@ -1,0 +1,35 @@
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.hiddenCheckbox {
+  display: none;
+}
+.customCheckbox {
+  width: 20px;
+  height: 20px;
+  border: 1.4px solid #8f8f8f;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  transition: background-color 0.2s ease;
+}
+.customCheckbox.checked {
+  background-color: #1e54ca;
+  color: white;
+  border-color: #3e74eb;
+}
+.checkmark {
+  color: white;
+  display: flex;
+}
+
+.checkboxContainer:hover .customCheckbox.unChecked{
+  background-color: rgba(238, 238, 238, 0.562);
+}
+.checkboxContainer:hover .customCheckbox.checked {
+  background-color: #2e68e4;
+}

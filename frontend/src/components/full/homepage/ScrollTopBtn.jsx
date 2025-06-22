@@ -1,5 +1,5 @@
 import { useEffect, useState} from 'react';
-import styles from '../../styles/HomePage.module.css';
+import styles from '../../../styles/HomePage.module.css';
 
 export default function ScrollTopBtn() {
   const [visible, setVisible] = useState(false);

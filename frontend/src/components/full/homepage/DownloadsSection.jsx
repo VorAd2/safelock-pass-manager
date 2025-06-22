@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container, Nav, Tab } from 'react-bootstrap';
-import styles from '../../styles/HomePage.module.css';
+import styles from '../../../styles/HomePage.module.css';
 
 export default function DownloadsSection() {
     const [key, setKey] = useState('windows');

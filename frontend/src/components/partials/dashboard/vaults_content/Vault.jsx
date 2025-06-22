@@ -1,3 +1,4 @@
+import { CustomCheckBox } from '../../..';
 import styles from '../../../../styles/VaultsContent.module.css';
 import { VaultIcon, EllipsisIcon, EmptySquareIcon, UserAvatar } from '../../../../assets/dashboard';
 
@@ -5,7 +6,7 @@ function Vault() {
   return (
     <div className={styles.vaultCard}>
         <div className={styles.topBar}>
-            <EmptySquareIcon className={styles.icon} />
+            <CustomCheckBox/>
             <EllipsisIcon className={styles.icon} />
         </div>
 

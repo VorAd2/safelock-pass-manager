@@ -1,8 +1,8 @@
-import SiteIcon from '../../assets/site-icon.svg?react';
+import SiteIcon from '../../../assets/shared/site-icon.svg?react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../routes';
-import styles from '../../styles/HomePage.module.css';
+import { SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../../routes';
+import styles from '../../../styles/HomePage.module.css';
 
 function Header() {
   return (

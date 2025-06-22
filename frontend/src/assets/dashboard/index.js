@@ -18,6 +18,11 @@ import TrashIcon from './trash.svg?react';
 import EmptySquareIcon from './square.svg?react';
 import PlusIcon from './plus.svg?react';
 import EllipsisIcon from './ellipsis.svg?react';
+import CheckIcon from './check.svg?react';
+import BoxesIcon from './boxes.svg?react';
+import QuestionIcon from './question.svg?react';
+import EyeIcon from './eye.svg?react';
+import EyeSlashIcon from './eye-slash.svg?react';
 
 export {
     VaultIcon,
@@ -39,5 +44,10 @@ export {
     TrashIcon,
     EmptySquareIcon,
     PlusIcon,
-    EllipsisIcon
+    EllipsisIcon,
+    CheckIcon,
+    BoxesIcon,
+    QuestionIcon,
+    EyeIcon,
+    EyeSlashIcon
 }

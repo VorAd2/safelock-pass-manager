@@ -1,5 +1,5 @@
 import { Container, Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
-import styles from '../../styles/HomePage.module.css';
+import styles from '../../../styles/HomePage.module.css';
 
 export default function PricingSection() {
   return (

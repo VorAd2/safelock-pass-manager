@@ -1,7 +1,9 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const UserModel = require('../models/User.cjs');
+dotenv.config({ path: '../.env' });
 
 module.exports = (db) => {
   router.get('/', (req, res) => {

@@ -78,7 +78,7 @@ function DashboardPage() {
       <DashboardHeader title={headerTitle} username={username} />
       
       <div className="flex-grow-1 d-flex" style={{ minHeight: 0 }}>
-        <Outlet />
+        <Outlet username={username}/>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-import { UserAvatar } from '../../../assets/dashboard'
+import { UserAvatar } from '../../../../assets/dashboard'
 
 function DashboardHeader({title, username}) {
     return (
-        <header className='d-flex justify-content-between align-items-center px-4 pt-2 mb-3'>
-            <h2>{title}</h2>
+        <header className='d-flex justify-content-between align-items-center px-4 pt-2 mb-2'>
+            <h4 className='mt-2'>{title}</h4>
             <div className='d-flex align-items-center'>
                 <p className='mb-0'>{username}</p>
                 <div
