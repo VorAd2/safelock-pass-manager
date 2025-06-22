@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { FloatingBox, VaultPanel, NewVaultModal } from "../../../index";
+import { useOutletContext } from 'react-router-dom'
+import { FloatingBox, VaultPanel, NewVaultModal } from "../../../index"
 
-function VaultsContent({username}) {
+function VaultsContent() {
   const [modalVisible, setModalVisible] = useState(false)
+  const { username } = useOutletContext()
 
   const closeModal = () => {
     setModalVisible(false)
