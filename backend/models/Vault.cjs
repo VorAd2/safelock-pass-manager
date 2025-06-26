@@ -4,7 +4,7 @@ class VaultModel {
     async insertVault(data, db) {
         const {originUser, title, pin, desc} = data
         let hashedPin = null
-        if (pin != null) {
+        if (pin != '') {
             const salt = await bcrypt.genSalt(10)
             hashedPin = await bcrypt.hash(pin, salt)
         }

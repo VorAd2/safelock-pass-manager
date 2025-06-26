@@ -20,6 +20,7 @@ export { default as ContactUsContent } from './full/dashboard/contents/ContactUs
 
 export { default as  FloatingBox} from './partials/dashboard/vaults_content/FloatingBox.jsx'
 export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
+export { default as Notification } from './shared/Notification.jsx'
 export { default as VaultPanel } from './partials/dashboard/vaults_content/VaultPanel.jsx'
 export { default as Vault } from './partials/dashboard/vaults_content/Vault.jsx'
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/NewVaultModal.jsx'

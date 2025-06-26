@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sidebar } from "../components";
-import { DashboardHeader } from "../components";
+import {Sidebar, DashboardHeader, Notification } from "../components";
 import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
@@ -16,6 +15,11 @@ const titlesMap = {
 };
 
 function DashboardPage() {
+  const [notification, setNotification] = useState({
+    show: false,
+    message: '',
+    variant: '',
+  });
   const { username } = useParams();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isLoading, setLoading] = useState(true);
@@ -25,6 +29,13 @@ function DashboardPage() {
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
+
+  const notificationHandler = (show, message, variant) => {
+    setNotification({show: show, message: message, variant: variant})
+    setTimeout(() => {
+      setNotification({show: false, message:'', variant:''})
+    }, 3500)
+  }
 
   useEffect(() => {
     console.log("useEffect executado");
@@ -78,10 +89,16 @@ function DashboardPage() {
       <DashboardHeader title={headerTitle} username={username} />
       
       <div className="flex-grow-1 d-flex" style={{ minHeight: 0 }}>
-        <Outlet context={{username}}/>
+        <Outlet context={{username, notificationHandler}}/>
       </div>
     </div>
+    <Notification 
+        show={notification.show}
+        message={notification.message}
+        variant={notification.variant}
+      />
   </div>
+  
   );
 }
 

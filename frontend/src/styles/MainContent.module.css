@@ -1,4 +1,4 @@
 .mainContentContainer {
-  flex-grow: 1; /* Ocupa o restante do espaço horizontal */
-  transition: margin-left 0.3s ease; /* Transição para o ajuste de margem */
+  flex-grow: 1; 
+  transition: margin-left 0.3s ease; 
 }

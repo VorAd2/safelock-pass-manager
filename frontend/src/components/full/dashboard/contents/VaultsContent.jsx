@@ -4,15 +4,16 @@ import { FloatingBox, VaultPanel, NewVaultModal } from "../../../index"
 
 function VaultsContent() {
   const [modalVisible, setModalVisible] = useState(false)
-  const { username } = useOutletContext()
+  const { username, notificationHandler } = useOutletContext()
 
-  const closeModal = () => {
+  const onCloseModal = () => {
     setModalVisible(false)
     console.log('modal fechado')
   }
 
-  const createVault = () => {
-    closeModal()
+  const onCreateVault = async () => {
+    onCloseModal()
+    notificationHandler(true, 'Vault criado com sucesso!', 'success')
     console.log('vault criado')
   }
 
@@ -25,8 +26,8 @@ function VaultsContent() {
       <div className="p-3 flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
         <VaultPanel modalVisibleCallback={(visible) => setModalVisible(visible)}/>
         {modalVisible && <NewVaultModal 
-            onClose={() => closeModal()} 
-            onCreate={() => createVault()}
+            onClose={onCloseModal} 
+            onCreate={onCreateVault}
             originUser={username} 
           />
         }

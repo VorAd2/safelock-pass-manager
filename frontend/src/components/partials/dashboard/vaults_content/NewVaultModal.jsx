@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../assets/dashboard';
@@ -9,31 +10,32 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
     const [title, setTitle] = useState('');
     const [pin, setPin] = useState('');
     const [showPin, setShowPin] = useState(false);
-    const [description, setDescription] = useState('');
+    const [desc, setDescription] = useState('');
     const maxTitleLength = 20;
     const maxDescriptionLength = 100;
 
     const confirmModal = async (vaultData) => {
-        const {title, pin, desc} = vaultData
+        const { title, pin, desc } = vaultData;
         try {
-            await axios.post(
-                `${backUrl}/dashboard/vault`, 
-                {originUser, title, pin, desc}
-            )
-            onCreate(vaultData)
+            console.log('Tentando enviar post...');
+            const response = await axios.post(
+                `${backUrl}/dashboard/vault`,
+                { originUser, title, pin, desc }
+            );
+            await onCreate();
         } catch (err) {
-            onClose()
             if (err.response) {
-                const errorStatus = err.response.status
-                const errorMsg = err.response.data.message
-                console.log(`Erro(${errorStatus}) ao criar vault: ${errorMsg}`);
+            const errorStatus = err.response.status;
+            const errorMsg = err.response.data.message;
+            alert(`Erro ao criar vault: ${errorMsg}`);
             } else if (err.request) {
-                alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão')
+            alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão.');
             } else {
-                alert('Erro ao tentar enviar requisição')
+            alert('Erro ao tentar enviar requisição.');
             }
         }
-    }
+    };
+
 
     return (
         <div className={styles.backdrop}>
@@ -116,22 +118,23 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                 as="textarea"
                 rows={3}
                 maxLength={maxDescriptionLength}
-                value={description}
+                value={desc}
                 onChange={(e) => setDescription(e.target.value)}
                 />
                 <div className="text-end text-muted small">
-                {description.length}/{maxDescriptionLength}
+                {desc.length}/{maxDescriptionLength}
                 </div>
             </Form.Group>
 
             <div className="d-flex justify-content-end gap-2">
-                <Button variant="secondary" onClick={onClose}>
+                <Button type='button' variant="secondary" onClick={onClose}>
                 Cancelar
                 </Button>
                 <button
+                type='button'
                 className={styles.confirmModalBtn}
-                onClick={() => confirmModal({ title, pin, description })}
-                disabled={!title || !description}
+                onClick={() => confirmModal({title, pin, desc})}
+                disabled={!title || !desc}
                 >
                 Criar
                 </button>

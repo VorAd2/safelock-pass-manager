@@ -2,9 +2,9 @@
   height: 100vh;
   background-color: #1f1f1f;
   color: white;
+  transition: width 0.3s ease;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
   overflow-x: hidden;
   overflow-y: auto; 
   flex-shrink: 0;
@@ -29,19 +29,19 @@
   transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s;
 }
 .activeRectangle {
+  width: 4px; 
+  border-radius: 0 2px 2px 0;
+  background-color: var(--lessdark-blue-color); 
+  transition: transform 0.3s ease, background-color 0.3s ease;
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0; 
-  width: 4px; 
-  background-color: var(--lessdark-blue-color); 
-  border-radius: 0 2px 2px 0; 
-  transition: transform 0.3s ease, background-color 0.3s ease; 
 }
 .sidebarIcon {
-  margin-right: 7px;
   width: 24px;
   height: 24px;
+  margin-right: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,6 +74,7 @@
 .navLink {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.7);
+  transition: background-color 0.3s ease;
   display: flex;
   align-items: center;
   padding: 10px 15px;
@@ -81,7 +82,6 @@
   font-size: small;
   min-height: 40px;
   position: relative;
-  transition: background-color 0.3s ease; 
   overflow: hidden;
 }
 .navLink:hover {
@@ -93,18 +93,18 @@
   background-color: rgba(97, 97, 97, 0.15);
 }
 .logoSection {
+  padding: 1rem 1rem;
   display: flex;
   align-items: center;
-  padding: 1rem 1rem; 
   margin-bottom: 1rem;
   flex-shrink: 0; 
 }
 .siteIcon {
-  width: 32px; /* Adjust logo size as needed */
-  height: 32px; /* Adjust logo size as needed */
-  fill: var(--yellow-color); /* Example: If your SVG logo needs a fill color */
-  flex-shrink: 0; /* Ensures the logo itself doesn't shrink */
-  transition: margin-right 0.3s ease; /* Smooth transition for margin */
+  width: 32px;
+  height: 32px; 
+  fill: var(--yellow-color); 
+  flex-shrink: 0; 
+  transition: margin-right 0.3s ease;
 }
 .siteNameText {
   color: white;
@@ -120,41 +120,37 @@
 
 
 .sidebarFooter {
+  padding: 0 1rem 0.5rem;        
+  width: 100%; 
   display: flex;
   margin-top: auto;
   flex-direction: column !important;
   align-items: flex-start;
-  gap: 5px;              
-  padding: 0 1rem 0.5rem;        
-  width: 100%;            
+  gap: 5px;                       
   box-sizing: border-box; 
 }
 .upgradeContainer {
+  width: 100%; 
   background-color: transparent;
   border-radius: 8px;
   cursor: pointer;
+  padding: 0.8rem 1rem; 
   transition: background-color 0.3s ease, opacity 0.3s ease, width 0.3s ease, max-width 0.3s ease, padding 0.3s ease, margin-right 0.3s ease;
   box-sizing: border-box; 
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0.8rem 1rem; 
-  width: 100%; 
   margin-right: 0; 
 }
 .upgradeContainer:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .upgradeElements {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
   font-size: medium;
-}
-.upgradeElements:hover .upgradeLink {
-  text-decoration: underline;
-  text-decoration-color: var(--yellow-color);
 }
 .upgradeLink {
   color: whitesmoke;
@@ -165,11 +161,15 @@
   white-space: nowrap; /* Evita que o texto quebre linha */
   margin-bottom: 5px; 
 }
+.upgradeElements:hover .upgradeLink {
+  text-decoration: underline;
+  text-decoration-color: var(--yellow-color);
+}
 .upgradeIcon {
   width: 18px; 
-  height: 18px;  
+  height: 18px; 
+  color: var(--yellow-color); 
   margin-right: 8px;
-  color: var(--yellow-color);
   flex-shrink: 0; 
 }
 .currentPlan {
@@ -181,10 +181,10 @@
 .sidebarToggleBtn {
   border: none;
   background-color: transparent;
+  border-radius: 50%;
   color: white;
   cursor: pointer;
   padding: 0;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -246,6 +246,11 @@
   margin-right: 0;
   transition: opacity 0.3s ease, max-width 0.3s ease, padding 0.3s ease, margin-right 0.3s ease;
 }
+.sidebarCollapsed .upgradeElements {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
 .sidebarExpanded .sidebarToggleBtn {
   width: 40px;
   height: 40px;
@@ -258,9 +263,4 @@
   border-radius: 50%;
   align-self: center; /* Centraliza o botão na largura total da sidebar colhida */
   margin: 0 auto; 
-}
-.sidebarCollapsed .upgradeElements {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
 }
