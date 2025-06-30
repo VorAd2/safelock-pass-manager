@@ -22,5 +22,8 @@ export { default as  FloatingBox} from './partials/dashboard/vaults_content/Floa
 export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
 export { default as Notification } from './shared/Notification.jsx'
 export { default as VaultPanel } from './partials/dashboard/vaults_content/VaultPanel.jsx'
-export { default as Vault } from './partials/dashboard/vaults_content/Vault.jsx'
+export { default as VaultCard } from './partials/dashboard/vaults_content/VaultCard.jsx'
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/NewVaultModal.jsx'
+export { default as VaultModal } from './partials/dashboard/vaults_content/VaultModal.jsx'
+
+export { default as NoVaultsIcon } from './icons/NoVaultsIcon.jsx'

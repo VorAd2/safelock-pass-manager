@@ -4,9 +4,13 @@ import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../assets/dashboard';
 import styles from '../../../../styles/NewVaultModal.module.css';
 import axios from 'axios';
+import { useVaults } from './VaultsContext';
+
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const NewVaultModal = ({ onClose, onCreate, originUser }) => {
+    const { addVault } = useVaults();
+    
     const [title, setTitle] = useState('');
     const [pin, setPin] = useState('');
     const [showPin, setShowPin] = useState(false);
@@ -14,14 +18,16 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
     const maxTitleLength = 20;
     const maxDescriptionLength = 100;
 
-    const confirmModal = async (vaultData) => {
+    const handleCreate = async (vaultData) => {
         const { title, pin, desc } = vaultData;
         try {
-            console.log('Tentando enviar post...');
             const response = await axios.post(
-                `${backUrl}/dashboard/vault`,
+                `${backUrl}/dashboard/vaults`,
                 { originUser, title, pin, desc }
             );
+            const newVault = response.data.vault;
+            addVault(newVault);
+            console.log('Vault criado:', newVault);
             await onCreate();
         } catch (err) {
             if (err.response) {
@@ -133,7 +139,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                 <button
                 type='button'
                 className={styles.confirmModalBtn}
-                onClick={() => confirmModal({title, pin, desc})}
+                onClick={() => handleCreate({title, pin, desc})}
                 disabled={!title || !desc}
                 >
                 Criar

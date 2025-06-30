@@ -24,7 +24,30 @@
   border-radius: 4px;
 }
 
-
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+.emptyStateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    color: #888;
+    text-align: center;
+}
+.emptyIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.7;
+}
+.emptyText {
+    font-size: 1.1rem;
+}
 
 .vaultPanelContainer {
   height: 100%;

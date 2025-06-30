@@ -19,8 +19,8 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
           <Nav className={`mx-auto gap-4 ${styles.headerOptions}`}>
             <Nav.Link href="#features">Tools & Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
             <Nav.Link href="#downloads">Downloads</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link>
           </Nav>
 
           <div className="d-flex gap-2 pe-3">

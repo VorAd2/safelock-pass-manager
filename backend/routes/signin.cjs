@@ -33,7 +33,6 @@ module.exports = (db) => {
                 res.json({token: token}) // Envia o token de volta ao cliente
             }
           )
-          console.log('Login autorizado')
         } else {
           res.status(401).json({message: 'Email ou senha inválidos'})
         }

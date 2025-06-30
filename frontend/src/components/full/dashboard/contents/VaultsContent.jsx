@@ -1,18 +1,37 @@
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal } from "../../../index"
+import { FloatingBox, VaultPanel, NewVaultModal, VaultModal } from "../../../index"
 
 function VaultsContent() {
   const [modalVisible, setModalVisible] = useState(false)
+  const [vaultModalVisible, setVaultModalVisible] = useState(false)
+  const [vaultData, setVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const onCloseModal = () => {
+  const handleVaultClick = async (vaultName) => {
+    let data = await getVaultData(vaultName)
+    setVaultData(data)
+    setVaultModalVisible(true)
+    console.log('vault clicked:', vaultName)
+  }
+
+  const getVaultData = async (vaultName) => {
+    // Simulate an API call to fetch vault data
+    const data = {
+      vaultName: vaultName,
+      ownerUsername: username,
+      credentials: []
+    }
+    return data
+  }
+
+  const onCloseCreateModal = () => {
     setModalVisible(false)
     console.log('modal fechado')
   }
 
   const onCreateVault = async () => {
-    onCloseModal()
+    onCloseCreateModal()
     notificationHandler(true, 'Vault criado com sucesso!', 'success')
     console.log('vault criado')
   }
@@ -24,13 +43,23 @@ function VaultsContent() {
       </div>
 
       <div className="p-3 flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
-        <VaultPanel modalVisibleCallback={(visible) => setModalVisible(visible)}/>
+        <VaultPanel 
+          username={username}
+          modalVisibleCallback={(visible) => setModalVisible(visible)}
+          vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+        />
         {modalVisible && <NewVaultModal 
-            onClose={onCloseModal} 
+            onClose={onCloseCreateModal} 
             onCreate={onCreateVault}
             originUser={username} 
           />
         }
+        <VaultModal 
+          data={vaultData} 
+          show={vaultModalVisible} 
+          onHide={() => setVaultModalVisible(false)} 
+        />
+
       </div>
     </div>
   );

@@ -35,7 +35,6 @@ module.exports = (db) => {
             res.json({token: token})
         }
       )
-      console.log('Inserção de usuário autorizada');
     } catch (err) {
       res.status(500).json({message: err.message});
       console.log('Erro inesperado na inserção de usuário')

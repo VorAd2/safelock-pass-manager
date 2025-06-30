@@ -18,8 +18,15 @@ class VaultModel {
             updatedAt: new Date(),
         }
         const result = await db.collection('user_vaults').insertOne(vault)
-        return result.insertedId
+        const newVault = await db.collection('user_vaults').findOne({_id: result.insertedId})
+        return {'vaultId': result.insertedId, 'vault': newVault}
     }
+
+    async getVaultsByUser(username, db) {
+        const vaultsArray = await db.collection('user_vaults').find({originUser: username}).toArray()
+        return vaultsArray
+    }
+
 }
 
 module.exports = new VaultModel()

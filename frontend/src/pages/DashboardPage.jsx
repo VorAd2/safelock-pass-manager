@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {Sidebar, DashboardHeader, Notification } from "../components";
 import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
+import { VaultsProvider } from "../components/partials/dashboard/vaults_content/VaultsContext";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const titlesMap = {
@@ -81,6 +82,32 @@ function DashboardPage() {
 
   const currentPathSegment = location.pathname.split("/").pop();
   const headerTitle = titlesMap[currentPathSegment];
+
+  function getContentWithProvider() {
+    switch (headerTitle) {
+      case "Vaults":
+        return (
+          <VaultsProvider>
+            <Outlet context={{username, notificationHandler}} />
+          </VaultsProvider>
+        )
+      case "Explore Our Tools":
+        return <Outlet context={{username, notificationHandler}} />;
+      case "Share Your Credentials":
+        return <Outlet context={{username, notificationHandler}} />;
+      case "Personal Cards":
+        return <Outlet context={{username, notificationHandler}} />;
+      case "Receipts":
+        return <Outlet context={{username, notificationHandler}} />;
+      case "Settings":
+        return <Outlet context={{username, notificationHandler}} />;
+      case "Contact Us":
+        return <Outlet context={{username, notificationHandler}} />;
+      default:
+        return <h1>Content not found</h1>;
+    }
+  }
+
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
     <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
@@ -89,7 +116,7 @@ function DashboardPage() {
       <DashboardHeader title={headerTitle} username={username} />
       
       <div className="flex-grow-1 d-flex" style={{ minHeight: 0 }}>
-        <Outlet context={{username, notificationHandler}}/>
+        {getContentWithProvider()}
       </div>
     </div>
     <Notification 
