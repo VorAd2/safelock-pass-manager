@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CheckIcon } from '../../assets/dashboard'
 import styles from '../../styles/CustomCheckBox.module.css';
 
-const CustomCheckbox = ({ label, defaultChecked = false, onChange }) => {
+const CustomCheckbox = ({ label, defaultChecked = false, onChange, onClick }) => {
   const [checked, setChecked] = useState(defaultChecked);
 
   const handleToggle = () => {
@@ -14,7 +14,7 @@ const CustomCheckbox = ({ label, defaultChecked = false, onChange }) => {
   };
 
   return (
-    <label className={styles.checkboxContainer}>
+    <label className={styles.checkboxContainer} onClick={onClick} >
       <input
         type="checkbox"
         className={styles.hiddenCheckbox}

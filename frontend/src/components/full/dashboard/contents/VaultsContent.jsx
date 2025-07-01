@@ -3,35 +3,36 @@ import { useOutletContext } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultModal } from "../../../index"
 
 function VaultsContent() {
-  const [modalVisible, setModalVisible] = useState(false)
-  const [vaultModalVisible, setVaultModalVisible] = useState(false)
-  const [vaultData, setVaultData] = useState(null)
+  const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
+  const [vaultInfoModalVisible, setVaultInfoModalVisible] = useState(false)
+  const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const handleVaultClick = async (vaultName) => {
-    let data = await getVaultData(vaultName)
-    setVaultData(data)
-    setVaultModalVisible(true)
-    console.log('vault clicked:', vaultName)
-  }
-
-  const getVaultData = async (vaultName) => {
-    // Simulate an API call to fetch vault data
-    const data = {
-      vaultName: vaultName,
-      ownerUsername: username,
-      credentials: []
+  const handleVaultClick = async (vaultTitle) => {
+    const getVaultData = async (vaultTitle) => {
+      // Simulate an API call to fetch vault data
+      const data = {
+        vaultTitle: vaultTitle,
+        ownerUsername: username,
+        credentials: []
+      }
+      return data
     }
-    return data
+
+    let data = await getVaultData(vaultTitle)
+    setCurrentVaultData(data)
+    setVaultInfoModalVisible(true)
+    console.log('vault clicked:', vaultTitle)
   }
 
-  const onCloseCreateModal = () => {
-    setModalVisible(false)
+
+  const onCloseNewVaultModal = () => {
+    setNewVaultModalVisible(false)
     console.log('modal fechado')
   }
 
-  const onCreateVault = async () => {
-    onCloseCreateModal()
+  const onConfirmNewVaultModal = async () => {
+    onCloseNewVaultModal()
     notificationHandler(true, 'Vault criado com sucesso!', 'success')
     console.log('vault criado')
   }
@@ -45,19 +46,19 @@ function VaultsContent() {
       <div className="p-3 flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
         <VaultPanel 
           username={username}
-          modalVisibleCallback={(visible) => setModalVisible(visible)}
+          modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
         />
-        {modalVisible && <NewVaultModal 
-            onClose={onCloseCreateModal} 
-            onCreate={onCreateVault}
+        {newVaultModalVisible && <NewVaultModal 
+            onClose={onCloseNewVaultModal} 
+            onCreate={onConfirmNewVaultModal}
             originUser={username} 
           />
         }
         <VaultModal 
-          data={vaultData} 
-          show={vaultModalVisible} 
-          onHide={() => setVaultModalVisible(false)} 
+          data={currentVaultData} 
+          show={vaultInfoModalVisible} 
+          onHide={() => setVaultInfoModalVisible(false)} 
         />
 
       </div>

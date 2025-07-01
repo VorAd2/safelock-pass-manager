@@ -1,10 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-const VaultsContext = createContext();
-
-export function useVaults() {
-  return useContext(VaultsContext);
-}
+export const VaultsContext = createContext();
 
 export function VaultsProvider({ children }) {
   const [vaults, setVaults] = useState([]);

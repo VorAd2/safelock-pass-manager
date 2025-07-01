@@ -15,3 +15,37 @@
 .panelContent {
   padding-bottom: 1rem;
 }
+
+
+.vaultOptions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+.vaultOptions:hover {
+  background: #f0f0f0;
+}
+
+.addCredentialBtn {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--green-color);
+  color: white;
+  transition: background-color 0.2s ease;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+.addCredentialBtn:hover {
+  background-color: #086161;
+}
+.addCredentialBtn:active {
+  background-color: var(--hover-green-color);
+}

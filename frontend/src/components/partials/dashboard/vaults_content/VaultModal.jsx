@@ -1,22 +1,24 @@
-/* eslint-disable no-unused-vars */
 import { Modal } from "react-bootstrap";
-import { VaultIcon, EllipsisIcon } from "../../../../assets/dashboard";
+import { VerticalEllipsisIcon } from "../../../../assets/shared";
+import { PlusIcon } from "../../../../assets/dashboard";
 import styles from "../../../../styles/VaultModal.module.css"; 
 import CustomCheckbox from "../../../shared/CustomCheckbox"; 
+import { useState } from "react";
 
 const VaultModal = ({ data, show, onHide }) => {
-  const vaultName = data ? data.vaultName : "Nome do Vault";
+  const vaultTitle = data ? data.vaultTitle : "Nome do Vault";
+  const [showAddCredential, setShowAddCredential] = useState(false);
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
-          <span><VaultIcon/></span>
-          <Modal.Title className="mb-0">AA</Modal.Title>
+          <div className={`ms-auto text-muted ${styles.vaultOptions}`} style={{ cursor: "pointer" }}>
+            <VerticalEllipsisIcon/>
+          </div>
+          <Modal.Title className="mb-0">{vaultTitle}</Modal.Title>
         </div>
-        <div className="ms-auto text-muted" style={{ cursor: "pointer" }}>
-          <EllipsisIcon/>
-        </div>
+        
       </Modal.Header>
 
       <Modal.Body className={styles.scrollPanel}>
@@ -28,7 +30,18 @@ const VaultModal = ({ data, show, onHide }) => {
           <div className="flex-grow-1 fw-bold">Todos</div>
           <div className="flex-grow-1 fw-bold">Nome</div>
           <div className="flex-grow-1 fw-bold">Proprietário</div>
+          <div className="ms-auto">
+            <button
+              type="button"
+              className={`${styles.addCredentialBtn}`}
+              onClick={() => setShowAddCredential(true)}
+              title="Adicionar credential"
+            >
+              <PlusIcon style={{ width: 18, height: 18 }} />
+            </button>
+          </div>
         </div>
+
         <hr className="m-0" />
 
         {/* Conteúdo scrollável */}
@@ -42,6 +55,21 @@ const VaultModal = ({ data, show, onHide }) => {
           </div>
           {/* Repetir conforme necessário */}
         </div>
+
+        {/* Modal para adicionar credential */}
+        <Modal show={showAddCredential} onHide={() => setShowAddCredential(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Adicionar Credential</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {/* Campos do formulário para credential aqui */}
+            <p>Formulário de nova credential (implemente os campos necessários)</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button className="btn btn-secondary" onClick={() => setShowAddCredential(false)}>Cancelar</button>
+            <button className="btn btn-primary">Salvar</button>
+          </Modal.Footer>
+        </Modal>
       </Modal.Body>
     </Modal>
   );

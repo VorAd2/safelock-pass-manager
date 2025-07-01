@@ -4,7 +4,7 @@ import { PlusIcon } from '../../../../assets/dashboard';
 import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
 import styles from '../../../../styles/VaultsContent.module.css';
 import { useEffect, useState } from 'react';
-import { useVaults } from './VaultsContext';
+import { useVaults } from './context/useVaults';
 import axios from 'axios';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL; 
@@ -52,7 +52,7 @@ function VaultPanel({username, modalVisibleCallback, vaultCardClick}) {
             <div className='d-flex justify-content-between align-items-center'>
                 <div> <CustomCheckBox label='Todos'/></div>
                 <button type='button' onClick={() => modalVisibleCallback(true)} className={styles.newVaultBtn}>
-                    <PlusIcon className='me-1'/> Novo 
+                    <PlusIcon className='me-1'/> Vault 
                 </button>
             </div>
             <hr className='mb-2'/>

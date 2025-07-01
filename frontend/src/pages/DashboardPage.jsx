@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {Sidebar, DashboardHeader, Notification } from "../components";
 import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
-import { VaultsProvider } from "../components/partials/dashboard/vaults_content/VaultsContext";
+import { VaultsProvider } from "../components/partials/dashboard/vaults_content/context/VaultsContext";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const titlesMap = {
@@ -81,7 +81,9 @@ function DashboardPage() {
   }
 
   const currentPathSegment = location.pathname.split("/").pop();
-  const headerTitle = titlesMap[currentPathSegment];
+  const headerTitle = currentPathSegment === username 
+  ? username
+  : titlesMap[currentPathSegment];
 
   function getContentWithProvider() {
     switch (headerTitle) {
@@ -102,6 +104,8 @@ function DashboardPage() {
       case "Settings":
         return <Outlet context={{username, notificationHandler}} />;
       case "Contact Us":
+        return <Outlet context={{username, notificationHandler}} />;
+      case username:
         return <Outlet context={{username, notificationHandler}} />;
       default:
         return <h1>Content not found</h1>;

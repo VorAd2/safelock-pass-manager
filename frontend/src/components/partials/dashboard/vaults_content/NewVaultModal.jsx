@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
+
 import { useState } from 'react';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../assets/dashboard';
 import styles from '../../../../styles/NewVaultModal.module.css';
 import axios from 'axios';
-import { useVaults } from './VaultsContext';
+import { useVaults } from './context/useVaults';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -31,6 +32,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
             await onCreate();
         } catch (err) {
             if (err.response) {
+            // eslint-disable-next-line no-unused-vars
             const errorStatus = err.response.status;
             const errorMsg = err.response.data.message;
             alert(`Erro ao criar vault: ${errorMsg}`);
@@ -86,10 +88,10 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                         type={showPin ? 'text' : 'password'}
                         value={pin}
                         onChange={(e) => {
-                        const numeric = e.target.value.replace(/\D/g, '');
-                        if (numeric.length <= 5) {
-                            setPin(numeric);
-                        } 
+                            const numeric = e.target.value.replace(/\D/g, '');
+                            if (numeric.length <= 5) {
+                                setPin(numeric);
+                            } 
                         }}
                         className="border-0 shadow-none flex-grow-1"
                         style={{ outline: 'none' }}
@@ -137,10 +139,10 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                 Cancelar
                 </Button>
                 <button
-                type='button'
-                className={styles.confirmModalBtn}
-                onClick={() => handleCreate({title, pin, desc})}
-                disabled={!title || !desc}
+                    type='button'
+                    className={styles.confirmModalBtn}
+                    onClick={() => handleCreate({title, pin, desc})}
+                    disabled={!title || !desc || (pin && pin.length < 5)}
                 >
                 Criar
                 </button>
