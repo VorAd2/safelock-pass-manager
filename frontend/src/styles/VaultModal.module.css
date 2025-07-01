@@ -3,7 +3,6 @@
   overflow-y: auto;
   padding: 0;
 }
-
 .panelHeader {
   position: sticky;
   top: 0;
@@ -11,9 +10,10 @@
   z-index: 1;
   border-bottom: 1px solid #dee2e6;
 }
-
 .panelContent {
   padding-bottom: 1rem;
+  max-height: 300px; /* ou qualquer altura desejada */
+  overflow-y: auto;
 }
 
 
@@ -30,6 +30,7 @@
   background: #f0f0f0;
 }
 
+
 .addCredentialBtn {
   display: flex;
   width: 32px;
@@ -42,10 +43,34 @@
   padding: 0;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 .addCredentialBtn:hover {
   background-color: #086161;
 }
 .addCredentialBtn:active {
   background-color: var(--hover-green-color);
+}
+
+
+.gridRow {
+  display: grid;
+  grid-template-columns: 40px 2fr 2fr 2fr 40px; 
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.headerRow {
+  font-weight: bold;
+  position: relative;
+}
+.actionColumn {
+  display: flex;
+  justify-content: flex-end;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

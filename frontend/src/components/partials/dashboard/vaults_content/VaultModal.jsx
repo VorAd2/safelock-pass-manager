@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { VerticalEllipsisIcon } from "../../../../assets/shared";
-import { PlusIcon } from "../../../../assets/dashboard";
+import { PlusIcon, FingerprintIcon } from "../../../../assets/dashboard";
 import styles from "../../../../styles/VaultModal.module.css"; 
 import CustomCheckbox from "../../../shared/CustomCheckbox"; 
 import { useState } from "react";
@@ -23,17 +23,15 @@ const VaultModal = ({ data, show, onHide }) => {
 
       <Modal.Body className={styles.scrollPanel}>
         {/* Cabeçalho do painel */}
-        <div className={`${styles.panelHeader} d-flex align-items-center px-3 py-2`}>
-          <div className="me-3">
-            <CustomCheckbox />
-          </div>
-          <div className="flex-grow-1 fw-bold">Todos</div>
-          <div className="flex-grow-1 fw-bold">Nome</div>
-          <div className="flex-grow-1 fw-bold">Proprietário</div>
-          <div className="ms-auto">
+        <div className={`${styles.gridRow} ${styles.headerRow}`}>
+          <div><CustomCheckbox /></div>
+          <div>Todos</div>
+          <div>Nome</div>
+          <div>Proprietário</div>
+          <div className={styles.actionColumn}>
             <button
               type="button"
-              className={`${styles.addCredentialBtn}`}
+              className={styles.addCredentialBtn}
               onClick={() => setShowAddCredential(true)}
               title="Adicionar credential"
             >
@@ -46,15 +44,17 @@ const VaultModal = ({ data, show, onHide }) => {
 
         {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
-          {/* Aqui você renderiza os itens */}
-          <div className="d-flex align-items-center px-3 py-2">
-            <CustomCheckbox />
-            <div className="flex-grow-1">Item 1</div>
-            <div className="flex-grow-1">Nome 1</div>
-            <div className="flex-grow-1">Prop 1</div>
+          <div className={styles.gridRow}>
+            <div><CustomCheckbox /></div>
+            <div><FingerprintIcon /></div>
+            <div className={styles.truncate}>LLLLLLLLLLLLLLLLLLLL</div>
+            <div className={styles.truncate}>Rayla</div>
+            <div></div>
           </div>
           {/* Repetir conforme necessário */}
         </div>
+
+
 
         {/* Modal para adicionar credential */}
         <Modal show={showAddCredential} onHide={() => setShowAddCredential(false)} centered>

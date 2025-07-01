@@ -23,6 +23,7 @@ import BoxesIcon from './boxes.svg?react';
 import QuestionIcon from './question.svg?react';
 import EyeIcon from './eye.svg?react';
 import EyeSlashIcon from './eye-slash.svg?react';
+import FingerprintIcon from './fingerprint.svg?react';
 
 export {
     VaultIcon,
@@ -49,5 +50,6 @@ export {
     BoxesIcon,
     QuestionIcon,
     EyeIcon,
-    EyeSlashIcon
+    EyeSlashIcon,
+    FingerprintIcon
 }
