@@ -1,13 +1,15 @@
-import { CustomCheckBox } from '../../..';
-import styles from '../../../../styles/VaultsContent.module.css';
 import { VaultIcon, EllipsisIcon, UserAvatar } from '../../../../assets/dashboard';
+import styles from '../../../../styles/VaultsContent.module.css';
+import { CustomCheckBox } from '../../..';
+
 
 function VaultCard({vault, onClick}) {
     const vaultTitle = vault.title
-    // Handler para evitar propagação do clique do checkbox
+
     const handleCheckboxClick = (e) => {
         e.stopPropagation();
     };
+    
     return (
         <div className={styles.vaultCard} onClick={() => onClick(vaultTitle)}>
             <div className={styles.topBar}>

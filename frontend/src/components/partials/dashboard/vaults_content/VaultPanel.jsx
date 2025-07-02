@@ -1,8 +1,8 @@
-import { CustomCheckBox, VaultCard } from '../../../index'
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { PlusIcon } from '../../../../assets/dashboard';
 import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
+import { CustomCheckBox, VaultCard } from '../../../index'
 import styles from '../../../../styles/VaultsContent.module.css';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useVaults } from './context/useVaults';
 import axios from 'axios';

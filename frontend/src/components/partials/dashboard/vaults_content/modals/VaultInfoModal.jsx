@@ -1,13 +1,16 @@
+import { VerticalEllipsisIcon } from "../../../../../assets/shared";
+import { PlusIcon, FingerprintIcon } from "../../../../../assets/dashboard";
+import CustomCheckbox from "../../../../shared/CustomCheckbox";
+import NewCredentialModal from "./NewCredentialModal";
+import styles from "../../../../../styles/VaultModal.module.css"; 
 import { Modal } from "react-bootstrap";
-import { VerticalEllipsisIcon } from "../../../../assets/shared";
-import { PlusIcon, FingerprintIcon } from "../../../../assets/dashboard";
-import styles from "../../../../styles/VaultModal.module.css"; 
-import CustomCheckbox from "../../../shared/CustomCheckbox"; 
+
+
 import { useState } from "react";
 
-const VaultModal = ({ data, show, onHide }) => {
+const VaultInfoModal = ({ data, show, onHide, username }) => {
   const vaultTitle = data ? data.vaultTitle : "Nome do Vault";
-  const [showAddCredential, setShowAddCredential] = useState(false);
+  const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
@@ -32,7 +35,7 @@ const VaultModal = ({ data, show, onHide }) => {
             <button
               type="button"
               className={styles.addCredentialBtn}
-              onClick={() => setShowAddCredential(true)}
+              onClick={() => setNewCredentialModalVisible(true)}
               title="Adicionar credential"
             >
               <PlusIcon style={{ width: 18, height: 18 }} />
@@ -51,28 +54,21 @@ const VaultModal = ({ data, show, onHide }) => {
             <div className={styles.truncate}>Rayla</div>
             <div></div>
           </div>
-          {/* Repetir conforme necessário */}
         </div>
 
 
 
         {/* Modal para adicionar credential */}
-        <Modal show={showAddCredential} onHide={() => setShowAddCredential(false)} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Adicionar Credential</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* Campos do formulário para credential aqui */}
-            <p>Formulário de nova credential (implemente os campos necessários)</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <button className="btn btn-secondary" onClick={() => setShowAddCredential(false)}>Cancelar</button>
-            <button className="btn btn-primary">Salvar</button>
-          </Modal.Footer>
-        </Modal>
+        <NewCredentialModal
+          modalVisible={newCredentialModalVisible}
+          setModalVisible={setNewCredentialModalVisible}
+          owner={username}
+        />
+
+
       </Modal.Body>
     </Modal>
   );
 };
 
-export default VaultModal;
+export default VaultInfoModal;

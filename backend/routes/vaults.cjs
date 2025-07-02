@@ -22,6 +22,10 @@ module.exports = (db) => {
         }
     });
 
+    router.get('/:username/:vaultTitle', async (req, res) => {
+        const { username, vaultTitle } = req.params;
+    })
+
     router.post('/', async (req, res) => {
         const {originUser, title, pin, desc} = req.body
         console.log(`pin: ${pin}`)

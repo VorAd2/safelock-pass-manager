@@ -74,3 +74,27 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.confirmCredentialModalBtn {
+    border: none;
+    border-radius: 10%;
+    background-color: var(--green-color);
+    color: white;
+    transition: background-color 0.2s ease;
+    padding: 0px 15px;
+    height: 2.3rem;
+}
+.confirmCredentialModalBtn:disabled{
+    background-color: rgba(49, 136, 136, 0.705);
+}
+.confirmCredentialModalBtn:hover {
+  background-color: #086161;
+}
+.confirmCredentialModalBtn:active {
+  background-color: var(--hover-green-color);
+}
+.confirmCredentialModalBtn:disabled:hover,
+.confirmCredentialModalBtn:disabled:active {
+  background-color: rgba(49, 136, 136, 0.705);
+  cursor: not-allowed;
+}

@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
-
 import { useState } from 'react';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../assets/dashboard';
-import styles from '../../../../styles/NewVaultModal.module.css';
+import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
+import styles from '../../../../../styles/NewVaultModal.module.css';
+import { useVaults } from '../context/useVaults';
 import axios from 'axios';
-import { useVaults } from './context/useVaults';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 

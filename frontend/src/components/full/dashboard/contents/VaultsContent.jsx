@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal, VaultModal } from "../../../index"
+import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal } from "../../../index"
+import axios from 'axios'
+
+const backUrl = import.meta.env.VITE_BACKEND_URL
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
@@ -10,13 +13,8 @@ function VaultsContent() {
 
   const handleVaultClick = async (vaultTitle) => {
     const getVaultData = async (vaultTitle) => {
-      // Simulate an API call to fetch vault data
-      const data = {
-        vaultTitle: vaultTitle,
-        ownerUsername: username,
-        credentials: []
-      }
-      return data
+      const response = await axios.get(`${backUrl}/dashboard/vaults/${username}/${vaultTitle}`)
+      return response.data
     }
 
     let data = await getVaultData(vaultTitle)
@@ -55,10 +53,11 @@ function VaultsContent() {
             originUser={username} 
           />
         }
-        <VaultModal 
+        <VaultInfoModal 
           data={currentVaultData} 
           show={vaultInfoModalVisible} 
-          onHide={() => setVaultInfoModalVisible(false)} 
+          onHide={() => setVaultInfoModalVisible(false)}
+          username={username} 
         />
 
       </div>
