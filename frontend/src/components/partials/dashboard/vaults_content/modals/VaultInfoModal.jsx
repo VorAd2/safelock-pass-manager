@@ -9,8 +9,11 @@ import { Modal } from "react-bootstrap";
 import { useState } from "react";
 
 const VaultInfoModal = ({ data, show, onHide, username }) => {
-  const vaultTitle = data ? data.vaultTitle : "Nome do Vault";
+  const vaultTitle = data ? data.title : "Nome do Vault";
+  const vaultId = data ? data._id : "ID do Vault";
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
+
+  const credentials = data ? data.credentials : [];
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
@@ -47,22 +50,25 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
 
         {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
-          <div className={styles.gridRow}>
+          {credentials.map((credential) => (
+            <div className={styles.gridRow}>
             <div><CustomCheckbox /></div>
             <div><FingerprintIcon /></div>
-            <div className={styles.truncate}>LLLLLLLLLLLLLLLLLLLL</div>
-            <div className={styles.truncate}>Rayla</div>
+            <div className={styles.truncate}>{credential.credentialTitle}</div>
+            <div className={styles.truncate}>{credential.credentialOwner}</div>
             <div></div>
           </div>
+          ))}
         </div>
 
 
 
         {/* Modal para adicionar credential */}
         <NewCredentialModal
+          vaultId={vaultId}
           modalVisible={newCredentialModalVisible}
           setModalVisible={setNewCredentialModalVisible}
-          owner={username}
+          credentialOwner={username}
         />
 
 

@@ -17,3 +17,5 @@ class CredentialModel {
         return { 'credentialId': result.insertedId, 'newCredential': newCredential };
     }
 }
+
+module.exports = new CredentialModel()

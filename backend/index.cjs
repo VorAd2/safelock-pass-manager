@@ -28,7 +28,7 @@ let db;
 
         const signinRouter = require('./routes/signin.cjs')(db);
         const signupRouter = require('./routes/signup.cjs')(db);
-        const dashboardRouter = require('./routes/dashboard.cjs');
+        const dashboardRouter = require('./routes/dashboard.cjs')(db);
         const vaultsRouter = require('./routes/vaults.cjs')(db);
         const credentialsRouter = require('./routes/credentials.cjs')(db);
         

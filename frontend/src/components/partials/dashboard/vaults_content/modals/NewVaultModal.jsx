@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
 import styles from '../../../../../styles/NewVaultModal.module.css';
-import { useVaults } from '../context/useVaults';
+import { useVaults } from '../../../../context/useVaults';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const NewVaultModal = ({ onClose, onCreate, originUser }) => {
+    const navigate = useNavigate();
     const { addVault } = useVaults();
     
     const [title, setTitle] = useState('');
@@ -20,25 +22,29 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
 
     const handleCreate = async (vaultData) => {
         const { title, pin, desc } = vaultData;
+        let authToken = localStorage.getItem('authToken')
+        if (!authToken) {
+            console.warn("Nenhum token encontrado. Redirecionando para login.");
+            navigate("/signin");
+            return;
+        }
         try {
-            const response = await axios.post(
+            const response = axios.post(
                 `${backUrl}/dashboard/vaults`,
-                { originUser, title, pin, desc }
+                { newVaultData: { originUser, title, pin, desc } }, // body
+                { headers: { 'Authorization': `Bearer ${authToken}` } } // config
             );
             const newVault = response.data.vault;
             addVault(newVault);
             console.log('Vault criado:', newVault);
             await onCreate();
         } catch (err) {
-            if (err.response) {
-            // eslint-disable-next-line no-unused-vars
-            const errorStatus = err.response.status;
-            const errorMsg = err.response.data.message;
-            alert(`Erro ao criar vault: ${errorMsg}`);
-            } else if (err.request) {
-            alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão.');
+            if (err.response && err.response.status === 403) {
+                alert("Acesso negado ou sessão expirada. Por favor, faça login novamente.");
+                localStorage.removeItem("authToken");
+                navigate("/signin");
             } else {
-            alert('Erro ao tentar enviar requisição.');
+                alert("Ocorreu um erro inesperado ao criar o vault.");
             }
         }
     };

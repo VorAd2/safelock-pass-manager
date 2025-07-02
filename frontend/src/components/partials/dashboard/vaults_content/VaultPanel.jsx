@@ -3,49 +3,11 @@ import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
 import { CustomCheckBox, VaultCard } from '../../../index'
 import styles from '../../../../styles/VaultsContent.module.css';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { useVaults } from './context/useVaults';
-import axios from 'axios';
+import { useVaults } from '../../../context/useVaults';
 
-const backUrl = import.meta.env.VITE_BACKEND_URL; 
 
-function VaultPanel({username, modalVisibleCallback, vaultCardClick}) {
-    const { vaults, setAllVaults } = useVaults();
-    const [isLoading, setLoading] = useState(true) 
-
-    useEffect(() => {
-        const fetchVaults = async () => {
-            console.log('fetchVaults rodou');
-            let response;
-            try {
-                response = await axios.get(`${backUrl}/dashboard/vaults/${username}`)
-                setAllVaults(response.data);
-                console.log('Vaults fetched:', response.data);
-            } catch (error) {
-                console.warn('Error fetching vaults in panel:', error);
-                if (error.response && error.response.status === 404) {
-                    console.warn('Nenhum vault encontrado para este usuário.');
-                    setAllVaults([]);
-                } else {
-                    console.error('Erro ao buscar vaults:', error.message);
-                }
-            } finally {
-                setLoading(false);
-            }
-            
-        };
-        fetchVaults();
-    }, [username])
-
-    if (isLoading) {
-        return (
-            <div className={styles.loadingContainer}>
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Carregando...</span>
-                </Spinner>
-            </div>
-        );
-    }
+function VaultPanel({modalVisibleCallback, vaultCardClick}) {
+    const { vaults } = useVaults();
 
     return (
         <div className='d-flex flex-column flex-grow-1' style={{minHeight: 0}}>

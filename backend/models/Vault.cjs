@@ -14,6 +14,7 @@ class VaultModel {
             title,
             pin: hashedPin,
             desc,
+            credentials: [],
             createdAt: new Date(),
             updatedAt: new Date(),
         }
@@ -25,6 +26,14 @@ class VaultModel {
     async getVaultsByUser(username, db) {
         const vaultsArray = await db.collection('user_vaults').find({originUser: username}).toArray()
         return vaultsArray
+    }
+
+    async addCredential(vaultId, credential, db) {
+        const result = await db.collection('user_vaults').updateOne(
+            {_id: vaultId},
+            {$push: {credentials: credential}}
+        )
+        return result
     }
 
 }

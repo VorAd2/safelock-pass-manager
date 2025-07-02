@@ -7,9 +7,18 @@ export function VaultsProvider({ children }) {
 
   const addVault = (vault) => setVaults((prev) => [...prev, vault]);
   const setAllVaults = (vaultsArr) => setVaults(vaultsArr);
+  const addCredentialByVaultTitle = (vaultTitle, credential) => {
+    setVaults((prev) =>
+      prev.map(vault =>
+        vault.vaultTitle === vaultTitle
+          ? { ...vault, credentials: [...vault.credentials, credential] }
+          : vault
+      )
+    );
+  };
 
   return (
-    <VaultsContext.Provider value={{ vaults, addVault, setAllVaults }}>
+    <VaultsContext.Provider value={{ vaults, addVault, setAllVaults, addCredentialByVaultTitle }}>
       {children}
     </VaultsContext.Provider>
   );

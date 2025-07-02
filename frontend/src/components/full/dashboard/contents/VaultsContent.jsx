@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal } from "../../../index"
-import axios from 'axios'
-
-const backUrl = import.meta.env.VITE_BACKEND_URL
+import { useVaults } from '../../../context/useVaults'
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
@@ -11,13 +9,17 @@ function VaultsContent() {
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const handleVaultClick = async (vaultTitle) => {
-    const getVaultData = async (vaultTitle) => {
-      const response = await axios.get(`${backUrl}/dashboard/vaults/${username}/${vaultTitle}`)
-      return response.data
-    }
+  const { vaults } = useVaults() 
 
-    let data = await getVaultData(vaultTitle)
+  const handleVaultClick = (vaultTitle) => {
+    const getVaultData = (vaultTitle) => {
+      for (let vault of vaults) {
+        if (vault.title === vaultTitle) {
+          return vault
+        }
+      }
+    }
+    let data =  getVaultData(vaultTitle)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)
     console.log('vault clicked:', vaultTitle)

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {Sidebar, DashboardHeader, Notification } from "../components";
-import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
-import { VaultsProvider } from "../components/partials/dashboard/vaults_content/context/VaultsContext";
+import { useVaults } from "../components/context/useVaults";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const titlesMap = {
@@ -15,15 +15,16 @@ const titlesMap = {
   contactus: "Contact Us",
 };
 
-function DashboardPage() {
+function DashboardPage({username}) {
   const [notification, setNotification] = useState({
     show: false,
     message: '',
     variant: '',
   });
-  const { username } = useParams();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isLoading, setLoading] = useState(true);
+ 
+  const { setAllVaults } = useVaults();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,6 +40,7 @@ function DashboardPage() {
   }
 
   useEffect(() => {
+    console.log(`username: ${username}`)
     console.log("useEffect executado");
     const fetchVaults = async () => {
       console.log("fetchVaults executado");
@@ -55,8 +57,9 @@ function DashboardPage() {
             Authorization: `Bearer ${authToken}`,
           },
         });
+        setAllVaults(response.data);
+        console.log("Vaults carregados:", response.data);
         setLoading(false);
-        console.log("Resposta do back:", response.data);
       } catch (err) {
         console.error("ERROR:", err);
         console.error(err.response);
@@ -67,6 +70,10 @@ function DashboardPage() {
           );
           localStorage.removeItem("authToken");
           navigate("/signin");
+        } else if (err.response && err.response.status === 404) {
+          console.log("Nenhum vault encontrado para este usuário.");
+          setAllVaults([]);
+          return
         } else {
           alert("Ocorreu um erro ao carregar os dados do cofre.");
         }
@@ -74,7 +81,7 @@ function DashboardPage() {
     };
 
     fetchVaults();
-  }, [username, navigate]);
+  }, [username]);
 
   if (isLoading) {
     return <h1>Carregando...</h1>;
@@ -85,52 +92,26 @@ function DashboardPage() {
   ? username
   : titlesMap[currentPathSegment];
 
-  function getContentWithProvider() {
-    switch (headerTitle) {
-      case "Vaults":
-        return (
-          <VaultsProvider>
-            <Outlet context={{username, notificationHandler}} />
-          </VaultsProvider>
-        )
-      case "Explore Our Tools":
-        return <Outlet context={{username, notificationHandler}} />;
-      case "Share Your Credentials":
-        return <Outlet context={{username, notificationHandler}} />;
-      case "Personal Cards":
-        return <Outlet context={{username, notificationHandler}} />;
-      case "Receipts":
-        return <Outlet context={{username, notificationHandler}} />;
-      case "Settings":
-        return <Outlet context={{username, notificationHandler}} />;
-      case "Contact Us":
-        return <Outlet context={{username, notificationHandler}} />;
-      case username:
-        return <Outlet context={{username, notificationHandler}} />;
-      default:
-        return <h1>Content not found</h1>;
-    }
-  }
+
 
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
-    <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
+      <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
 
-    <div className="flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
-      <DashboardHeader title={headerTitle} username={username} />
-      
-      <div className="flex-grow-1 d-flex" style={{ minHeight: 0 }}>
-        {getContentWithProvider()}
+      <div className="flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
+        <DashboardHeader title={headerTitle} username={username} />
+        <div className="flex-grow-1 d-flex" style={{ minHeight: 0 }}>
+          <Outlet context={{ username, notificationHandler }} />
+        </div>
       </div>
-    </div>
-    <Notification 
-        show={notification.show}
-        message={notification.message}
-        variant={notification.variant}
+
+      <Notification 
+          show={notification.show}
+          message={notification.message}
+          variant={notification.variant}
       />
-  </div>
-  
-  );
+    </div>
+  )
 }
 
 export default DashboardPage;
