@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
+import { useEffect } from 'react'
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
@@ -24,6 +25,13 @@ function VaultsContent() {
     setVaultInfoModalVisible(true)
     console.log('vault clicked:', vaultTitle)
   }
+
+  useEffect(() => {
+    if (currentVaultData && vaults.length > 0) {
+      const updated = vaults.find(v => v._id === currentVaultData._id)
+      if (updated) setCurrentVaultData(updated)
+    }
+  }, [vaults])
 
 
   const onCloseNewVaultModal = () => {

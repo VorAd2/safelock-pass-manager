@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
@@ -29,11 +28,12 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
             return;
         }
         try {
-            const response = axios.post(
+            const response = await axios.post(
                 `${backUrl}/dashboard/vaults`,
                 { newVaultData: { originUser, title, pin, desc } }, // body
                 { headers: { 'Authorization': `Bearer ${authToken}` } } // config
             );
+            console.log(`response data: ${JSON.stringify(response.data)}`);
             const newVault = response.data.vault;
             addVault(newVault);
             console.log('Vault criado:', newVault);
@@ -45,6 +45,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                 navigate("/signin");
             } else {
                 alert("Ocorreu um erro inesperado ao criar o vault.");
+                console.warn(err);
             }
         }
     };

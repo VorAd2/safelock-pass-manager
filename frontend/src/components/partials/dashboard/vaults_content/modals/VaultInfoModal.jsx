@@ -4,15 +4,13 @@ import CustomCheckbox from "../../../../shared/CustomCheckbox";
 import NewCredentialModal from "./NewCredentialModal";
 import styles from "../../../../../styles/VaultModal.module.css"; 
 import { Modal } from "react-bootstrap";
-
-
 import { useState } from "react";
+
 
 const VaultInfoModal = ({ data, show, onHide, username }) => {
   const vaultTitle = data ? data.title : "Nome do Vault";
   const vaultId = data ? data._id : "ID do Vault";
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
-
   const credentials = data ? data.credentials : [];
 
   return (
@@ -51,7 +49,7 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
           {credentials.map((credential) => (
-            <div className={styles.gridRow}>
+            <div className={styles.gridRow} key={credential._id}>
             <div><CustomCheckbox /></div>
             <div><FingerprintIcon /></div>
             <div className={styles.truncate}>{credential.credentialTitle}</div>
@@ -66,6 +64,7 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         {/* Modal para adicionar credential */}
         <NewCredentialModal
           vaultId={vaultId}
+          vaultTitle={vaultTitle}
           modalVisible={newCredentialModalVisible}
           setModalVisible={setNewCredentialModalVisible}
           credentialOwner={username}

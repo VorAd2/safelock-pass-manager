@@ -8,7 +8,7 @@ import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 import axios from 'axios';
 
-const NewCredentialModal = ({ vaultId, modalVisible, setModalVisible, credentialOwner}) => {
+const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible, credentialOwner}) => {
     const [credentialTitle, setTitle] = useState('');
     const [credentialEmail, setEmail] = useState('');
     const [credentialUsername, setUsername] = useState('');
@@ -16,7 +16,7 @@ const NewCredentialModal = ({ vaultId, modalVisible, setModalVisible, credential
     const [credentialPassword, setPassword] = useState('');
     const [credentialLinks, setLinks] = useState([]);
 
-    const { addCredentialByVaultTitle } = useVaults();
+    const { vaults, addCredentialByVaultTitle } = useVaults();
     const navigate = useNavigate();
 
     const resetForm = () => {
@@ -46,7 +46,8 @@ const NewCredentialModal = ({ vaultId, modalVisible, setModalVisible, credential
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
             console.log('Nova credencial postada:', response.data);
-            addCredentialByVaultTitle(vaultId, response.data);
+            addCredentialByVaultTitle(vaultTitle, response.data);
+            console.log(`vaults context: ${JSON.stringify(vaults)}`)
         } catch (err) {
             if (err.response && err.response.status === 403) {
                 alert("Acesso negado ou sessão expirada. Por favor, faça login novamente.");
@@ -54,6 +55,7 @@ const NewCredentialModal = ({ vaultId, modalVisible, setModalVisible, credential
                 navigate("/signin");
             } else {
                 alert("Ocorreu um erro ao carregar os dados do cofre.");
+                console.warn(err);
             }
         }
         resetForm();

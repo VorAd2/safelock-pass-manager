@@ -37,6 +37,7 @@ module.exports = (db) => {
         try {
             const newVaultData = await VaultModel.insertVault({originUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
+            console.log(`novo vault: ${JSON.stringify(newVaultData.vault)}`)
             const vault = newVaultData.vault
             await UserModel.addVault(originUser, vaultId, db)
             console.log('POST de Vault finalizado sem err')

@@ -10,8 +10,8 @@ export function VaultsProvider({ children }) {
   const addCredentialByVaultTitle = (vaultTitle, credential) => {
     setVaults((prev) =>
       prev.map(vault =>
-        vault.vaultTitle === vaultTitle
-          ? { ...vault, credentials: [...vault.credentials, credential] }
+        vault.title === vaultTitle
+          ? { ...vault, credentials: [...(vault.credentials || []), credential] }
           : vault
       )
     );

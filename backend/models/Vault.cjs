@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { ObjectId } = require('mongodb');
 
 class VaultModel {
     async insertVault(data, db) {
@@ -30,7 +31,7 @@ class VaultModel {
 
     async addCredential(vaultId, credential, db) {
         const result = await db.collection('user_vaults').updateOne(
-            {_id: vaultId},
+            {_id: new ObjectId(String(vaultId))},
             {$push: {credentials: credential}}
         )
         return result
