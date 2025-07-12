@@ -27,10 +27,10 @@ const iconMap = {
 }
 
 function SidebarSection(
-  { title, options, isExpanded, iconClassName, textClassName })
+  { title, options, isExpanded, iconWrapperClassName, textClassName })
   {
   return (
-    <div className="mb-2">
+    <div className="mb-3">
       {isExpanded && <h5 className={`px-3  text-white ${sectionStyles.sectionTitle}`}>{title}</h5>}
       <Nav className="flex-column">
         {options.map((option, _) => {
@@ -47,8 +47,8 @@ function SidebarSection(
                   return (
                     <>
                       {isActive && <div className={styles.activeRectangle}></div>}
-                      <span className={iconClassName}>
-                        {IconComponent ? <IconComponent/> : <span>?</span>}
+                      <span className={iconWrapperClassName}>
+                        {IconComponent ? <IconComponent className={styles.sidebarIcon} /> : <span>?</span>}
                       </span>
                       <span className={textClassName}>
                         {option.name}

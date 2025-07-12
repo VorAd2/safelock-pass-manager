@@ -70,12 +70,12 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
     return (
         <Modal show={modalVisible} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Adicionar Credential</Modal.Title>
+            <Modal.Title className='fs-3'>Adicionar Credential</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form id='newCredential' onSubmit={handleSubmit}>
                 <Form.Group className='mb-1'>
-                    <Form.Label>Título <span className='text-danger'>*</span> </Form.Label>
+                    <Form.Label className='fs-5' >Título <span className='text-danger'>*</span> </Form.Label>
                     <Form.Control 
                         type="text"
                         value={credentialTitle}
@@ -84,7 +84,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     />
                 </Form.Group>
                 <Form.Group className='mb-1'>
-                    <Form.Label>Email <span className='text-danger'>*</span> </Form.Label>
+                    <Form.Label className='fs-5'>Email <span className='text-danger'>*</span> </Form.Label>
                     <Form.Control 
                         type="email"
                         value={credentialEmail}
@@ -93,7 +93,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     />
                 </Form.Group>
                 <Form.Group className="mb-1">
-                    <Form.Label>Nome de Usuário</Form.Label>
+                    <Form.Label className='fs-5'>Nome de Usuário</Form.Label>
                     <Form.Control
                         type="text"
                         value={credentialUsername}
@@ -101,7 +101,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     />
                 </Form.Group>
                 <Form.Group className="mb-1">
-                    <Form.Label>Senha <span className='text-danger'>*</span> </Form.Label>
+                    <Form.Label className='fs-5'>Senha <span className='text-danger'>*</span> </Form.Label>
                     <div className="d-flex align-items-center border rounded pe-2">
                         <Form.Control
                             type={showPassword ? 'text' : 'password'}
@@ -123,7 +123,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     </div>
                 </Form.Group>
                 <Form.Group className="mb-1">
-                    <Form.Label>Links</Form.Label>
+                    <Form.Label className='fs-5'>Links</Form.Label>
                     <Form.Control
                         type="text"
                         value={credentialLinks.join(', ')}
@@ -139,7 +139,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
               type="submit"
               form="newCredential"
               className={styles.confirmCredentialModalBtn}
-              disabled={!credentialEmail || !credentialPassword}
+              disabled={!credentialTitle || !credentialEmail || !credentialPassword}
             >
                 Adicionar
             </button>

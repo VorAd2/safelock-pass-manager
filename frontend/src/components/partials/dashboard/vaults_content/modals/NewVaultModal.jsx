@@ -54,10 +54,10 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
     return (
         <div className={styles.backdrop}>
         <div className={styles.modalBox}>
-            <h5 className='mb-3'>Criar Novo Cofre</h5>
-            <Form>
+            <h5 className='mb-3 fs-3'>Criar Novo Cofre</h5>
+            <Form id='newVaultForm'>
             <Form.Group className="mb-1">
-                <Form.Label>
+                <Form.Label className='fs-5'>
                     Título <span className='text-danger'>*</span>
                 </Form.Label>
                 <Form.Control
@@ -72,7 +72,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label className='d-flex align-content-center'>
+                <Form.Label className='fs-5 d-flex align-content-center'>
                     PIN{''}
                     <OverlayTrigger
                         placement="right"
@@ -125,7 +125,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label>
+                <Form.Label className='fs-5'>
                     Descrição <span className='text-danger'>*</span>
                 </Form.Label>
                 <Form.Control

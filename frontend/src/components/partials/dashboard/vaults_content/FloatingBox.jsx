@@ -5,7 +5,7 @@ function FloatingBox() {
     return (
         <div className={styles.floatingBoxContainer}>
             <div className={styles.searchVaultSection}>
-                <div>Pesquisar cofre</div>
+                <div>Procurar cofres</div>
             </div>
             <div className={styles.optionsList}>
                 <div> <BoxesIcon/> Todos os cofres</div>

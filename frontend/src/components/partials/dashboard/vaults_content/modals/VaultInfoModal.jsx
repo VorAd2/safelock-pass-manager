@@ -13,6 +13,10 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
   const credentials = data ? data.credentials : [];
 
+  const handleCredentialClick = (credentialId) => {
+    
+  }
+
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
@@ -20,7 +24,7 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
           <div className={`ms-auto text-muted ${styles.vaultOptions}`} style={{ cursor: "pointer" }}>
             <VerticalEllipsisIcon/>
           </div>
-          <Modal.Title className="mb-0">{vaultTitle}</Modal.Title>
+          <Modal.Title className="mb-0 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
         </div>
         
       </Modal.Header>
@@ -29,9 +33,9 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         {/* Cabeçalho do painel */}
         <div className={`${styles.gridRow} ${styles.headerRow}`}>
           <div><CustomCheckbox /></div>
-          <div>Todos</div>
-          <div>Nome</div>
-          <div>Proprietário</div>
+          <div className="fs-6" >Todos</div>
+          <div className="fs-6" >Nome</div>
+          <div className="fs-6" >Proprietário</div>
           <div className={styles.actionColumn}>
             <button
               type="button"
@@ -49,11 +53,11 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
           {credentials.map((credential) => (
-            <div className={styles.gridRow} key={credential._id}>
+          <div className={styles.gridRow} key={credential._id} onClick={() => null}>
             <div><CustomCheckbox /></div>
-            <div><FingerprintIcon /></div>
-            <div className={styles.truncate}>{credential.credentialTitle}</div>
-            <div className={styles.truncate}>{credential.credentialOwner}</div>
+            <div><FingerprintIcon style={{width:'20px', height:'20px'}} /></div>
+            <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
+            <div className={`${styles.truncate} fs-6`}>{credential.credentialOwner}</div>
             <div></div>
           </div>
           ))}

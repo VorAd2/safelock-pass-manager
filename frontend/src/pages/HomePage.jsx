@@ -1,5 +1,6 @@
 import {
-    Header, Footer, HeroSection, FeaturesSection, DownloadsSection, PrincingSection, ScrollTopBtn
+    Header, Footer, HeroSection, FeaturesSection, 
+    DownloadsSection, PrincingSection, ScrollTopBtn
 } from '../components';
 import { useEffect } from 'react';
 
@@ -15,16 +16,14 @@ export default function Home() {
     }, []);
 
     return (
-    <>
-        <Header/>
-            <HeroSection />
-            <FeaturesSection/>
-            <DownloadsSection/>
-            <PrincingSection/>
-            <ScrollTopBtn/>
-        <Footer/>
-        
-    </>
-       
+        <>
+            <Header/>
+                <HeroSection />
+                <FeaturesSection/>
+                <DownloadsSection/>
+                <PrincingSection/>
+                <ScrollTopBtn/>
+            <Footer/>
+        </>
     );
 }

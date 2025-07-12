@@ -24,7 +24,7 @@ const CustomCheckbox = ({ label, defaultChecked = false, onChange, onClick }) =>
       <span className={`${styles.customCheckbox} ${checked ? styles.checked : styles.unChecked}`}>
         {checked && <span className={styles.checkmark}> <CheckIcon/> </span>}
       </span>
-      {label && <span>{label}</span>}
+      {label && <span className='fs-5' >{label}</span>}
     </label>
   );
 };

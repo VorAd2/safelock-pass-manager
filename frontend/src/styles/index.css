@@ -8,8 +8,8 @@
   --dark-yellow-color: #d8970b;
   --whitetext-to-yellow: rgb(212, 212, 212);
 
-  --sidebar-width-expanded: 250px;
-  --sidebar-width-collapsed: 80px;
+  --sidebar-width-expanded: 290px;
+  --sidebar-width-collapsed: 120px;
 }
 
 body {

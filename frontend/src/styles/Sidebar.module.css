@@ -10,6 +10,7 @@
   flex-shrink: 0;
   box-sizing: border-box; 
 }
+
 .sidebarExpanded {
   width: var(--sidebar-width-expanded);
 }
@@ -22,6 +23,7 @@
   white-space: nowrap;
   overflow: hidden;
   transition: opacity 0.1s ease, width 0.1s ease;
+  font-size: 1.2rem;
 }
 .sidebarExpanded .sidebarText {
   opacity: 1;
@@ -39,17 +41,25 @@
   bottom: 0; 
 }
 .sidebarIcon {
+  width: 20px;
+  height: 20px;
+}
+.sidebarIconWrapper {
   width: 24px;
   height: 24px;
-  margin-right: 7px;
+  margin-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
 }
-.sidebarCollapsed .sidebarIcon {
+.sidebarCollapsed .sidebarIconWrapper {
   margin-left: auto;
   margin-right: auto;
+}
+.sidebarCollapsed .sidebarIcon {
+  width: 30px;
+  height: 30px;
 }
 .sidebarDivider { 
   border: none;
@@ -79,7 +89,6 @@
   align-items: center;
   padding: 10px 15px;
   font-weight: 500 !important;
-  font-size: small;
   min-height: 40px;
   position: relative;
   overflow: hidden;
@@ -100,15 +109,15 @@
   flex-shrink: 0; 
 }
 .siteIcon {
-  width: 32px;
-  height: 32px; 
+  width: 36px;
+  height: 36px; 
   fill: var(--yellow-color); 
   flex-shrink: 0; 
   transition: margin-right 0.3s ease;
 }
 .siteNameText {
   color: white;
-  font-size: 1.2rem; 
+  font-size: 1.7rem; 
   font-weight: 600;
   white-space: nowrap;
   opacity: 1; 
@@ -156,6 +165,7 @@
   color: whitesmoke;
   text-decoration: none;
   font-weight: 600;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   white-space: nowrap; /* Evita que o texto quebre linha */
@@ -166,15 +176,15 @@
   text-decoration-color: var(--yellow-color);
 }
 .upgradeIcon {
-  width: 18px; 
-  height: 18px; 
+  width: 26px; 
+  height: 26px; 
   color: var(--yellow-color); 
   margin-right: 8px;
   flex-shrink: 0; 
 }
 .currentPlan {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   margin: 0;
   align-self: flex-start;
 }
@@ -197,8 +207,8 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 .toggleBtnIcon {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
 }
 

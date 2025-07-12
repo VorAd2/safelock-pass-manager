@@ -5,10 +5,10 @@ import SiteIcon from '../../../assets/shared/site-icon.svg?react';
 import styles from '../../../styles/Sidebar.module.css'; 
 
 function Sidebar({ isExpanded, toggleSidebar }) {
-  const sidebarClassName = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
+  const sidebarExpandClass = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
 
   return (
-    <div className={`${styles.sidebarContainer} ${sidebarClassName}`}>
+    <div className={`${styles.sidebarContainer} ${sidebarExpandClass}`}>
       <div className={styles.logoSection}>
         <SiteIcon className={styles.siteIcon} />
         <span className={styles.siteNameText}>SafeLock</span>
@@ -23,7 +23,7 @@ function Sidebar({ isExpanded, toggleSidebar }) {
             { name: 'Send', href: 'send' }
           ]}
           isExpanded={isExpanded}
-          iconClassName={styles.sidebarIcon}
+          iconWrapperClassName={styles.sidebarIconWrapper}
           textClassName={styles.sidebarText}
         />
         <SidebarSection
@@ -33,7 +33,7 @@ function Sidebar({ isExpanded, toggleSidebar }) {
             { name: 'Receipts', href: 'receipts' }
           ]}
           isExpanded={isExpanded}
-          iconClassName={styles.sidebarIcon}
+          iconWrapperClassName={styles.sidebarIconWrapper}
           textClassName={styles.sidebarText}
         />
         <SidebarSection
@@ -43,7 +43,7 @@ function Sidebar({ isExpanded, toggleSidebar }) {
             { name: 'ContactUs', href: 'contactus' },
           ]}
           isExpanded={isExpanded}
-          iconClassName={styles.sidebarIcon}
+          iconWrapperClassName={styles.sidebarIconWrapper}
           textClassName={styles.sidebarText}
         />
       </Nav>

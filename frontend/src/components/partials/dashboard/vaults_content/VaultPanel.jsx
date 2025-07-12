@@ -13,8 +13,11 @@ function VaultPanel({modalVisibleCallback, vaultCardClick}) {
         <div className='d-flex flex-column flex-grow-1' style={{minHeight: 0}}>
             <div className='d-flex justify-content-between align-items-center'>
                 <div> <CustomCheckBox label='Todos'/></div>
-                <button type='button' onClick={() => modalVisibleCallback(true)} className={styles.newVaultBtn}>
-                    <PlusIcon className='me-1'/> Vault 
+                <button type='button' 
+                    onClick={() => modalVisibleCallback(true)} 
+                    className={`${styles.newVaultBtn} fs-5`}
+                >
+                    <PlusIcon className='me-1' style={{width: '20px', height:'20px'}}/> Vault 
                 </button>
             </div>
             <hr className='mb-2'/>
@@ -26,7 +29,7 @@ function VaultPanel({modalVisibleCallback, vaultCardClick}) {
                     </div>
                 ) : (
                     <Container fluid>
-                        <Row className='g-3'>
+                        <Row className='g-4'>
                             {vaults.map((vault, i) => (
                             <Col md={3} key={i}>
                                 <VaultCard vault={vault} onClick={vaultCardClick}/>

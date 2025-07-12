@@ -14,7 +14,12 @@ function VaultCard({vault, onClick}) {
         <div className={styles.vaultCard} onClick={() => onClick(vaultTitle)}>
             <div className={styles.topBar}>
                 <CustomCheckBox onClick={handleCheckboxClick}/>
-                <EllipsisIcon className={styles.icon} />
+                <div className={styles.vaultCardEllipsisWrapper}>
+                    <EllipsisIcon style={{
+                    width: '1.7rem',
+                    height: '1.7rem',
+                }} />
+                </div>
             </div>
 
             <div className={styles.iconArea}>
