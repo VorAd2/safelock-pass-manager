@@ -40,10 +40,7 @@ function DashboardPage({username}) {
   }
 
   useEffect(() => {
-    console.log(`username: ${username}`)
-    console.log("useEffect executado");
     const fetchVaults = async () => {
-      console.log("fetchVaults executado");
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
         console.warn("Nenhum token encontrado. Redirecionando para login.");

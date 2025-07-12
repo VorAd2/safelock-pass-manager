@@ -125,6 +125,10 @@
 .vaultCardEllipsisWrapper:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.vaultCardEllipsis {
+  width: 1.7rem;
+  height: 1.7rem;
+}
 .iconArea {
   display: flex;
   justify-content: center;

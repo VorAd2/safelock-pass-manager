@@ -2,7 +2,7 @@ import { PlusIcon } from '../../../../assets/dashboard';
 import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
 import { CustomCheckBox, VaultCard } from '../../../index'
 import styles from '../../../../styles/VaultsContent.module.css';
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import { Container, Row, Col} from 'react-bootstrap';
 import { useVaults } from '../../../context/useVaults';
 
 

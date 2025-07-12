@@ -1,6 +1,6 @@
 import { VerticalEllipsisIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon } from "../../../../../assets/dashboard";
-import CustomCheckbox from "../../../../shared/CustomCheckbox";
+import { CustomCheckbox, MiniModal } from "../../../../shared";
 import NewCredentialModal from "./NewCredentialModal";
 import styles from "../../../../../styles/VaultModal.module.css"; 
 import { Modal } from "react-bootstrap";
@@ -11,9 +11,10 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
   const vaultTitle = data ? data.title : "Nome do Vault";
   const vaultId = data ? data._id : "ID do Vault";
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
+  const [credentialInfoModalVisible, setCredentialInfoModalVisible] = useState(false);
   const credentials = data ? data.credentials : [];
 
-  const handleCredentialClick = (credentialId) => {
+  const handleCredentialClick = (credential) => {
     
   }
 
@@ -21,16 +22,36 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
-          <div className={`ms-auto text-muted ${styles.vaultOptions}`} style={{ cursor: "pointer" }}>
-            <VerticalEllipsisIcon/>
-          </div>
+          <MiniModal
+          ButtonIcon={VerticalEllipsisIcon}
+          buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
+          iconClass={styles.ellipsis}
+          placement="left"
+          >
+            {({ closePopover, popoverItemClass}) => (
+                 <>
+                  <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
+                    Favoritar
+                  </button>
+                  <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
+                    Compartilhar
+                  </button>
+                  <button type="button" 
+                  className={popoverItemClass}
+                  style={{color:'red'}}
+                  onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}>
+                    Excluir
+                  </button>
+                </>
+              )
+            }
+          </MiniModal>
           <Modal.Title className="mb-0 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
         </div>
         
       </Modal.Header>
 
       <Modal.Body className={styles.scrollPanel}>
-        {/* Cabeçalho do painel */}
         <div className={`${styles.gridRow} ${styles.headerRow}`}>
           <div><CustomCheckbox /></div>
           <div className="fs-6" >Todos</div>
@@ -53,7 +74,9 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
           {credentials.map((credential) => (
-          <div className={styles.gridRow} key={credential._id} onClick={() => null}>
+          <div className={styles.gridRow} key={credential._id} 
+          onClick={() => handleCredentialClick(credential)}
+          >
             <div><CustomCheckbox /></div>
             <div><FingerprintIcon style={{width:'20px', height:'20px'}} /></div>
             <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
@@ -73,6 +96,8 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
           setModalVisible={setNewCredentialModalVisible}
           credentialOwner={username}
         />
+
+        {/* CredentialInfoModal */}
 
 
       </Modal.Body>

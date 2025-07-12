@@ -1,6 +1,6 @@
 import { VaultIcon, EllipsisIcon, UserAvatar } from '../../../../assets/dashboard';
 import styles from '../../../../styles/VaultsContent.module.css';
-import { CustomCheckBox } from '../../..';
+import { CustomCheckbox, MiniModal } from '../../../shared';
 
 
 function VaultCard({vault, onClick}) {
@@ -13,13 +13,30 @@ function VaultCard({vault, onClick}) {
     return (
         <div className={styles.vaultCard} onClick={() => onClick(vaultTitle)}>
             <div className={styles.topBar}>
-                <CustomCheckBox onClick={handleCheckboxClick}/>
-                <div className={styles.vaultCardEllipsisWrapper}>
-                    <EllipsisIcon style={{
-                    width: '1.7rem',
-                    height: '1.7rem',
-                }} />
-                </div>
+                <CustomCheckbox onClick={handleCheckboxClick}/>
+                <MiniModal
+                ButtonIcon={EllipsisIcon}
+                buttonClass={styles.vaultCardEllipsisWrapper}
+                iconClass={styles.vaultCardEllipsis}
+                >
+                    {({ closePopover, popoverItemClass}) => (
+                        <>
+                        <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
+                            Favoritar
+                        </button>
+                        <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
+                            Compartilhar
+                        </button>
+                        <button type="button" 
+                        className={popoverItemClass}
+                        style={{color:'red'}}
+                        onClick={() => { console.log("Excluir vault"); closePopover(); }}>
+                            Excluir
+                        </button>
+                        </>
+                        )
+                    }
+                </MiniModal>
             </div>
 
             <div className={styles.iconArea}>

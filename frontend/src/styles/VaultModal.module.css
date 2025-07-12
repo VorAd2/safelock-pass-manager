@@ -17,19 +17,22 @@
 }
 
 
-.vaultOptions {
+.ellipsisWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 2.3rem;
+  height: 2.3rem;
   border-radius: 50%;
-  transition: background 0.2s ease;
+  transition: background-color 0.2s ease;
 }
-.vaultOptions:hover {
+.ellipsisWrapper:hover {
   background: #f0f0f0;
 }
-
+.ellipsis {
+  width: 1.4rem;
+  height: 1.4rem;
+}
 
 .addCredentialBtn {
   display: flex;
