@@ -1,0 +1,122 @@
+import { EyeIcon, EyeSlashIcon, TrashIcon, UserAvatar } from '../../../../../assets/dashboard';
+import { CopyIcon } from '../../../../../assets/shared';
+import {Modal, Form} from 'react-bootstrap';
+import { useState } from 'react'
+import styles from '../../../../../styles/CredentialInfoModal.module.css'
+
+
+function CredentialInfoModal({credential, modalState, setModalState}) {
+    const title = credential && credential.credentialTitle
+    const owner = credential && credential.credentialOwner
+    const email = credential && credential.credentialEmail
+    const password = credential && credential.credentialPassword
+    const username = credential && credential.username
+    const links = credential && (credential.credentialLinks.join(', '))
+    const [showPassword, setShowPassword] = useState(false)
+
+    function closeModal() {
+        setModalState({
+            visible: false,
+            credential: undefined
+        })
+    }
+
+    if (credential == undefined) {
+        return null
+    }
+
+    return (
+        <Modal show={modalState.visible} onHide={closeModal} centered>
+            <Modal.Header closeButton>
+                <Modal.Title className='fs-3 d-flex align-items-center'>
+                    <span>{title}</span> 
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div className={`d-flex justify-content-betweem align-items-center mb-3 ${styles.actionBar}`}>
+                    <div
+                    role='button'
+                    tabIndex={0}
+                    >
+                        <CopyIcon/>
+                        <span>Copiar email</span>
+                    </div>
+                    <div
+                    role='button'
+                    tabIndex={0}
+                    >
+                        <CopyIcon/>
+                        <span>Copiar usuário</span>
+                    </div>
+                    <div
+                    role='button'
+                    tabIndex={0}
+                    >
+                        <CopyIcon/>
+                        <span>Copiar senha</span>
+                    </div>
+                    <div
+                    role='button'
+                    tabIndex={0}
+                    >
+                        <TrashIcon style={{fill:'red', marginRight:'0px',}}/>
+                    </div>
+                </div>
+                <Form style={{pointerEvents:'none'}}>
+                    <Form.Group>
+                        <Form.Label className='fs-5'>Email</Form.Label>
+                        <Form.Control
+                        type='email'
+                        value={email}
+                        readOnly
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className='fs-5'>Nome de Usuário</Form.Label>
+                        <Form.Control
+                        type='text'
+                        value={username || ""}
+                        readOnly
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className='fs-5'>Senha</Form.Label>
+                        <div className="d-flex align-items-center border rounded pe-2">
+                            <Form.Control
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                className="border-0 shadow-none flex-grow-1"
+                                style={{ outline: 'none' }}
+                                readOnly
+                            />
+                            <span
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                style={{
+                                cursor: 'pointer',
+                                color: '#666',
+                                pointerEvents:'auto'
+                                }}
+                            >
+                                {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+                            </span>
+                        </div>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className='fs-5'>Links</Form.Label>
+                        <Form.Control
+                        as="textarea"
+                        value={links || ""}
+                        readOnly
+                        />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+
+        </Modal>
+    )
+}
+
+export default CredentialInfoModal

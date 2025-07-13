@@ -41,7 +41,6 @@
   border: none;
   border-radius: 50%;
   background-color: var(--green-color);
-  color: white;
   transition: background-color 0.2s ease;
   padding: 0;
   justify-content: center;
@@ -80,6 +79,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.truncate div {
+  display: flex;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--lessdark-blue-color);
+  transition: background-color 0.2s ease;
+  padding: 6px;
+  justify-content: center;
+  margin-right: 0.7rem;
+  align-items: center;
 }
 
 .confirmCredentialModalBtn {

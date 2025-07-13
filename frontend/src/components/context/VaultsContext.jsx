@@ -17,17 +17,11 @@ export function VaultsProvider({ children }) {
     );
   };
 
-  const getCredentialByTitle = (vaultTitle, credentialTitle) => {
-    const vault = vaults.find(v => v.title == vaultTitle)
-    if (!vault) return undefined
-    return (vault.credentials || []).find(c => c.credentialTitle == credentialTitle)
-  }
 
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, setAllVaults, addCredentialByVaultTitle, 
-      getCredentialByTitle }
+      { vaults, addVault, setAllVaults, addCredentialByVaultTitle }
     }>
       {children}
     </VaultsContext.Provider>
