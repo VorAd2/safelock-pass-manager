@@ -1,4 +1,5 @@
 import { useEffect, useState} from 'react';
+import { ArrowUpIcon } from '../../../assets/shared';
 import styles from '../../../styles/HomePage.module.css';
 
 export default function ScrollTopBtn() {
@@ -28,7 +29,7 @@ export default function ScrollTopBtn() {
             display: visible ? 'block' : 'none',
         }}
     >
-      ↑
+      <ArrowUpIcon style={{width:'20px', height:'20px'}}/>
     </button>
   );
 }

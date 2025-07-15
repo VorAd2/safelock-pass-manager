@@ -27,8 +27,8 @@
   fill: var(--yellow-color);
   border-color: white !important;
   border-width: 20px;
-  width: 190px;
-  height: 190px;
+  width: 210px;
+  height: 210px;
 }
 .heroSection h1 {
   font-size: 3rem;
@@ -47,16 +47,16 @@
 .featureIconBack {
   background-color: var(--lessdark-blue-color);
   border-radius: 12px;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   margin-bottom: 1rem;
   display: flex; 
   align-items: center; 
   justify-content: center; 
 }
 .featureIcon {
-  width: 24px;  
-  height: 24px;
+  width: 26px;  
+  height: 26px;
   fill: white;
 }
 .feature h4 {
@@ -64,6 +64,7 @@
 }
 .feature p {
   margin-bottom: 0.4rem !important;
+  font-size:large;
 }
 
 
@@ -103,6 +104,9 @@
 .freeCard h5 {
   color: var(--green-color) !important;
 }
+.freeCard h3 {
+  font-size: 1.8rem;
+}
 .freeCard :global(.btn) {
   border: none;
   background-color: rgb(12, 104, 104);
@@ -116,11 +120,15 @@
   background-color: var(--hover-green-color) !important;
 }
 
+
 .familyCard {
   border-color:#0950b9;
 }
 .familyCard h5 {
   color: #0950b9;
+}
+.familyCard h3 {
+  font-size: 1.8rem;
 }
 .familyBtn1 {
   background-color: #0950b9 !important;
@@ -156,6 +164,9 @@
   text-decoration: underline;
   text-decoration-color: var(--yellow-color);
 }
+.businessCard h3 {
+  font-size: 1.8rem;
+}
 .businessFeatures :global(.list-group-item) {
   background-color: var(--dark-blue-color);
   background-image: linear-gradient(
@@ -178,8 +189,12 @@
 
 
 /*Footer*/
+.myFooter p {
+  font-size: large;
+}
 .myFooter a {
   color: whitesmoke;
+  font-size: large;
 }
 .myFooter a:hover {
   color: rgb(19, 110, 248);
@@ -230,8 +245,8 @@
 }
 .scrollTopBtn {
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   background-color: var(--lessdark-blue-color);

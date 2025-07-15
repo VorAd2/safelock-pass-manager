@@ -53,10 +53,10 @@ function SigninPage() {
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <Card style={{ width: '25rem' }}>
         <Card.Body>
-          <Card.Title className="text-center mb-4">Login</Card.Title>
+          <Card.Title className="text-center mb-4 fs-3">Login</Card.Title>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label className='fs-5'>Email address</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
@@ -67,7 +67,7 @@ function SigninPage() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className='fs-5'>Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Password"
@@ -77,7 +77,7 @@ function SigninPage() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="primary" type="submit" className="w-100 fs-5">
               Login
             </Button>
             <p>{message}</p>

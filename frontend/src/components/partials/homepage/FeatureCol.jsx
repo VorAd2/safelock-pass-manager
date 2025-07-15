@@ -8,8 +8,8 @@ const FeatureCol = ({ icon: IconComponent, title, description, linkText, linkHre
       <div className={styles.featureIconBack}>
         {IconComponent && <IconComponent style={{ fill: 'white' }} className={styles.featureIcon}/>}
       </div>
-      <h4>{title}</h4>
-      <p>{description}</p>
+      <h3 style={{fontSize:'1.8rem'}}>{title}</h3>
+      <p className='mt-3'>{description}</p>
       <a href={linkHref}>{linkText} <ArrowRightIcon /></a>
     </Col>
   );

@@ -26,10 +26,10 @@ export default function DownloadsSection() {
     return (
       <section id='downloads'>
         <Container fluid className="py-5 text-center bg-dark">
-          <h2 className="mb-4 text-white">Escolha seu sistema para download</h2>  
+          <h2 className="mb-4 text-white" style={{fontSize:'2.2rem'}}>Escolha seu sistema para download</h2>  
           <Tab.Container activeKey={key} onSelect={(k) => setKey(k)}>
             <div className={styles.downloadTabs}>
-                <Nav variant="tabs" className="justify-content-center mb-4">
+                <Nav variant="tabs" className="justify-content-center mb-4 fs-5" >
                     <Nav.Item>
                         <Nav.Link eventKey="windows">Windows</Nav.Link>
                     </Nav.Item>
@@ -47,7 +47,7 @@ export default function DownloadsSection() {
                 <Tab.Pane eventKey={os} key={os}>
                   <h4>{info.title}</h4>
                   <p>{info.description}</p>
-                  <a href={info.link} className="btn btn-primary" download>
+                  <a href={info.link} className="btn btn-primary fs-5" download>
                     Baixar agora
                   </a>
                 </Tab.Pane>

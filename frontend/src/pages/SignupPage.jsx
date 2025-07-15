@@ -58,10 +58,10 @@ function SignupPage() {
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <Card style={{ width: '25rem' }}>
         <Card.Body>
-          <Card.Title className="text-center mb-4">Register</Card.Title>
+          <Card.Title className="text-center mb-4 fs-3">Register</Card.Title>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicNameRegister">
-              <Form.Label>Account Name</Form.Label>
+              <Form.Label className='fs-5'>Account Name</Form.Label>
               <Form.Control
                 type="name"
                 placeholder="Enter name"
@@ -72,7 +72,7 @@ function SignupPage() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmailRegister">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label className='fs-5'>Email address</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
@@ -83,7 +83,7 @@ function SignupPage() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPasswordRegister">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className='fs-5'>Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Password"
@@ -94,7 +94,7 @@ function SignupPage() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicConfirmPasswordRegister">
-              <Form.Label>Confirm Password</Form.Label>
+              <Form.Label className='fs-5'>Confirm Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Confirm Password"
@@ -104,7 +104,7 @@ function SignupPage() {
               />
             </Form.Group>
 
-            <Button variant="success" type="submit" className="w-100">
+            <Button variant="success" type="submit" className="w-100 fs-5">
               Register
             </Button>
             <p>{message}</p>
