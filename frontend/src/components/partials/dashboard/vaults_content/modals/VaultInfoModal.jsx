@@ -1,4 +1,5 @@
-import { VerticalEllipsisIcon } from "../../../../../assets/shared";
+import { VerticalEllipsisIcon, CopyIcon } from "../../../../../assets/shared";
+import { TrashIcon } from "../../../../../assets/dashboard";
 import { PlusIcon, FingerprintIcon, UserAvatar } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import { CredentialInfoModal } from "../../../../index"
@@ -11,9 +12,9 @@ import { useState } from "react";
 const VaultInfoModal = ({ data, show, onHide, username }) => {
   const vaultTitle = data ? data.title : "Nome do Vault";
   const vaultId = data ? data._id : "ID do Vault";
-  const [
-    credentialInfoModalState, setCredentialInfoModalState
-  ] = useState({visible: false, credential: undefined})
+  const [credentialInfoModalState, setCredentialInfoModalState] = useState(
+    {visible: false, credential: undefined}
+  )
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
   const credentials = data ? data.credentials : [];
 
@@ -24,41 +25,93 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
     })
   }
 
+  const handleCredentialCopy = (field) => {
+    console.log(`Campo de credencial copiado: ${field}`)
+  }
+
+  function getVaultEllipsisModal() {
+    return (
+      <MiniModal
+        ButtonIcon={VerticalEllipsisIcon}
+        buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
+        iconClass={styles.ellipsis}
+        placement="left"
+        >
+          {({ closePopover, popoverItemClass}) => (
+              <>
+                <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
+                  Favoritar
+                </button>
+                <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
+                  Compartilhar
+                </button>
+                <button type="button" 
+                className={popoverItemClass}
+                style={{color:'red'}}
+                onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}>
+                  Excluir
+                </button>
+              </>
+            )
+          }
+        </MiniModal>
+    )
+  }
+
+  function getCredentialEllipsisModal(credential) {
+    const email = credential.credentialEmail
+    const password = credential.credentialPassword
+    const username = credential.credentialUsername
+    return (
+      <MiniModal
+      ButtonIcon={VerticalEllipsisIcon}
+      buttonClass={styles.credentialEllipsisWrapper}
+      placement="right"
+      >
+        {({ closePopover, popoverItemClass}) => (
+            <>
+              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(email); closePopover(e); }}>
+                <div className="d-flex align-items-center">
+                  <CopyIcon className='me-2'/>
+                  <span>Copiar email</span>
+                </div>
+              </button>
+              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(password); closePopover(e); }}>
+                <div className="d-flex align-items-center">
+                  <CopyIcon className='me-2'/>
+                  <span>Copiar senha</span>
+                </div>
+              </button>
+              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(username); closePopover(e); }}>
+                <div className="d-flex align-items-center fs-9">
+                  <CopyIcon className='me-2'/>
+                  <span>Copiar usuário</span>
+                </div>
+              </button>
+              <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Excluir credential"); closePopover(e); }}>
+                <div className="d-flex align-items-center ">
+                  <TrashIcon className='me-2' style={{fill:'red'}}/>
+                  <span style={{color:'red'}}>Excluir</span>
+                </div>
+              </button>
+            </>
+          )
+        }
+      </MiniModal>
+    )
+  }
+
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
-          <MiniModal
-          ButtonIcon={VerticalEllipsisIcon}
-          buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
-          iconClass={styles.ellipsis}
-          placement="left"
-          >
-            {({ closePopover, popoverItemClass}) => (
-                 <>
-                  <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
-                    Favoritar
-                  </button>
-                  <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
-                    Compartilhar
-                  </button>
-                  <button type="button" 
-                  className={popoverItemClass}
-                  style={{color:'red'}}
-                  onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}>
-                    Excluir
-                  </button>
-                </>
-              )
-            }
-          </MiniModal>
+          {getVaultEllipsisModal()}
           <Modal.Title className="mb-0 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
-        </div>
-        
+        </div> 
       </Modal.Header>
 
       <Modal.Body className={styles.scrollPanel}>
-        <div className={`${styles.gridRow} ${styles.headerRow}`}>
+        <div className={`${styles.gridRow} fw-bold`}>
           <div><CustomCheckbox /></div>
           <div className="fs-6" >Todos</div>
           <div className="fs-6" >Nome</div>
@@ -91,8 +144,10 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
                   <UserAvatar style={{fill:'white'}}/>
                 </div>
                 {credential.credentialOwner}
-                </div>
-              <div></div>
+              </div>
+              <div className={styles.actionColumn}>
+                {getCredentialEllipsisModal(credential)}
+              </div>
             </div>
           ))}
         </div>

@@ -67,10 +67,6 @@
   background-color: #f0f0f0;
   cursor: pointer;
 }
-.headerRow {
-  font-weight: bold;
-  position: relative;
-}
 .actionColumn {
   display: flex;
   justify-content: flex-end;
@@ -95,6 +91,22 @@
   margin-right: 0.7rem;
   align-items: center;
 }
+
+
+.credentialEllipsisWrapper {
+  margin-right: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: border 0.05s ease;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.credentialEllipsisWrapper:hover {
+  border: 2px solid var(--green-color);
+}
+
 
 .confirmCredentialModalBtn {
     border: none;
