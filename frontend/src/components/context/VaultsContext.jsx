@@ -17,11 +17,36 @@ export function VaultsProvider({ children }) {
     );
   };
 
+  const setFavoritism = (vaultTitle, username, toFavorite) => {
+    setVaults((prev) =>
+      prev.map((vault) => {
+        if (vault.title !== vaultTitle) return vault;
+        const alreadyFavorited = vault.favoritedBy.includes(username);
+        let updatedFavoritedBy;
+        if (toFavorite && !alreadyFavorited) {
+          updatedFavoritedBy = [...vault.favoritedBy, username];
+        } else if (!toFavorite && alreadyFavorited) {
+          updatedFavoritedBy = vault.favoritedBy.filter((user) => user !== username);
+        } else {
+          return vault;
+        }
+
+        return {
+          ...vault,
+          favoritedBy: updatedFavoritedBy,
+        };
+      })
+    );
+  };
+
+  const getFavorites = (username) => {
+    return vaults.favoritedBy.filter((name => name === username))
+  }
 
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, setAllVaults, addCredentialByVaultTitle }
+      { vaults, addVault, setAllVaults, addCredentialByVaultTitle, setFavoritism, getFavorites }
     }>
       {children}
     </VaultsContext.Provider>

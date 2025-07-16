@@ -19,7 +19,7 @@ module.exports = (db) => {
         try {
             const vaultsArray = await VaultModel.getVaultsByUser(username, db);
             if (vaultsArray.length === 0) {
-                return res.status(404).json({ message: 'Nenhum vault encontrado para este usuário.' });
+                return res.status(204).json({ message: 'Nenhum vault encontrado para este usuário.' });
             }
             return res.status(200).json(vaultsArray);
         } catch (err) {
@@ -45,6 +45,20 @@ module.exports = (db) => {
         } catch (err) {
             console.log('Erro inesperado no POST de Vault: ' + err.message)
             return res.status(500).json({message: err.message});
+        }
+    })
+
+    router.patch('/favoritism', authenticateToken, async (req, res) => {
+        const {toFavorite, vaultId, username} = req.body
+        console.log(`toFavorite: ${toFavorite}, vaultId: ${vaultId}, username: ${username}`)
+        try {
+            await VaultModel.favoritism(toFavorite, vaultId, username, db)
+            await UserModel.vaultFavoritism(toFavorite, vaultId, username, db)
+            console.log(`PATCH favoritismo finalizado sem err`)
+            return res.status(200).json({message: 'Favoritismo de vault atualizado'})
+        } catch (err) {
+            console.log(`Erro inesperado no PATCH favoritism: ${JSON.stringify(err)}`)
+            return res.status(500).json({message: err.message})
         }
     })
 

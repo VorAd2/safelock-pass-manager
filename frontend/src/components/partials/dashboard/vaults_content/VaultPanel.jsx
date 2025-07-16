@@ -6,7 +6,7 @@ import { Container, Row, Col} from 'react-bootstrap';
 import { useVaults } from '../../../context/useVaults';
 
 
-function VaultPanel({modalVisibleCallback, vaultCardClick}) {
+function VaultPanel({username, modalVisibleCallback, vaultCardClick, notificationHandler}) {
     const { vaults } = useVaults();
 
     return (
@@ -32,7 +32,12 @@ function VaultPanel({modalVisibleCallback, vaultCardClick}) {
                         <Row className='g-4'>
                             {vaults.map((vault, i) => (
                             <Col md={3} key={i}>
-                                <VaultCard vault={vault} onClick={vaultCardClick}/>
+                                <VaultCard 
+                                vault={vault} 
+                                onClick={vaultCardClick} 
+                                username={username} 
+                                notificationHandler={notificationHandler}
+                                />
                             </Col>
                             ))}
                         </Row>

@@ -1,12 +1,19 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import {SponsorsContainer} from '../..';
 import SiteIcon from '../../../assets/shared/site-icon.svg?react';
+import { useNavigate } from 'react-router-dom';
+import { SIGNUP_ROUTE } from '../../../routes';
 import styles from '../../../styles/HomePage.module.css';
 
 export default function HeroSection() {
+  const navigate = useNavigate()
 
   const handleOpenLink = () => {
     window.open('https://github.com/VorAd2', '_blank', 'noopener,noreferrer');
+  }
+
+  const handleGetStarted = () => {
+    navigate(SIGNUP_ROUTE)
   }
 
   return (
@@ -21,10 +28,10 @@ export default function HeroSection() {
               Welcome to<br />SafeLock
             </h1>
             <p className="lead fs-4 mb-5">
-              Aqui você pode descobrir nossos serviços e explorar tudo que temos a oferecer.  
+              Here you can discover our services and explore everything we have to offer.  
             </p>
             <div className="d-flex gap-3 mt-4">
-              <Button size="lg" className={`${styles.getStartedBtn} fs-4`}>Get Started</Button>
+              <Button onClick={handleGetStarted} size="lg" className={`${styles.getStartedBtn} fs-4`}>Get Started</Button>
               <Button onClick={handleOpenLink} variant="outline-custom" size="lg" className={`${styles.aboutUsBtn} fs-4`}>About Us</Button>
             </div>
           </Col>

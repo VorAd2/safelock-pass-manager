@@ -35,6 +35,14 @@ class UserModel {
             {$addToSet: {allVaults: vaultId} }
         )
     }
+
+    async vaultFavoritism(toFavorite, vaultId, username, db) {
+        const filter = {username: username}
+        const update = toFavorite
+            ? {$addToSet: {favoriteVaults: vaultId}}
+            : {$pull: {favoriteVaults: vaultId}}
+        await db.collection('users').updateOne(filter, update)
+    }
 }
 
 module.exports = new UserModel();

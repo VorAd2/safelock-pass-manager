@@ -56,6 +56,7 @@ function VaultsContent() {
           username={username}
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+          notificationHandler={notificationHandler}
         />
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 

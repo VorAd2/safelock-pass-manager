@@ -22,7 +22,7 @@ module.exports = (db) => {
         }
         const isVaultsEmpty = vaultsArray.length === 0
         if (isVaultsEmpty) {
-            return res.status(404).json({ message: 'Nenhum vault encontrado para este usuário.' });
+            return res.status(204).json({ message: 'Nenhum vault encontrado para este usuário.' });
         }
         res.status(200).json(vaultsArray);
     })

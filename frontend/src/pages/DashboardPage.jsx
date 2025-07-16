@@ -67,7 +67,7 @@ function DashboardPage({username}) {
           );
           localStorage.removeItem("authToken");
           navigate("/signin");
-        } else if (err.response && err.response.status === 404) {
+        } else if (err.response && err.response.status === 204) {
           console.log("Nenhum vault encontrado para este usuário.");
           setAllVaults([]);
           return

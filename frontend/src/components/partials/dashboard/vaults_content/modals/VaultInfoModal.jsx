@@ -1,6 +1,6 @@
 import { VerticalEllipsisIcon, CopyIcon } from "../../../../../assets/shared";
 import { TrashIcon } from "../../../../../assets/dashboard";
-import { PlusIcon, FingerprintIcon, UserAvatar } from "../../../../../assets/dashboard";
+import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import { CredentialInfoModal } from "../../../../index"
 import NewCredentialModal from "./NewCredentialModal";
@@ -25,8 +25,12 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
     })
   }
 
-  const handleCredentialCopy = (field) => {
-    console.log(`Campo de credencial copiado: ${field}`)
+  const handleCredentialCopy = async (field) => {
+    try {
+      await navigator.clipboard.writeText(field)
+    } catch (err) {
+      alert(`Erro ao copiar campo: ${err.message}`)
+    }
   }
 
   function getVaultEllipsisModal() {
@@ -40,16 +44,25 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
           {({ closePopover, popoverItemClass}) => (
               <>
                 <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
-                  Favoritar
+                  <div className="d-flex align-items-center">
+                    <StarIcon className='me-2'/>
+                    <span>Favorite</span>
+                  </div>
                 </button>
                 <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
-                  Compartilhar
+                  <div className="d-flex align-items-center">
+                    <SendIcon className='me-2'/>
+                    <span>Share</span>
+                  </div>
                 </button>
                 <button type="button" 
                 className={popoverItemClass}
-                style={{color:'red'}}
+                style={{color:'var(--red-color)', fill:'var(--red-color)'}}
                 onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}>
-                  Excluir
+                  <div className="d-flex align-items-center">
+                    <TrashIcon className='me-2'/>
+                    <span>Delete</span>
+                  </div>
                 </button>
               </>
             )
@@ -90,8 +103,8 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
               </button>
               <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Excluir credential"); closePopover(e); }}>
                 <div className="d-flex align-items-center ">
-                  <TrashIcon className='me-2' style={{fill:'red'}}/>
-                  <span style={{color:'red'}}>Excluir</span>
+                  <TrashIcon className='me-2' style={{fill:'var(--red-color)'}}/>
+                  <span style={{color:'var(--red-color)'}}>Excluir</span>
                 </div>
               </button>
             </>

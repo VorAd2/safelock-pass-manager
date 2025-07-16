@@ -11,11 +11,12 @@ class VaultModel {
         }
         const vault  = {
             originUser,
-            sharedUsers: null,
+            sharedUsers: [],
             title,
             pin: hashedPin,
             desc,
             credentials: [],
+            favoritedBy: [],
             createdAt: new Date(),
             updatedAt: new Date(),
         }
@@ -35,6 +36,14 @@ class VaultModel {
             {$push: {credentials: credential}}
         )
         return result
+    }
+
+    async favoritism(toFavorite, vaultId, username, db) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        const update = toFavorite
+            ? {$addToSet: {favoritedBy: username} }
+            : {$pull: {favoritedBy: username} }
+        await db.collection('user_vaults').updateOne(filter, update)
     }
 
 }
