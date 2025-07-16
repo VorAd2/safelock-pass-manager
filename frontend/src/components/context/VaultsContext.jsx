@@ -31,16 +31,19 @@ export function VaultsProvider({ children }) {
           return vault;
         }
 
-        return {
+        const newVault = {
           ...vault,
           favoritedBy: updatedFavoritedBy,
-        };
+        }
+        console.log(`Vault ${vaultTitle} passado pelo setFav: ${JSON.stringify(newVault, null, 2)}`)
+        return newVault
       })
     );
+    console.log(`Novo estado de vaults: ${JSON.stringify(vaults, null, 2)}`)
   };
 
   const getFavorites = (username) => {
-    return vaults.favoritedBy.filter((name => name === username))
+    return vaults.filter(vault => vault.favoritedBy.includes(username))
   }
 
   return (

@@ -33,10 +33,8 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                 { newVaultData: { originUser, title, pin, desc } }, // body
                 { headers: { 'Authorization': `Bearer ${authToken}` } } // config
             );
-            console.log(`response data: ${JSON.stringify(response.data)}`);
             const newVault = response.data.vault;
             addVault(newVault);
-            console.log('Vault criado:', newVault);
             await onCreate();
         } catch (err) {
             if (err.response && err.response.status === 403) {

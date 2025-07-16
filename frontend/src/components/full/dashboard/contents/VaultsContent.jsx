@@ -10,7 +10,7 @@ function VaultsContent() {
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const { vaults } = useVaults() 
+  const { vaults, getFavorites } = useVaults() 
 
   const handleVaultClick = (vaultTitle) => {
     const getVaultData = (vaultTitle) => {
@@ -23,7 +23,6 @@ function VaultsContent() {
     let data =  getVaultData(vaultTitle)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)
-    console.log('vault clicked:', vaultTitle)
   }
 
   useEffect(() => {
@@ -31,18 +30,17 @@ function VaultsContent() {
       const updated = vaults.find(v => v._id === currentVaultData._id)
       if (updated) setCurrentVaultData(updated)
     }
+    console.log(`Vaults favoritos: ${JSON.stringify(getFavorites(username), null, 2)}`)
   }, [vaults])
 
 
   const onCloseNewVaultModal = () => {
     setNewVaultModalVisible(false)
-    console.log('modal fechado')
   }
 
   const onConfirmNewVaultModal = async () => {
     onCloseNewVaultModal()
     notificationHandler(true, 'Vault criado com sucesso!', 'success')
-    console.log('vault criado')
   }
 
   return (

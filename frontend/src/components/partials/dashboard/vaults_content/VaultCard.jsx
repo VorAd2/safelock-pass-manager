@@ -9,7 +9,7 @@ const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 function VaultCard({vault, onClick, username, notificationHandler}) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
-    const { setFavoritism, getFavorites } = useVaults()
+    const { setFavoritism } = useVaults()
 
     useEffect(() => {
         console.log(`toFavorite de ${vaultTitle}: ${toFavorite}`)
@@ -41,9 +41,8 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
                 ? 'Vault favoritado com sucesso'
                 : 'Vault desfavoritado com sucesso'
             notificationHandler(true, message, 'success')
-            console.log(`Vaults favoritos: ${JSON.stringify(getFavorites(username))}`)
         } catch (err) {
-            console.warn(`Erro no favoritismo: ${err.message}`)
+            console.warn(`Erro no favoritismo: ${err}`)
         } finally {
             closePopover(e)
         }
