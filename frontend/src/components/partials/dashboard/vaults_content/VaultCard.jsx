@@ -1,4 +1,4 @@
-import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
+import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import styles from '../../../../styles/VaultsContent.module.css';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { useVaults } from '../../../context/useVaults';
@@ -59,8 +59,8 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
                         <>
                             <button type="button" className={popoverItemClass} onClick={(e) => { handleFavoriteAction(e, closePopover) }}>
                                 <div className="d-flex align-items-center">
-                                    <StarIcon className='me-2'/>
-                                    <span>Favorite</span>
+                                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}
+                                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                                 </div>
                             </button>
                             <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>

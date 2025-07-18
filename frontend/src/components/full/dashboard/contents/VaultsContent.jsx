@@ -10,7 +10,8 @@ function VaultsContent() {
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const { vaults, getFavorites } = useVaults() 
+  const { vaults, getFavorites } = useVaults()
+  const [vaultsFilter, setVaultsFilter] = useState('all') 
 
   const handleVaultClick = (vaultTitle) => {
     const getVaultData = (vaultTitle) => {
@@ -23,6 +24,17 @@ function VaultsContent() {
     let data =  getVaultData(vaultTitle)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)
+  }
+
+  function getVaultsSubgroup() {
+    switch (vaultsFilter) {
+      case 'all':
+        return vaults
+      case 'favs':
+        return vaults.filter(v => v.favoritedBy.includes(username))
+      case 'shared':
+        return vaults.filter(v => v.sharedUsers.includes(username))
+    }
   }
 
   useEffect(() => {
@@ -46,7 +58,7 @@ function VaultsContent() {
   return (
     <div className="d-flex flex-grow-1" style={{ minHeight: 0 }}>
       <div className="p-3" style={{ width: '25%', minWidth: '250px' }}>
-        <FloatingBox />
+        <FloatingBox setVaultsFilter={setVaultsFilter} />
       </div>
 
       <div className="p-3 flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
@@ -55,6 +67,8 @@ function VaultsContent() {
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
           notificationHandler={notificationHandler}
+          vaultsFilter={vaultsFilter}
+          vaultsSubgroup={getVaultsSubgroup()}
         />
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 

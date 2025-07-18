@@ -6,8 +6,25 @@ import { Container, Row, Col} from 'react-bootstrap';
 import { useVaults } from '../../../context/useVaults';
 
 
-function VaultPanel({username, modalVisibleCallback, vaultCardClick, notificationHandler}) {
+function VaultPanel({ 
+    username, modalVisibleCallback, vaultCardClick, 
+    notificationHandler, vaultsFilter, vaultsSubgroup }) 
+{
     const { vaults } = useVaults();
+    let emptyPanelText
+    switch (vaultsFilter) {
+        case 'all':
+            emptyPanelText = 'Você ainda não possui vaults.'
+            break
+        case 'favs':
+            emptyPanelText = 'Você ainda não favoritou algum vault'
+            break
+        case 'shared':
+            emptyPanelText = 'Você ainda não possui vaults compartilhados por/com você'
+            break
+        default:
+            emptyPanelText = 'null'
+    }
 
     return (
         <div className='d-flex flex-column flex-grow-1' style={{minHeight: 0}}>
@@ -22,15 +39,15 @@ function VaultPanel({username, modalVisibleCallback, vaultCardClick, notificatio
             </div>
             <hr className='mb-2'/>
             <div className={styles.vaultPanelContainer}>
-                {vaults.length === 0 ? (
+                {vaultsSubgroup.length === 0 ? (
                     <div className={styles.emptyStateContainer}>
                         <NoVaultsIcon className={styles.emptyIcon}/>
-                        <p className={styles.emptyText}>Você ainda não possui vaults.</p>
+                        <p className={styles.emptyText}>{emptyPanelText}</p>
                     </div>
                 ) : (
                     <Container fluid>
                         <Row className='g-4'>
-                            {vaults.map((vault, i) => (
+                            {vaultsSubgroup.map((vault, i) => (
                             <Col md={3} key={i}>
                                 <VaultCard 
                                 vault={vault} 

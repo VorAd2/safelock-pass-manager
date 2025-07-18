@@ -12,6 +12,7 @@ import ArrowRightIcon from './arrow-right.svg?react';
 import PremiumIcon from './premium.svg?react';
 import UserAvatar from './person.svg?react';
 import StarIcon from './star.svg?react';
+import UnstarIcon from './unstar.svg?react';
 import PeopleIcon from './people.svg?react';
 import FolderIcon from './folder.svg?react';
 import TrashIcon from './trash.svg?react';
@@ -40,6 +41,7 @@ export {
     PremiumIcon,
     UserAvatar,
     StarIcon,
+    UnstarIcon,
     PeopleIcon,
     FolderIcon,
     TrashIcon,

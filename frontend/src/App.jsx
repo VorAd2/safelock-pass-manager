@@ -1,3 +1,4 @@
+//f5 esta reconstruindo a arvore de componentes inteira: context é volatil
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HOME_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE, DASHBOARD_ROUTE } from './routes';
 import {HomePage, DashboardWrapper, SigninPage, SignupPage} from './pages';
