@@ -1,4 +1,4 @@
-import { BoxesIcon, StarIcon, PeopleIcon, TrashIcon } from '../../../../assets/dashboard'
+import { BoxesIcon, StarIcon, PeopleIcon } from '../../../../assets/dashboard'
 import styles from '../../../../styles/VaultsContent.module.css'
 
 function FloatingBox({ setVaultsFilter }) {
@@ -14,7 +14,7 @@ function FloatingBox({ setVaultsFilter }) {
                 tabIndex={0}
                 onClick={() => setVaultsFilter('all')}
                 > 
-                    <BoxesIcon/> Todos os cofres
+                    <BoxesIcon/> All vaults
                 </div>
 
                 <div
@@ -22,7 +22,7 @@ function FloatingBox({ setVaultsFilter }) {
                 tabIndex={0}
                 onClick={() => setVaultsFilter('favs')}
                 > 
-                    <StarIcon/> Favoritos
+                    <StarIcon/> Favorited
                 </div> 
 
                 <div
@@ -30,15 +30,7 @@ function FloatingBox({ setVaultsFilter }) {
                 tabIndex={0}
                 onClick={() => setVaultsFilter('shared')}
                 > 
-                    <PeopleIcon/> Compartilhados
-                </div>
-
-                <div
-                role='button'
-                tabIndex={0}
-                onClick={() => setVaultsFilter('all')}
-                > 
-                    <TrashIcon/> Lixeira
+                    <PeopleIcon/> Shared
                 </div>
             </div>
         </div>

@@ -11,10 +11,16 @@
 
   --sidebar-width-expanded: 290px;
   --sidebar-width-collapsed: 120px;
+
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Source Sans 3', sans-serif;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-secondary), Tahoma, Geneva, Verdana, sans-serif;
+}
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-primary);
 }
 
 html, body, #root {

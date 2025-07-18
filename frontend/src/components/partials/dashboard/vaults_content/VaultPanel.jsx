@@ -3,24 +3,23 @@ import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
 import { CustomCheckBox, VaultCard } from '../../../index'
 import styles from '../../../../styles/VaultsContent.module.css';
 import { Container, Row, Col} from 'react-bootstrap';
-import { useVaults } from '../../../context/useVaults';
+
 
 
 function VaultPanel({ 
     username, modalVisibleCallback, vaultCardClick, 
     notificationHandler, vaultsFilter, vaultsSubgroup }) 
 {
-    const { vaults } = useVaults();
     let emptyPanelText
     switch (vaultsFilter) {
         case 'all':
-            emptyPanelText = 'Você ainda não possui vaults.'
+            emptyPanelText = "You don't have vaults yet"
             break
         case 'favs':
-            emptyPanelText = 'Você ainda não favoritou algum vault'
+            emptyPanelText = "You haven't favorited a vault yet"
             break
         case 'shared':
-            emptyPanelText = 'Você ainda não possui vaults compartilhados por/com você'
+            emptyPanelText = "You don't yet have vaults shared by/with you"
             break
         default:
             emptyPanelText = 'null'
@@ -29,7 +28,7 @@ function VaultPanel({
     return (
         <div className='d-flex flex-column flex-grow-1' style={{minHeight: 0}}>
             <div className='d-flex justify-content-between align-items-center'>
-                <div> <CustomCheckBox label='Todos'/></div>
+                <div> <CustomCheckBox label='All'/></div>
                 <button type='button' 
                     onClick={() => modalVisibleCallback(true)} 
                     className={`${styles.newVaultBtn} fs-5`}
@@ -41,8 +40,8 @@ function VaultPanel({
             <div className={styles.vaultPanelContainer}>
                 {vaultsSubgroup.length === 0 ? (
                     <div className={styles.emptyStateContainer}>
-                        <NoVaultsIcon className={styles.emptyIcon}/>
-                        <p className={styles.emptyText}>{emptyPanelText}</p>
+                        <NoVaultsIcon className={styles.emptyIcon} size={128}/>
+                        <p className={`${styles.emptyText} fs-5`}>{emptyPanelText}</p>
                     </div>
                 ) : (
                     <Container fluid>

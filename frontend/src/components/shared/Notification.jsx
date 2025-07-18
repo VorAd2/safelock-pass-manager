@@ -6,7 +6,7 @@ const Notification = ({ show, variant, message }) => {
 
   return (
     <div className={styles.notificationWrapper}>
-      <Alert variant={variant} className="mb-0 text-center">
+      <Alert variant={variant} className="mb-0 text-center fs-5">
         {message}
       </Alert>
     </div>

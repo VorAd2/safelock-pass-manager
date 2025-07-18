@@ -23,7 +23,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
         const { title, pin, desc } = vaultData;
         let authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("Nenhum token encontrado. Redirecionando para login.");
+            console.warn("No token found. Redirecting to signin.");
             navigate("/signin");
             return;
         }
@@ -52,11 +52,11 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
     return (
         <div className={styles.backdrop}>
         <div className={styles.modalBox}>
-            <h5 className='mb-3 fs-3'>Criar Novo Cofre</h5>
+            <h5 className='mb-3 fs-3'>Create New Vault</h5>
             <Form id='newVaultForm'>
             <Form.Group className="mb-1">
                 <Form.Label className='fs-5'>
-                    Título <span className='text-danger'>*</span>
+                    Title <span className='text-danger'>*</span>
                 </Form.Label>
                 <Form.Control
                 type="text"
@@ -76,8 +76,8 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                         placement="right"
                         overlay={
                         <Tooltip id="pin-tooltip">
-                            O PIN é uma identificação numérica opcional usada para 
-                            proteger o acesso ao cofre.
+                            The PIN is an optional numeric identification used to 
+                            protect access to the vault.
                         </Tooltip>
                         }
                     >
@@ -124,7 +124,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
 
             <Form.Group className="mb-3">
                 <Form.Label className='fs-5'>
-                    Descrição <span className='text-danger'>*</span>
+                    Description <span className='text-danger'>*</span>
                 </Form.Label>
                 <Form.Control
                 as="textarea"
@@ -140,7 +140,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
 
             <div className="d-flex justify-content-end gap-2">
                 <Button type='button' variant="secondary" onClick={onClose}>
-                Cancelar
+                Cancel
                 </Button>
                 <button
                     type='button'
@@ -148,7 +148,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
                     onClick={() => handleCreate({title, pin, desc})}
                     disabled={!title || !desc || (pin && pin.length < 5)}
                 >
-                Criar
+                Create
                 </button>
             </div>
             </Form>

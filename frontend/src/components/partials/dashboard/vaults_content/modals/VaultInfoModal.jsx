@@ -1,15 +1,18 @@
 import { VerticalEllipsisIcon, CopyIcon } from "../../../../../assets/shared";
-import { TrashIcon } from "../../../../../assets/dashboard";
-import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon } from "../../../../../assets/dashboard";
+import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import { CredentialInfoModal } from "../../../../index"
 import NewCredentialModal from "./NewCredentialModal";
 import styles from "../../../../../styles/VaultModal.module.css"; 
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
+import { useVaults } from "../../../../context/useVaults";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
-const VaultInfoModal = ({ data, show, onHide, username }) => {
+const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) => {
   const vaultTitle = data ? data.title : "Nome do Vault";
   const vaultId = data ? data._id : "ID do Vault";
   const [credentialInfoModalState, setCredentialInfoModalState] = useState(
@@ -17,6 +20,39 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
   )
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
   const credentials = data ? data.credentials : [];
+  const navigate = useNavigate();
+
+  const { setFavoritism } = useVaults()
+  const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
+
+  const handleFavoriteAction = async (e, closePopover) => {
+        e.stopPropagation()
+        const reqData = {
+            toFavorite: toFavorite,
+            vaultId: data._id,
+            username: username
+        }
+        const authToken = localStorage.getItem('authToken')
+        if (!authToken) {
+            console.warn("No token found. Redirecting to signin.");
+            navigate("/signin");
+            return;
+        }
+        try {
+            await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
+                { headers: {Authorization: `Bearer ${authToken}` }}
+            )
+            setFavoritism(vaultTitle, username, toFavorite)
+            const message = toFavorite
+                ? 'Vault favorited successfully'
+                : 'Vault unfavorited successfully'
+            notificationHandler(true, message, 'success')
+        } catch (err) {
+            console.warn(`Erro no favoritismo: ${err}`)
+        } finally {
+            closePopover(e)
+        }
+    }
 
   const handleCredentialClick = (credential) => {
     setCredentialInfoModalState({
@@ -33,6 +69,7 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
     }
   }
 
+
   function getVaultEllipsisModal() {
     return (
       <MiniModal
@@ -43,10 +80,11 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
         >
           {({ closePopover, popoverItemClass}) => (
               <>
-                <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Favoritar vault"); closePopover(e); }}>
+                <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
                   <div className="d-flex align-items-center">
-                    <StarIcon className='me-2'/>
-                    <span>Favorite</span>
+                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}
+                    
+                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                   </div>
                 </button>
                 <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
@@ -86,25 +124,25 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
               <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(email); closePopover(e); }}>
                 <div className="d-flex align-items-center">
                   <CopyIcon className='me-2'/>
-                  <span>Copiar email</span>
+                  <span>Copy email</span>
                 </div>
               </button>
               <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(password); closePopover(e); }}>
                 <div className="d-flex align-items-center">
                   <CopyIcon className='me-2'/>
-                  <span>Copiar senha</span>
+                  <span>Copy password</span>
                 </div>
               </button>
               <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(username); closePopover(e); }}>
                 <div className="d-flex align-items-center fs-9">
                   <CopyIcon className='me-2'/>
-                  <span>Copiar usuário</span>
+                  <span>Copy username</span>
                 </div>
               </button>
               <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Excluir credential"); closePopover(e); }}>
                 <div className="d-flex align-items-center ">
                   <TrashIcon className='me-2' style={{fill:'var(--red-color)'}}/>
-                  <span style={{color:'var(--red-color)'}}>Excluir</span>
+                  <span style={{color:'var(--red-color)'}}>Delete</span>
                 </div>
               </button>
             </>
@@ -126,9 +164,9 @@ const VaultInfoModal = ({ data, show, onHide, username }) => {
       <Modal.Body className={styles.scrollPanel}>
         <div className={`${styles.gridRow} fw-bold`}>
           <div><CustomCheckbox /></div>
-          <div className="fs-6" >Todos</div>
-          <div className="fs-6" >Nome</div>
-          <div className="fs-6" >Proprietário</div>
+          <div className="fs-6" >All</div>
+          <div className="fs-6" >Title</div>
+          <div className="fs-6" >Owner</div>
           <div className={styles.actionColumn}>
             <button
               type="button"

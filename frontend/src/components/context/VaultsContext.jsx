@@ -35,11 +35,9 @@ export function VaultsProvider({ children }) {
           ...vault,
           favoritedBy: updatedFavoritedBy,
         }
-        console.log(`Vault ${vaultTitle} passado pelo setFav: ${JSON.stringify(newVault, null, 2)}`)
         return newVault
       })
     );
-    console.log(`Novo estado de vaults: ${JSON.stringify(vaults, null, 2)}`)
   };
 
   const getFavorites = (username) => {

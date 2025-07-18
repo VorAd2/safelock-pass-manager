@@ -35,7 +35,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
         }
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-            console.warn("Nenhum token encontrado. Redirecionando para login.");
+            console.warn("No token found. Redirecting to signin.");
             navigate("/signin");
             return;
         }
@@ -70,12 +70,12 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
     return (
         <Modal show={modalVisible} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title className='fs-3'>Adicionar Credential</Modal.Title>
+            <Modal.Title className='fs-3'>Add Credential</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form id='newCredential' onSubmit={handleSubmit}>
                 <Form.Group className='mb-1'>
-                    <Form.Label className='fs-5' >Título <span className='text-danger'>*</span> </Form.Label>
+                    <Form.Label className='fs-5' >Title <span className='text-danger'>*</span> </Form.Label>
                     <Form.Control 
                         type="text"
                         value={credentialTitle}
@@ -93,7 +93,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     />
                 </Form.Group>
                 <Form.Group className="mb-1">
-                    <Form.Label className='fs-5'>Nome de Usuário</Form.Label>
+                    <Form.Label className='fs-5'>Username</Form.Label>
                     <Form.Control
                         type="text"
                         value={credentialUsername}
@@ -101,7 +101,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                     />
                 </Form.Group>
                 <Form.Group className="mb-1">
-                    <Form.Label className='fs-5'>Senha <span className='text-danger'>*</span> </Form.Label>
+                    <Form.Label className='fs-5'>Password <span className='text-danger'>*</span> </Form.Label>
                     <div className="d-flex align-items-center border rounded pe-2">
                         <Form.Control
                             type={showPassword ? 'text' : 'password'}
@@ -128,20 +128,20 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                         type="text"
                         value={credentialLinks.join(', ')}
                         onChange={(e) => setLinks(e.target.value.split(',').map(link => link.trim()))}
-                        placeholder="Adicione links separados por vírgula"
+                        placeholder="Add comma-separated links"
                     />
                 </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <button className="btn btn-secondary" onClick={handleClose}>Cancelar</button>
+            <button className="btn btn-secondary" onClick={handleClose}>Cancel</button>
             <button
               type="submit"
               form="newCredential"
               className={styles.confirmCredentialModalBtn}
               disabled={!credentialTitle || !credentialEmail || !credentialPassword}
             >
-                Adicionar
+                Add
             </button>
           </Modal.Footer>
         </Modal>

@@ -3,6 +3,7 @@ import styles from '../../../../styles/VaultsContent.module.css';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { useVaults } from '../../../context/useVaults';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -10,6 +11,7 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
     const { setFavoritism } = useVaults()
+    const navigate = useNavigate()
 
     useEffect(() => {
         console.log(`toFavorite de ${vaultTitle}: ${toFavorite}`)
@@ -28,7 +30,7 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
         }
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("Nenhum token encontrado. Redirecionando para login.");
+            console.warn("No token found. Redirecting to signin.");
             navigate("/signin");
             return;
         }
@@ -38,8 +40,8 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
             )
             setFavoritism(vaultTitle, username, toFavorite)
             const message = toFavorite
-                ? 'Vault favoritado com sucesso'
-                : 'Vault desfavoritado com sucesso'
+                ? 'Vault favorited successfully'
+                : 'Vault unfavorited successfully'
             notificationHandler(true, message, 'success')
         } catch (err) {
             console.warn(`Erro no favoritismo: ${err}`)

@@ -7,10 +7,11 @@ import styles from '../../../../../styles/CredentialInfoModal.module.css'
 
 function CredentialInfoModal({credential, modalState, setModalState}) {
     const title = credential && credential.credentialTitle
+    // eslint-disable-next-line no-unused-vars
     const owner = credential && credential.credentialOwner
     const email = credential && credential.credentialEmail
     const password = credential && credential.credentialPassword
-    const username = credential && credential.username
+    const username = credential && credential.credentialUsername
     const links = credential && (credential.credentialLinks.join(', '))
     const [showPassword, setShowPassword] = useState(false)
 
@@ -20,6 +21,14 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
             credential: undefined
         })
     }
+
+    const handleCredentialCopy = async (field) => {
+        try {
+            await navigator.clipboard.writeText(field)
+        } catch (err) {
+            alert(`Error copying field: ${err.message}`)
+        }
+  }
 
     if (credential == undefined) {
         return null
@@ -37,23 +46,26 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                     <div
                     role='button'
                     tabIndex={0}
+                    onClick={() => handleCredentialCopy(email)}
                     >
                         <CopyIcon/>
-                        <span>Copiar email</span>
+                        <span>Copy email</span>
                     </div>
                     <div
                     role='button'
                     tabIndex={0}
+                    onClick={() => {handleCredentialCopy(username)}}
                     >
                         <CopyIcon/>
-                        <span>Copiar usuário</span>
+                        <span>Copy username</span>
                     </div>
                     <div
                     role='button'
                     tabIndex={0}
+                    onClick={() => handleCredentialCopy(password)}
                     >
                         <CopyIcon/>
-                        <span>Copiar senha</span>
+                        <span>Copy password</span>
                     </div>
                     <div
                     role='button'
@@ -73,7 +85,7 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Label className='fs-5'>Nome de Usuário</Form.Label>
+                        <Form.Label className='fs-5'>Username</Form.Label>
                         <Form.Control
                         type='text'
                         value={username || ""}
@@ -82,7 +94,7 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Label className='fs-5'>Senha</Form.Label>
+                        <Form.Label className='fs-5'>Password</Form.Label>
                         <div className="d-flex align-items-center border rounded pe-2">
                             <Form.Control
                                 type={showPassword ? 'text' : 'password'}

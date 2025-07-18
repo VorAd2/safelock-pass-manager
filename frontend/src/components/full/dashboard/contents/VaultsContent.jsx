@@ -80,7 +80,8 @@ function VaultsContent() {
           data={currentVaultData} 
           show={vaultInfoModalVisible} 
           onHide={() => setVaultInfoModalVisible(false)}
-          username={username} 
+          username={username}
+          notificationHandler={notificationHandler} 
         />
 
       </div>
