@@ -62,5 +62,15 @@ module.exports = (db) => {
         }
     })
 
+    router.patch('/sharing', authenticateToken, async (req, res) => {
+        const {originUsername, senderUsername, vaultId, recipientUsername} = req.body
+        if (originUsername !== senderUsername) {
+            const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${originUsername} .. ${senderUsername}`
+            console.log(msg)
+            return res.status(403).json({message: msg})
+        }
+        
+    })
+
     return router
 }

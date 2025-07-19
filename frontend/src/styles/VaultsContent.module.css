@@ -1,7 +1,7 @@
 .floatingBoxContainer {
   border-radius: 8px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: #2e2e2e; 
+  background-color: var(--light-gray-color); 
   color: #f0f0f0;
   margin-top: 0.6rem;
   padding: 15px; 
@@ -47,6 +47,15 @@
 }
 .emptyText {
     font-size: 1.1rem;
+}
+.panelParent {
+  border: 1px solid rgba(240, 240, 240, 0.5);
+  border-radius: 8px;
+}
+.panelParent hr {
+  border: none;
+  background-color: white;
+  height: 2px;
 }
 .vaultPanelContainer {
   height: 100%;

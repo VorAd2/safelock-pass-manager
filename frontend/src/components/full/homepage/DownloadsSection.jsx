@@ -7,18 +7,18 @@ export default function DownloadsSection() {
 
     const downloadInfo = {
         windows: {
-            title: 'Download para Windows',
-            description: 'Versão compatível com Windows 10 ou superior.',
+            title: 'Download for Windows',
+            description: 'Version compatible with Windows 10 or higher.',
             link: '#',
         },
         macos: {
-            title: 'Download para macOS',
-            description: 'Compatível com macOS 11 Big Sur ou superior.',
+            title: 'Download for macOS',
+            description: 'Compatible with macOS 11 Big Sur or higher.',
             link: '#',
         },
         linux: {
-            title: 'Download para Linux',
-            description: 'Disponível em pacotes .deb e .AppImage.',
+            title: 'Download for Linux',
+            description: 'Available in .deb and .AppImage packages.',
             link: '#',
         },
   };
@@ -26,7 +26,7 @@ export default function DownloadsSection() {
     return (
       <section id='downloads'>
         <Container fluid className="py-5 text-center bg-dark">
-          <h2 className="mb-4 text-white" style={{fontSize:'2.2rem'}}>Escolha seu sistema para download</h2>  
+          <h2 className="mb-4 text-white" style={{fontSize:'2.2rem'}}>Choose your system for download</h2>  
           <Tab.Container activeKey={key} onSelect={(k) => setKey(k)}>
             <div className={styles.downloadTabs}>
                 <Nav variant="tabs" className="justify-content-center mb-4 fs-5" >
@@ -48,7 +48,7 @@ export default function DownloadsSection() {
                   <h4>{info.title}</h4>
                   <p>{info.description}</p>
                   <a href={info.link} className="btn btn-primary fs-5" download>
-                    Baixar agora
+                    Download now
                   </a>
                 </Tab.Pane>
               ))}

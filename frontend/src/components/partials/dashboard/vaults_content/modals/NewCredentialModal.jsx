@@ -27,6 +27,11 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
         setShowPassword(false);
     };
 
+    const handleClose = () => {
+        resetForm();
+        setModalVisible(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newCredential = {
@@ -58,14 +63,10 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                 console.warn(err);
             }
         }
-        resetForm();
-        setModalVisible(false);
+        handleClose()
     };
 
-    const handleClose = () => {
-        resetForm();
-        setModalVisible(false);
-    };
+    
 
     return (
         <Modal show={modalVisible} onHide={handleClose} centered>

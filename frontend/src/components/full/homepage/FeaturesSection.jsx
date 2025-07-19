@@ -7,7 +7,7 @@ import PeopleIcon from '../../../assets/features/people-icon.svg?react';
 
 export default function FeaturesSection() {
     return (
-        <section id="features">
+        <section id="features" className='bg-light'>
             <div className="container justify-items-center pt-5 pb-4">
                 <h2 style={{fontSize:'2.2rem'}}>Tools & Features</h2>
                 <hr className="my-2" style={{height:"1.3px", border:'none', backgroundColor:'black'}}/>

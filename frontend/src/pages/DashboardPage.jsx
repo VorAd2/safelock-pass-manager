@@ -86,8 +86,8 @@ function DashboardPage({username}) {
 
   const currentPathSegment = location.pathname.split("/").pop();
   const headerTitle = currentPathSegment === username 
-  ? username
-  : titlesMap[currentPathSegment];
+    ? 'Dashboard'
+    : titlesMap[currentPathSegment];
 
 
 

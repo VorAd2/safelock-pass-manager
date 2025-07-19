@@ -44,10 +44,28 @@ export function VaultsProvider({ children }) {
     return vaults.filter(vault => vault.favoritedBy.includes(username))
   }
 
+  const setSharing = (vaultTitle, recipientUsername) => {
+    setVaults((prev) => {
+      prev.map(vault => {
+        if (vault.title !== vaultTitle) return vault;
+        let updatedSharedUsers = [...vault.sharedUsers, recipientUsername];
+        const newVault = {
+          ...vault,
+          sharedUsers: updatedSharedUsers
+        }
+        return newVault;
+      })
+    })
+  }
+
+  const getShared = () => {
+    return vaults.filter(vault => vault.sharedUsers.length !== 0)
+  }
+
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, setAllVaults, addCredentialByVaultTitle, setFavoritism, getFavorites }
+      { vaults, addVault, setAllVaults, addCredentialByVaultTitle, setFavoritism, getFavorites, setSharing, getShared }
     }>
       {children}
     </VaultsContext.Provider>

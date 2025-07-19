@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
-function VaultCard({vault, onClick, username, notificationHandler}) {
+function VaultCard({vault, onClick, username, notificationHandler, setSendModalVisible}) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
     const { setFavoritism } = useVaults()
@@ -49,8 +49,15 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
             closePopover(e)
         }
     }
-    
+
+    const handleSendAction = (e, closePopover) => {
+        closePopover(e)
+        setSendModalVisible(true)
+    }
+
     function getEllipsisModal() {
+        const canShareVault = !(vault.sharedUsers.some(u => u === username))
+        const sendSpanStyle = canShareVault ? 'text-decoration-line-through text-secondary' : ''
         return (
             <MiniModal
                 ButtonIcon={EllipsisIcon}
@@ -65,10 +72,10 @@ function VaultCard({vault, onClick, username, notificationHandler}) {
                                     <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                                 </div>
                             </button>
-                            <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
+                            <button type="button" className={popoverItemClass} onClick={canShareVault ? (e) => { handleSendAction(e, closePopover)} : null} >
                                 <div className="d-flex align-items-center">
-                                    <SendIcon className='me-2'/>
-                                    <span>Share</span>
+                                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
+                                    <span className={sendSpanStyle}>Share</span>
                                 </div>
                             </button>
                             <button type="button" 

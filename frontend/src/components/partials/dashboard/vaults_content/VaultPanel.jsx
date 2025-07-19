@@ -8,7 +8,8 @@ import { Container, Row, Col} from 'react-bootstrap';
 
 function VaultPanel({ 
     username, modalVisibleCallback, vaultCardClick, 
-    notificationHandler, vaultsFilter, vaultsSubgroup }) 
+    notificationHandler, vaultsFilter, vaultsSubgroup,
+    setSendModalVibile }) 
 {
     let emptyPanelText
     switch (vaultsFilter) {
@@ -26,12 +27,12 @@ function VaultPanel({
     }
 
     return (
-        <div className='d-flex flex-column flex-grow-1' style={{minHeight: 0}}>
-            <div className='d-flex justify-content-between align-items-center'>
-                <div> <CustomCheckBox label='All'/></div>
+        <div className={`d-flex flex-column flex-grow-1 ${styles.panelParent}`} style={{minHeight: 0}}>
+            <div className='d-flex justify-content-between align-items-center p-1'>
+                <div className='text-light ms-3 mt-3'> <CustomCheckBox label='All'/></div>
                 <button type='button' 
                     onClick={() => modalVisibleCallback(true)} 
-                    className={`${styles.newVaultBtn} fs-5`}
+                    className={`${styles.newVaultBtn} fs-5 me-3 mt-3`}
                 >
                     <PlusIcon className='me-1' style={{width: '20px', height:'20px'}}/> Vault 
                 </button>
@@ -53,6 +54,7 @@ function VaultPanel({
                                 onClick={vaultCardClick} 
                                 username={username} 
                                 notificationHandler={notificationHandler}
+                                setSendModalVibile={setSendModalVibile}
                                 />
                             </Col>
                             ))}

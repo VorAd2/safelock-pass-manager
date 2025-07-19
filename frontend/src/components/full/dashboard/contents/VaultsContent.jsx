@@ -7,10 +7,12 @@ import { useEffect } from 'react'
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
   const [vaultInfoModalVisible, setVaultInfoModalVisible] = useState(false)
+  const [sendModalVisible, setSendModalVisible] = useState(false)
+
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const { vaults, getFavorites } = useVaults()
+  const { vaults, getFavorites, getShared } = useVaults()
   const [vaultsFilter, setVaultsFilter] = useState('all') 
 
   const handleVaultClick = (vaultTitle) => {
@@ -31,9 +33,9 @@ function VaultsContent() {
       case 'all':
         return vaults
       case 'favs':
-        return vaults.filter(v => v.favoritedBy.includes(username))
+        return getFavorites(username)
       case 'shared':
-        return vaults.filter(v => v.sharedUsers.includes(username))
+        return getShared()
     }
   }
 
@@ -61,14 +63,15 @@ function VaultsContent() {
         <FloatingBox setVaultsFilter={setVaultsFilter} />
       </div>
 
-      <div className="p-3 flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
+      <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
         <VaultPanel 
-          username={username}
-          modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
-          vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
-          notificationHandler={notificationHandler}
-          vaultsFilter={vaultsFilter}
-          vaultsSubgroup={getVaultsSubgroup()}
+        username={username}
+        modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
+        vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+        notificationHandler={notificationHandler}
+        vaultsFilter={vaultsFilter}
+        vaultsSubgroup={getVaultsSubgroup()}
+        setSendModalVisible={setSendModalVisible}
         />
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
@@ -77,11 +80,19 @@ function VaultsContent() {
           />
         }
         <VaultInfoModal 
-          data={currentVaultData} 
-          show={vaultInfoModalVisible} 
-          onHide={() => setVaultInfoModalVisible(false)}
-          username={username}
-          notificationHandler={notificationHandler} 
+        data={currentVaultData} 
+        show={vaultInfoModalVisible} 
+        onHide={() => setVaultInfoModalVisible(false)}
+        username={username}
+        notificationHandler={notificationHandler}
+        setSendModalVisible={setSendModalVisible} 
+        />
+
+        <SendVaultModal 
+        show={sendModalVisible}
+        setSendModalVisible={setSendModalVisible}
+        vaultData={currentVaultData}
+        username={username}
         />
 
       </div>

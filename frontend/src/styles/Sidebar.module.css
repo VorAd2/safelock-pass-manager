@@ -1,6 +1,6 @@
 .sidebarContainer {
   height: 100vh;
-  background-color: #1f1f1f;
+  background-color: var(--light-gray-color);
   color: white;
   transition: width 0.3s ease;
   display: flex;

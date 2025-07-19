@@ -50,7 +50,9 @@ function SigninPage() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    <Container 
+    className="d-flex justify-content-center align-items-center" 
+    style={{ minHeight: '100vh' }}>
       <Card style={{ width: '25rem' }}>
         <Card.Body>
           <Card.Title className="text-center mb-4 fs-3">Login</Card.Title>

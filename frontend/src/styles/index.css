@@ -8,6 +8,7 @@
   --dark-yellow-color: #d8970b;
   --whitetext-to-yellow: rgb(212, 212, 212);
   --red-color: #c90f02;
+  --light-gray-color: #2e2e2e;
 
   --sidebar-width-expanded: 290px;
   --sidebar-width-collapsed: 120px;
@@ -18,9 +19,10 @@
 
 body {
   font-family: var(--font-secondary), Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1f1f1f;
 }
 h1, h2, h3, h4, h5 {
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html, body, #root {

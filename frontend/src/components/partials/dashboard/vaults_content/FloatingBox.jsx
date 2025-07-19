@@ -5,7 +5,7 @@ function FloatingBox({ setVaultsFilter }) {
     return (
         <div className={styles.floatingBoxContainer}>
             <div className={styles.searchVaultSection}>
-                <div>Procurar cofres</div>
+                <div>Filter vaults</div>
             </div>
             <div className={styles.optionsList}>
 

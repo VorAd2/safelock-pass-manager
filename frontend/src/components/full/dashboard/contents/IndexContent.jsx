@@ -10,11 +10,11 @@ function IndexContent() {
             boxSizing: 'border-box'
         }}>
             <h3 style={{
-                color: 'ccc',
                 fontSize: '2em',
                 textAlign: 'center',
                 maxWidth: '80%',
-            }}>Bem vindo ao seu dashboard!</h3>
+                color: 'white'
+            }}>Welcome to your dashboard!</h3>
         </div>
     )
 }
