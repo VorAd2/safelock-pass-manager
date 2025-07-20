@@ -51,11 +51,9 @@ module.exports = (db) => {
 
     router.patch('/favoritism', authenticateToken, async (req, res) => {
         const {toFavorite, vaultId, username} = req.body
-        console.log(`toFavorite: ${toFavorite}, vaultId: ${vaultId}, username: ${username}`)
         try {
             await VaultModel.favoritism(toFavorite, vaultId, username, db)
             //await UserModel.vaultFavoritism(toFavorite, vaultId, username, db)
-            console.log(`PATCH favoritismo finalizado sem err`)
             return res.status(200).json({message: 'Favoritismo de vault atualizado'})
         } catch (err) {
             console.log(`Erro inesperado no PATCH favoritism: ${JSON.stringify(err)}`)

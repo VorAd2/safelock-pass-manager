@@ -7,7 +7,7 @@ import styles from '../../../../../styles/VaultModal.module.css'
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
-function SendVaultModal({ show, setSendModalVisible, vaultData, username }) {
+function SendVaultModal({ show, setSendModalVisible, vaultData, username, notificationHandler }) {
     const [recipientUsername, setRecipientUsername] = useState('')
     const [errMsg, setErrMsg] = useState('')
     vaultData = vaultData ?? {title: '', vaultId: '', ownerUser: ''}
@@ -53,6 +53,7 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username }) {
             )
             setSharing(vaultTitle, recipientUsername)
             handleClose()
+            notificationHandler(true, 'Vault shared successfully', 'success')
         } catch (err) {
             console.warn(`Erro ao compartilhar vault: ${err}`)
             if (err.response && err.response.status === 404) {

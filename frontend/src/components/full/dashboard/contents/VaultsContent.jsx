@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, SendVaultModal } from "../../../index"
@@ -61,7 +62,7 @@ function VaultsContent() {
 
   const onConfirmNewVaultModal = async () => {
     onCloseNewVaultModal()
-    notificationHandler(true, 'Vault criado com sucesso!', 'success')
+    notificationHandler(true, 'Vault created successfully!', 'success')
   }
 
   return (
@@ -101,6 +102,7 @@ function VaultsContent() {
         setSendModalVisible={setSendModalVisible}
         vaultData={currentVaultData}
         username={username}
+        notificationHandler={notificationHandler}
         />
 
       </div>

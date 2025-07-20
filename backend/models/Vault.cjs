@@ -26,7 +26,8 @@ class VaultModel {
     }
 
     async getVaultsByUser(username, db) {
-        const vaultsArray = await db.collection('user_vaults').find({ownerUser: username}).toArray()
+        const filter = {$or: [{ownerUser: username}, {sharedUsers: username} ]}
+        const vaultsArray = await db.collection('user_vaults').find(filter).toArray()
         return vaultsArray
     }
 
