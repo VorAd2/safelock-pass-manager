@@ -8,8 +8,9 @@ import { Container, Row, Col} from 'react-bootstrap';
 
 function VaultPanel({ 
     username, modalVisibleCallback, vaultCardClick, 
+    vaultEllipsisClick,
     notificationHandler, vaultsFilter, vaultsSubgroup,
-    setSendModalVibile }) 
+    setSendModalVisible }) 
 {
     let emptyPanelText
     switch (vaultsFilter) {
@@ -51,10 +52,11 @@ function VaultPanel({
                             <Col md={3} key={i}>
                                 <VaultCard 
                                 vault={vault} 
-                                onClick={vaultCardClick} 
+                                onClick={vaultCardClick}
+                                ellipsisClick={vaultEllipsisClick} 
                                 username={username} 
                                 notificationHandler={notificationHandler}
-                                setSendModalVibile={setSendModalVibile}
+                                setSendModalVisible={setSendModalVisible}
                                 />
                             </Col>
                             ))}

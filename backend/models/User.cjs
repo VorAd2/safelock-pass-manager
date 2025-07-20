@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
 
 class UserModel {
-    async existsUser(name, email, db) {
-        const existsUser = await db.collection('users').findOne({$or: [{name}, {email}] })
-        return existsUser
+    async existsUser(username, email, db) {
+        const user = await db.collection('users').findOne({$or: [{username}, {email}] })
+        return user !== null
     }
 
     async insertUser(userData, db) {
@@ -20,7 +20,7 @@ class UserModel {
         await db.collection('users').insertOne(user)
     }
 
-    async findUserByEmail(email, db) {
+    async getUserByEmail(email, db) {
         const user = await db.collection('users').findOne({email: email})
         return user;
     }
@@ -29,9 +29,9 @@ class UserModel {
         return (await bcrypt.compare(potentialPass, user.password))
     }
 
-    async addVault(originUser, vaultId, db) {
+    async addVault(username, vaultId, db) {
         await db.collection('users').updateOne(
-            {username: originUser},
+            {username: username},
             {$addToSet: {allVaults: vaultId} }
         )
     }

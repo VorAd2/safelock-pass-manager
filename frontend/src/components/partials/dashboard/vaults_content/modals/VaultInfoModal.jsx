@@ -13,8 +13,9 @@ import axios from "axios";
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) => {
-  const vaultTitle = data ? data.title : "Nome do Vault";
-  const vaultId = data ? data._id : "ID do Vault";
+  data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: []}
+  const vaultTitle = data.title;
+  const vaultId = data._id;
   const [credentialInfoModalState, setCredentialInfoModalState] = useState(
     {visible: false, credential: undefined}
   )
@@ -71,6 +72,8 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) =
 
 
   function getVaultEllipsisModal() {
+    const canShareVault = !(data.sharedUsers.some(u => u === username))
+    const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
     return (
       <MiniModal
         ButtonIcon={VerticalEllipsisIcon}
@@ -82,15 +85,14 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) =
               <>
                 <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
                   <div className="d-flex align-items-center">
-                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}
-                    
+                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}   
                     <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                   </div>
                 </button>
                 <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
                   <div className="d-flex align-items-center">
-                    <SendIcon className='me-2'/>
-                    <span>Share</span>
+                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
+                    <span className={sendSpanStyle}>Share</span>
                   </div>
                 </button>
                 <button type="button" 

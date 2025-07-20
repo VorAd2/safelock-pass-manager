@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
-const NewVaultModal = ({ onClose, onCreate, originUser }) => {
+const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
     const navigate = useNavigate();
     const { addVault } = useVaults();
     
@@ -30,7 +30,7 @@ const NewVaultModal = ({ onClose, onCreate, originUser }) => {
         try {
             const response = await axios.post(
                 `${backUrl}/dashboard/vaults`,
-                { newVaultData: { originUser, title, pin, desc } }, // body
+                { newVaultData: { ownerUser, title, pin, desc } }, // body
                 { headers: { 'Authorization': `Bearer ${authToken}` } } // config
             );
             const newVault = response.data.vault;

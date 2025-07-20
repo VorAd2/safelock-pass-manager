@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal } from "../../../index"
+import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, SendVaultModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
 import { useEffect } from 'react'
 
@@ -15,17 +15,22 @@ function VaultsContent() {
   const { vaults, getFavorites, getShared } = useVaults()
   const [vaultsFilter, setVaultsFilter] = useState('all') 
 
-  const handleVaultClick = (vaultTitle) => {
-    const getVaultData = (vaultTitle) => {
-      for (let vault of vaults) {
-        if (vault.title === vaultTitle) {
-          return vault
-        }
+  const getVaultData = (vaultTitle) => {
+    for (let vault of vaults) {
+      if (vault.title === vaultTitle) {
+        return vault
       }
     }
+  }
+
+  const handleVaultClick = (vaultTitle) => {
     let data =  getVaultData(vaultTitle)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)
+  }
+
+  const handleVaultEllpsisClick = (vaultTitle) => {
+    setCurrentVaultData(getVaultData(vaultTitle))
   }
 
   function getVaultsSubgroup() {
@@ -68,6 +73,7 @@ function VaultsContent() {
         username={username}
         modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
         vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+        vaultEllipsisClick={handleVaultEllpsisClick}
         notificationHandler={notificationHandler}
         vaultsFilter={vaultsFilter}
         vaultsSubgroup={getVaultsSubgroup()}
@@ -76,7 +82,7 @@ function VaultsContent() {
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
             onCreate={onConfirmNewVaultModal}
-            originUser={username} 
+            ownerUser={username} 
           />
         }
         <VaultInfoModal 

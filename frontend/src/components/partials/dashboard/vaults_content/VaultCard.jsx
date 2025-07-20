@@ -7,7 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
-function VaultCard({vault, onClick, username, notificationHandler, setSendModalVisible}) {
+function VaultCard({
+    vault, onClick, username, 
+    ellipsisClick, notificationHandler, setSendModalVisible
+}) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
     const { setFavoritism } = useVaults()
@@ -57,12 +60,14 @@ function VaultCard({vault, onClick, username, notificationHandler, setSendModalV
 
     function getEllipsisModal() {
         const canShareVault = !(vault.sharedUsers.some(u => u === username))
-        const sendSpanStyle = canShareVault ? 'text-decoration-line-through text-secondary' : ''
+        const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
+        const modalClick = () => ellipsisClick(vault.title)
         return (
             <MiniModal
                 ButtonIcon={EllipsisIcon}
                 buttonClass={styles.vaultCardEllipsisWrapper}
                 iconClass={styles.vaultCardEllipsis}
+                onClick={modalClick}
                 >
                     {({ closePopover, popoverItemClass}) => (
                         <>

@@ -3,14 +3,14 @@ const { ObjectId } = require('mongodb');
 
 class VaultModel {
     async insertVault(data, db) {
-        const {originUser, title, pin, desc} = data
+        const {ownerUser, title, pin, desc} = data
         let hashedPin = null
         if (pin != '') {
             const salt = await bcrypt.genSalt(10)
             hashedPin = await bcrypt.hash(pin, salt)
         }
         const vault  = {
-            originUser,
+            ownerUser,
             sharedUsers: [],
             title,
             pin: hashedPin,
@@ -26,7 +26,7 @@ class VaultModel {
     }
 
     async getVaultsByUser(username, db) {
-        const vaultsArray = await db.collection('user_vaults').find({originUser: username}).toArray()
+        const vaultsArray = await db.collection('user_vaults').find({ownerUser: username}).toArray()
         return vaultsArray
     }
 
@@ -43,6 +43,12 @@ class VaultModel {
         const update = toFavorite
             ? {$addToSet: {favoritedBy: username} }
             : {$pull: {favoritedBy: username} }
+        await db.collection('user_vaults').updateOne(filter, update)
+    }
+
+    async sharing(db, vaultId, recipientUsername) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        const update = {$addToSet: {sharedUsers: recipientUsername}}
         await db.collection('user_vaults').updateOne(filter, update)
     }
 

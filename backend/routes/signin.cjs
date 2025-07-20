@@ -13,7 +13,7 @@ module.exports = (db) => {
   router.post('/', async (req, res) => {
     const {email, password} = req.body
     try {
-      const user = await UserModel.findUserByEmail(email, db)
+      const user = await UserModel.getUserByEmail(email, db)
       if (user) {
         const isMatch = await UserModel.matchPassword(user, password, db)
         if (isMatch) {

@@ -29,17 +29,17 @@ module.exports = (db) => {
     });
 
     router.post('/', authenticateToken, async (req, res) => {
-        const {originUser, title, pin, desc} = req.body.newVaultData
-        if (req.userData.username !== originUser) {
+        const {ownerUser, title, pin, desc} = req.body.newVaultData
+        if (req.userData.username !== ownerUser) {
             console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
         }
         try {
-            const newVaultData = await VaultModel.insertVault({originUser, title, pin, desc}, db)
+            const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
             console.log(`novo vault: ${JSON.stringify(newVaultData.vault)}`)
             const vault = newVaultData.vault
-            await UserModel.addVault(originUser, vaultId, db)
+            await UserModel.addVault(ownerUser, vaultId, db)
             console.log('POST de Vault finalizado sem err')
             return res.status(201).json({ message: 'Vault criado com sucesso', vault: vault });
         } catch (err) {
@@ -53,7 +53,7 @@ module.exports = (db) => {
         console.log(`toFavorite: ${toFavorite}, vaultId: ${vaultId}, username: ${username}`)
         try {
             await VaultModel.favoritism(toFavorite, vaultId, username, db)
-            await UserModel.vaultFavoritism(toFavorite, vaultId, username, db)
+            //await UserModel.vaultFavoritism(toFavorite, vaultId, username, db)
             console.log(`PATCH favoritismo finalizado sem err`)
             return res.status(200).json({message: 'Favoritismo de vault atualizado'})
         } catch (err) {
@@ -63,13 +63,36 @@ module.exports = (db) => {
     })
 
     router.patch('/sharing', authenticateToken, async (req, res) => {
-        const {originUsername, senderUsername, vaultId, recipientUsername} = req.body
-        if (originUsername !== senderUsername) {
-            const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${originUsername} .. ${senderUsername}`
+        const {ownerUsername, senderUsername, vaultId, recipientUsername} = req.body
+        console.log(`recipientUsername: ${recipientUsername}`)
+        if (ownerUsername !== senderUsername) {
+            const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
             console.log(msg)
             return res.status(403).json({message: msg})
         }
-        
+        if (ownerUsername === recipientUsername) {
+            const msg = `Usuário remetente não pode compartilhar um vault consigo mesmo`
+            return res.status(403).json({message: msg})
+        }
+        try {
+            const recipientExists = await UserModel.existsUser(recipientUsername, null, db)
+            console.log(`recipientExists: ${recipientExists}`)
+            if (recipientExists) {
+                await VaultModel.sharing(db, vaultId, recipientUsername)
+                await UserModel.addVault(recipientUsername, vaultId, db)
+                //disparar notificação no recipientUser para que ele refresh o panel de vaults
+                return res.status(200).json(
+                    {message: `Vault compartilhado com sucesso entre ${ownerUsername} e ${recipientUsername}`}
+                )
+            } else {
+                return res.status(404).json({message: "Recipient user doesn't exist"})
+            }
+            
+        } catch (err) {
+            console.log(`Erro no compartilhamento de vault: ${err}`)
+            return res.status(500).json({ message: 'Erro interno ao compartilhar vault' })
+        }
+         
     })
 
     return router

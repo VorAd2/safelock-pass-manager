@@ -8,7 +8,8 @@ function MiniModal({
     buttonClass,
     iconClass,
     placement = "bottom-start",
-    className = ""
+    className = "",
+    onClick
 }) {
     const [show, setShow] = useState(false);
     const target = useRef(null);
@@ -26,7 +27,7 @@ function MiniModal({
     <>
         <div
         ref={target}
-        onClick={togglePopover} 
+        onClick={(e) => {togglePopover(e); onClick && onClick()}} 
         className={`${buttonClass}`} 
         style={{ cursor: "pointer" }}
         >

@@ -26,5 +26,6 @@ export { default as VaultCard } from './partials/dashboard/vaults_content/VaultC
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/modals/NewVaultModal.jsx'
 export { default as VaultInfoModal } from './partials/dashboard/vaults_content/modals/VaultInfoModal.jsx'
 export { default as CredentialInfoModal } from './partials/dashboard/vaults_content/modals/CredentialInfoModal.jsx'
+export { default as SendVaultModal } from './partials/dashboard/vaults_content/modals/SendVaultModal.jsx'
 
 export { default as NoVaultsIcon } from './icons/NoVaultsIcon.jsx'

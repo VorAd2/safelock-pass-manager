@@ -54,8 +54,8 @@ function DashboardPage({username}) {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        setAllVaults(response.data);
-        console.log("Vaults carregados:", response.data);
+        response.status === 200 && setAllVaults(response.data);
+        console.log("Vaults carregados:", response.data, response.status);
         setLoading(false);
       } catch (err) {
         console.error("ERROR:", err);
