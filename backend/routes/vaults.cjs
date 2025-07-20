@@ -30,6 +30,7 @@ module.exports = (db) => {
 
     router.post('/', authenticateToken, async (req, res) => {
         const {ownerUser, title, pin, desc} = req.body.newVaultData
+        console.log(`userData Username: ${req.userData.username}  ownerUser: ${ownerUser}`)
         if (req.userData.username !== ownerUser) {
             console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });

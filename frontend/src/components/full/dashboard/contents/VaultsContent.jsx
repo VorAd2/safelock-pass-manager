@@ -41,6 +41,8 @@ function VaultsContent() {
         return getFavorites(username)
       case 'shared':
         return getShared()
+      default:
+        return []
     }
   }
 

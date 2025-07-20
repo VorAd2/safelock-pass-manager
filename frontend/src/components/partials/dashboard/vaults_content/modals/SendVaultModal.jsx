@@ -41,7 +41,7 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username }) {
             return;
         }
         const reqBody = {
-            ownerUser,
+            ownerUsername: ownerUser,
             senderUsername: username,
             recipientUsername: recipientUsername,
             vaultId

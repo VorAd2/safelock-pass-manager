@@ -46,7 +46,7 @@ export function VaultsProvider({ children }) {
 
   const setSharing = (vaultTitle, recipientUsername) => {
     setVaults((prev) => {
-      prev.map(vault => {
+      return prev.map(vault => {
         if (vault.title !== vaultTitle) return vault;
         let updatedSharedUsers = [...vault.sharedUsers, recipientUsername];
         const newVault = {
