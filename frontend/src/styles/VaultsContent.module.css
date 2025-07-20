@@ -1,30 +1,4 @@
-.floatingBoxContainer {
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: var(--light-gray-color); 
-  color: #f0f0f0;
-  margin-top: 0.6rem;
-  padding: 15px; 
-  display: flex;
-  flex-direction: column; 
-  font-size: 1.25rem !important;
-}
-.searchVaultSection {
-  margin-bottom: 20px; 
-  font-weight: bold;
-}
-.optionsList svg {
-  margin-right: 0.3rem;
-}
-.optionsList div {
-  padding: 8px 11px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.optionsList div:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
+
 
 .loadingContainer {
     display: flex;

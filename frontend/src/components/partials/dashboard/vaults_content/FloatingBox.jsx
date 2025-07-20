@@ -1,7 +1,10 @@
 import { BoxesIcon, StarIcon, PeopleIcon } from '../../../../assets/dashboard'
-import styles from '../../../../styles/VaultsContent.module.css'
+import styles from '../../../../styles/FloatingBox.module.css'
+import { useState } from 'react'
 
 function FloatingBox({ setVaultsFilter }) {
+    const [active, setActiveOption] = useState('all')
+
     return (
         <div className={styles.floatingBoxContainer}>
             <div className={styles.searchVaultSection}>
@@ -12,25 +15,46 @@ function FloatingBox({ setVaultsFilter }) {
                 <div
                 role='button'
                 tabIndex={0}
-                onClick={() => setVaultsFilter('all')}
+                onClick={() => {
+                    setVaultsFilter('all')
+                    setActiveOption('all')
+                }}
                 > 
-                    <BoxesIcon/> All vaults
+                    <div className='d-flex align-items-center'>
+                        {active === 'all' && <div className={styles.activeRectangle}></div>}
+                        <span className='ms-1'><BoxesIcon/> All vaults</span>
+                    </div>
+                    
                 </div>
 
                 <div
                 role='button'
                 tabIndex={0}
-                onClick={() => setVaultsFilter('favs')}
-                > 
-                    <StarIcon/> Favorited
+                onClick={() => {
+                    setVaultsFilter('favs')
+                    setActiveOption('favs')
+                }}
+                >
+                    <div className='d-flex align-items-center'>
+                        {active === 'favs' && <div className={styles.activeRectangle}></div>}
+                        <span className='ms-1'><StarIcon/> Favorited</span>
+                    </div> 
+                    
                 </div> 
 
                 <div
                 role='button'
                 tabIndex={0}
-                onClick={() => setVaultsFilter('shared')}
+                onClick={() => {
+                    setVaultsFilter('shared')
+                    setActiveOption('shared')
+                }}
                 > 
-                    <PeopleIcon/> Shared
+                    <div className='d-flex align-items-center'>
+                        {active === 'shared' && <div className={styles.activeRectangle}></div>}
+                        <span className='ms-1'><PeopleIcon/> Shared</span>
+                    </div>
+                    
                 </div>
             </div>
         </div>

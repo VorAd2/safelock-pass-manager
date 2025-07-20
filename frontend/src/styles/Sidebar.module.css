@@ -30,16 +30,6 @@
   width: auto;
   transition: opacity 0.3s ease 0.1s, width 0.3s ease 0.1s;
 }
-.activeRectangle {
-  width: 4px; 
-  border-radius: 0 2px 2px 0;
-  background-color: var(--lessdark-blue-color); 
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0; 
-}
 .sidebarIcon {
   width: 20px;
   height: 20px;
@@ -81,6 +71,16 @@
 }
 
 
+.activeRectangle {
+  width: 4px; 
+  border-radius: 0 2px 2px 0;
+  background-color: var(--lessdark-blue-color); 
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0; 
+}
 .navLink {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.7);
