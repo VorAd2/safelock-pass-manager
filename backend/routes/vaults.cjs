@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
+const CredentialModel = require('../models/Credential.cjs');
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
 
 module.exports = (db) => {
@@ -53,7 +54,6 @@ module.exports = (db) => {
         const {toFavorite, vaultId, username} = req.body
         try {
             await VaultModel.favoritism(toFavorite, vaultId, username, db)
-            //await UserModel.vaultFavoritism(toFavorite, vaultId, username, db)
             return res.status(200).json({message: 'Favoritismo de vault atualizado'})
         } catch (err) {
             console.log(`Erro inesperado no PATCH favoritism: ${JSON.stringify(err)}`)
@@ -92,6 +92,24 @@ module.exports = (db) => {
             return res.status(500).json({ message: 'Erro interno ao compartilhar vault' })
         }
          
+    })
+
+    router.delete('/', authenticateToken, async (req, res) => {
+        try {
+            const {ownerUsername, vaultId} = req.body
+            console.log(`${ownerUsername} e vault ${vaultId}`)
+            const vault = await VaultModel.getVaultById(db, vaultId)
+            const sharedUsers = vault.sharedUsers
+            console.log(`sharedUsers; ${sharedUsers}`)
+
+            await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
+            await CredentialModel.deleteAllCredentials(db, vaultId)
+            await VaultModel.deleteVault(db, vaultId)
+            return res.status(200).json({message: 'Vault deleted successfully'})
+        } catch (err) {
+            console.log(`Erro ao deletar vault: ${err}`)
+            return res.status(500).json({message: 'Erro ao deletar vault'})
+        }
     })
 
     return router

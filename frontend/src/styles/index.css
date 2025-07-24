@@ -9,6 +9,7 @@
   --whitetext-to-yellow: rgb(212, 212, 212);
   --red-color: #c90f02;
   --light-gray-color: #2e2e2e;
+  --gray-hover-color: #f0f0f0;
 
   --sidebar-width-expanded: 290px;
   --sidebar-width-collapsed: 120px;
@@ -37,4 +38,8 @@ input[type="password"]::-webkit-credentials-auto-fill-button,
 input[type="password"]::-webkit-inner-spin-button,
 input[type="password"]::-webkit-clear-button {
   display: none;
+}
+
+.noHoverClass:hover {
+  background-color: inherit !important;
 }

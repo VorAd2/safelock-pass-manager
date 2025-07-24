@@ -43,6 +43,17 @@ class UserModel {
             : {$pull: {favoriteVaults: vaultId}}
         await db.collection('users').updateOne(filter, update)
     }
+
+    async removeVault(db, vaultId, ownerUsername, sharedUsers) {
+        const update = {$pull: {allVaults: vaultId}}
+        for (let us of sharedUsers) {
+            let filter = {username: us}
+            await db.collection('users').updateOne(filter, update)
+        }
+        const filter = {username: ownerUsername}
+        await db.collection('users').updateOne(filter, update)
+    }
+
 }
 
 module.exports = new UserModel();

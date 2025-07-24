@@ -7,7 +7,12 @@ export function VaultsProvider({ children }) {
   const [vaults, setVaults] = useState([]);
 
   const addVault = (vault) => setVaults((prev) => [...prev, vault]);
+  const deleteVault = (vaultId) => {
+    setVaults((prev) => prev.filter(vault => vault._id !== vaultId));
+  };
+
   const setAllVaults = (vaultsArr) => setVaults(vaultsArr);
+
   const addCredentialByVaultTitle = (vaultTitle, credential) => {
     setVaults((prev) =>
       prev.map(vault =>
@@ -66,7 +71,7 @@ export function VaultsProvider({ children }) {
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, setAllVaults, addCredentialByVaultTitle, setFavoritism, getFavorites, setSharing, getShared }
+      { vaults, addVault, deleteVault, setAllVaults, addCredentialByVaultTitle, setFavoritism, getFavorites, setSharing, getShared }
     }>
       {children}
     </VaultsContext.Provider>

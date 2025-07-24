@@ -13,7 +13,7 @@ function VaultCard({
 }) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
-    const { setFavoritism } = useVaults()
+    const { setFavoritism, deleteVault } = useVaults()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -58,9 +58,40 @@ function VaultCard({
         setSendModalVisible(true)
     }
 
+    const handleDeleteAction = async (e, closePopover) => {
+        e.stopPropagation()
+        try {
+            let authToken = localStorage.getItem('authToken')
+            if (!authToken) {
+                console.warn("No token found. Redirecting to signin.");
+                navigate("/signin");
+                return;
+            }
+            const route = `${BACK_URL}/dashboard/vaults`
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+                data: {
+                    ownerUsername: username,
+                    vaultId: vault._id
+                }
+            }
+            await axios.delete(route, config)
+            deleteVault(vault._id)
+            notificationHandler(true, 'Vault deleted successfully', 'success')
+        } catch (err) {
+            console.warn(`Erro ao deletar vault: ${err}`)
+        } finally {
+            closePopover(e)
+        }   
+    }
+
     function getEllipsisModal() {
         const canShareVault = !(vault.sharedUsers.some(u => u === username))
+        const canDeleteVault = vault.ownerUser === username
         const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
+        const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
+        const deleteSpanStyle = canDeleteVault ? '' : 'text-decoration-line-through text-secondary'
+        const noHoverClassDelete = canDeleteVault ? '' : 'noHoverClass'
         const modalClick = () => ellipsisClick(vault.title)
         return (
             <MiniModal
@@ -77,20 +108,33 @@ function VaultCard({
                                     <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                                 </div>
                             </button>
-                            <button type="button" className={popoverItemClass} onClick={canShareVault ? (e) => { handleSendAction(e, closePopover)} : null} >
+                            <button type="button" className={`${popoverItemClass} ${noHoverClassSend}`} 
+                            onClick={
+                                (e) => {
+                                    e.stopPropagation()
+                                    if (canShareVault) handleSendAction(e, closePopover); 
+                                }
+                            }
+                            style={{ cursor: canShareVault ? 'pointer' : 'not-allowed' }}
+                            >
                                 <div className="d-flex align-items-center">
                                     <SendIcon className={`me-2 ${sendSpanStyle}`}/>
                                     <span className={sendSpanStyle}>Share</span>
                                 </div>
                             </button>
                             <button type="button" 
-                            className={popoverItemClass}
-                            style={{color:'var(--red-color)', fill:'var(--red-color)'}}
-                            onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}
+                            className={`${popoverItemClass} text-danger ${noHoverClassDelete}`}
+                            style={{cursor: canDeleteVault ? 'pointer' : 'not-allowed'}}
+                            onClick={
+                                (e) => {
+                                    e.stopPropagation()
+                                    if (canDeleteVault) handleDeleteAction(e, closePopover); 
+                                }
+                            }
                             >
                                 <div className="d-flex align-items-center">
-                                    <TrashIcon className='me-2'/>
-                                    <span>Delete</span>
+                                    <TrashIcon className={`me-2 ${deleteSpanStyle}`}/>
+                                    <span className={deleteSpanStyle}>Delete</span>
                                 </div>
                             </button>
                         </>

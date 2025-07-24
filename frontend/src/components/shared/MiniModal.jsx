@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Overlay, Popover, Button } from "react-bootstrap"; // Adjust the import path as necessary
+import { Overlay, Popover, Button } from "react-bootstrap";
 import styles from "../../styles/MiniModal.module.css";
 
 function MiniModal({

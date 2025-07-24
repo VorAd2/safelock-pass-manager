@@ -1,0 +1,20 @@
+.bell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-right: 2rem;
+}
+.bell:hover {
+    background-color: #4e4e4e70;
+}
+
+.popoverBody {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}

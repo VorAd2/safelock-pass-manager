@@ -31,6 +31,12 @@ class VaultModel {
         return vaultsArray
     }
 
+    async getVaultById(db, id) {
+        const filter = {_id: new ObjectId(String(id))}
+        const vault = await db.collection('user_vaults').findOne(filter)
+        return vault
+    }
+
     async addCredential(vaultId, credential, db) {
         const result = await db.collection('user_vaults').updateOne(
             {_id: new ObjectId(String(vaultId))},
@@ -51,6 +57,11 @@ class VaultModel {
         const filter = {_id: new ObjectId(String(vaultId))}
         const update = {$addToSet: {sharedUsers: recipientUsername}}
         await db.collection('user_vaults').updateOne(filter, update)
+    }
+
+    async deleteVault(db, vaultId) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        await db.collection('user_vaults').deleteOne(filter)
     }
 
 }
