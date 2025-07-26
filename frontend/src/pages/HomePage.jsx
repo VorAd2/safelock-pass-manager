@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import {
     Header, Footer, HeroSection, FeaturesSection, 
     DownloadsSection, PrincingSection, ScrollTopBtn
 } from '../components';
-import { useEffect } from 'react';
 
 
 export default function Home() {

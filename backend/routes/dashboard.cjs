@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
-
 const VaultModel = require('../models/Vault.cjs');
-const UserModel = require('../models/User.cjs');
-
 
 module.exports = (db) => {
     router.get('/:username', authenticateToken, async (req, res) => {

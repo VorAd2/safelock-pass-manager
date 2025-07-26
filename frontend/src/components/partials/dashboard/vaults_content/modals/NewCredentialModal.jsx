@@ -1,12 +1,13 @@
-import { EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
-import styles from '../../../../../styles/VaultModal.module.css';
-import {Modal, Form} from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useVaults } from '../../../../context/useVaults';
-
-const backUrl = import.meta.env.VITE_BACKEND_URL;
 import axios from 'axios';
+import {Modal, Form} from 'react-bootstrap';
+import { EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
+import styles from '../../../../../styles/VaultModal.module.css';
+
+import { useVaults } from '../../../../context/useVaults';
+const backUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible, credentialOwner}) => {
     const [credentialTitle, setTitle] = useState('');

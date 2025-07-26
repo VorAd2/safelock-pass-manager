@@ -1,14 +1,16 @@
+import { useState } from "react";
+import { useVaults } from "../../../../context/useVaults";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Modal } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import { CredentialInfoModal } from "../../../../index"
 import NewCredentialModal from "./NewCredentialModal";
 import styles from "../../../../../styles/VaultModal.module.css"; 
-import { Modal } from "react-bootstrap";
-import { useState } from "react";
-import { useVaults } from "../../../../context/useVaults";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 

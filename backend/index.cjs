@@ -15,6 +15,7 @@ const io = new Server(server, {
   }
 });
 
+
 app.use(cors({
   origin: process.env.FRONT_URI,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
@@ -70,9 +71,7 @@ module.exports = { io, connectedUsers };
         app.use('/dashboard/vaults/credentials', credentialsRouter);
         app.use('/', homeRouter);
 
-        
         app.get('/', (req, res) => res.send('API funcionando!'));
-        //app.listen(port, () => console.log('Servidor na porta ' + port));
         server.listen(port, () => console.log('Servidor na porta ' + port));
     } catch (err) {
         console.log('Erro ao conectar ao MongoDB ou iniciar servidor:\n', err);

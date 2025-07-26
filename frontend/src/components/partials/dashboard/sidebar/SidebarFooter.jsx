@@ -1,7 +1,7 @@
-import {ArrowLeftIcon, ArrowRightIcon, PremiumIcon} from '../../../../assets/dashboard';
-import styles from '../../../../styles/Sidebar.module.css';
-import { ACCOUNT_UP_ROUTE } from '../../../../routes'; 
 import { Link } from 'react-router-dom';
+import {ArrowLeftIcon, ArrowRightIcon, PremiumIcon} from '../../../../assets/dashboard';
+import { ACCOUNT_UP_ROUTE } from '../../../../routes'; 
+import styles from '../../../../styles/Sidebar.module.css';
 
 function SidebarFooter({isExpanded, onClick}) {
     return (

@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import {SponsorsContainer} from '../..';
 import SiteIcon from '../../../assets/shared/site-icon.svg?react';
-import { useNavigate } from 'react-router-dom';
-import { SIGNUP_ROUTE } from '../../../routes';
 import styles from '../../../styles/HomePage.module.css';
+import { SIGNUP_ROUTE } from '../../../routes';
+
 
 export default function HeroSection() {
   const navigate = useNavigate()

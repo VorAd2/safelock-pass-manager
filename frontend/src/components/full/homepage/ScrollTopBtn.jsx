@@ -2,6 +2,7 @@ import { useEffect, useState} from 'react';
 import { ArrowUpIcon } from '../../../assets/shared';
 import styles from '../../../styles/HomePage.module.css';
 
+
 export default function ScrollTopBtn() {
   const [visible, setVisible] = useState(false);
 

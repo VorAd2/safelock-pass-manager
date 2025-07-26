@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authMiddleware.cjs');
+const { io, connectedUsers } = require('../index.cjs');
+
 const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
-const authenticateToken = require('../middlewares/authMiddleware.cjs');
-const { io, connectedUsers } = require('../index.cjs');
+
 
 module.exports = (db) => {
     router.get('/', (req, res) => {

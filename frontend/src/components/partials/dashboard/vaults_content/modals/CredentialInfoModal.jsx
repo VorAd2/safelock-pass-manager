@@ -1,7 +1,7 @@
-import { EyeIcon, EyeSlashIcon, TrashIcon, UserAvatar } from '../../../../../assets/dashboard';
-import { CopyIcon } from '../../../../../assets/shared';
-import {Modal, Form} from 'react-bootstrap';
 import { useState } from 'react'
+import {Modal, Form} from 'react-bootstrap';
+import { EyeIcon, EyeSlashIcon, TrashIcon } from '../../../../../assets/dashboard';
+import { CopyIcon } from '../../../../../assets/shared';
 import styles from '../../../../../styles/CredentialInfoModal.module.css'
 
 

@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
 import styles from '../../../../../styles/NewVaultModal.module.css';
-import { useVaults } from '../../../../context/useVaults';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
+import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
     const navigate = useNavigate();

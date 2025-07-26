@@ -36,14 +36,6 @@ class UserModel {
         )
     }
 
-    async vaultFavoritism(toFavorite, vaultId, username, db) {
-        const filter = {username: username}
-        const update = toFavorite
-            ? {$addToSet: {favoriteVaults: vaultId}}
-            : {$pull: {favoriteVaults: vaultId}}
-        await db.collection('users').updateOne(filter, update)
-    }
-
     async removeVault(db, vaultId, ownerUsername, sharedUsers) {
         const update = {$pull: {allVaults: vaultId}}
         for (let us of sharedUsers) {
@@ -54,6 +46,13 @@ class UserModel {
         await db.collection('users').updateOne(filter, update)
     }
 
+    async vaultFavoritism(toFavorite, vaultId, username, db) {
+        const filter = {username: username}
+        const update = toFavorite
+            ? {$addToSet: {favoriteVaults: vaultId}}
+            : {$pull: {favoriteVaults: vaultId}}
+        await db.collection('users').updateOne(filter, update)
+    }
 }
 
 module.exports = new UserModel();

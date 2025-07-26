@@ -19,8 +19,6 @@ export { default as SettingsContent } from './full/dashboard/contents/SettingsCo
 export { default as ContactUsContent } from './full/dashboard/contents/ContactUsContent'
 
 export { default as  FloatingBox} from './partials/dashboard/vaults_content/FloatingBox.jsx'
-export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
-export { default as Notification } from './shared/Notification.jsx'
 export { default as VaultPanel } from './partials/dashboard/vaults_content/VaultPanel.jsx'
 export { default as VaultCard } from './partials/dashboard/vaults_content/VaultCard.jsx'
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/modals/NewVaultModal.jsx'
@@ -28,5 +26,8 @@ export { default as VaultInfoModal } from './partials/dashboard/vaults_content/m
 export { default as CredentialInfoModal } from './partials/dashboard/vaults_content/modals/CredentialInfoModal.jsx'
 export { default as SendVaultModal } from './partials/dashboard/vaults_content/modals/SendVaultModal.jsx'
 export { default as BellPopover } from './partials/dashboard/header/BellPopover.jsx'
+
+export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
+export { default as Notification } from './shared/Notification.jsx'
 
 export { default as NoVaultsIcon } from './icons/NoVaultsIcon.jsx'

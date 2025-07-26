@@ -1,11 +1,12 @@
-import { Modal, Form } from "react-bootstrap"
-import { useState } from "react"
-import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import { useVaults } from "../../../../context/useVaults"
+import axios from 'axios'
+import { Modal, Form } from "react-bootstrap"
+import { useState } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
+
 
 function SendVaultModal({ show, setSendModalVisible, vaultData, username, notificationHandler }) {
     const [recipientUsername, setRecipientUsername] = useState('')

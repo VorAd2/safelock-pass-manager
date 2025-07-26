@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Container, Card } from 'react-bootstrap';
-import { Link, useNavigate} from 'react-router-dom'; 
-import { SIGNIN_ROUTE } from '../routes';
+import { Link, useNavigate} from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'; 
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import { Form, Button, Container, Card } from 'react-bootstrap';
+import { SIGNIN_ROUTE } from '../routes';
+
 const backUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 function SignupPage() {
   const [username, setName] = useState('');

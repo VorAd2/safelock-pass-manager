@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { BoxesIcon, StarIcon, PeopleIcon } from '../../../../assets/dashboard'
 import styles from '../../../../styles/FloatingBox.module.css'
-import { useState } from 'react'
+
 
 function FloatingBox({ setVaultsFilter }) {
     const [active, setActiveOption] = useState('all')

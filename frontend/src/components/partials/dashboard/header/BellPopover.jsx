@@ -1,9 +1,10 @@
+import { useEffect, useState, useRef } from 'react';
+import { socket } from '../../../../socket';
 import { OverlayTrigger, Popover, ListGroup, Button, Row, Col } from 'react-bootstrap';
 import { BellIcon, RefreshIcon } from '../../../../assets/shared';
 import { VaultIcon, FingerprintIcon, TrashIcon } from '../../../../assets/dashboard';
 import styles from '../../../../styles/DashboardHeader.module.css';
-import { useEffect, useState, useRef } from 'react';
-import { socket } from '../../../../socket';
+
 
 const BellPopover = () => {
   const [hasNotification, setHasNotification] = useState(false)

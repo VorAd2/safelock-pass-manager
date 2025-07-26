@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, SendVaultModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
-import { useEffect } from 'react'
+
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)

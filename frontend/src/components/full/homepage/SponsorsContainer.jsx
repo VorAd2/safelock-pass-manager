@@ -1,5 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
 
+
 export default function SponsorsContainer() {
   return (
       <Container className='py-1'>

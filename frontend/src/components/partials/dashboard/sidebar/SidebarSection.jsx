@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Nav } from 'react-bootstrap';
 import { NavLink as RouterNavLink} from 'react-router-dom';
+import { Nav } from 'react-bootstrap';
 import {VaultIcon,
     FeaturesIcon,
     SendIcon,

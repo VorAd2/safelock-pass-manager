@@ -1,11 +1,13 @@
-import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
-import styles from '../../../../styles/VaultsContent.module.css';
-import { CustomCheckbox, MiniModal } from '../../../shared';
 import { useVaults } from '../../../context/useVaults';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { CustomCheckbox, MiniModal } from '../../../shared';
+import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
+import styles from '../../../../styles/VaultsContent.module.css';
+
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
+
 
 function VaultCard({
     vault, onClick, username, 

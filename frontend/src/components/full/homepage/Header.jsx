@@ -1,11 +1,11 @@
-import SiteIcon from '../../../assets/shared/site-icon.svg?react';
-import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../../routes';
+import SiteIcon from '../../../assets/shared/site-icon.svg?react';
 import styles from '../../../styles/HomePage.module.css';
 
-function Header() {
 
+function Header() {
   const handleScrollToSection = (id) => {
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.getElementById('navbarNav');
