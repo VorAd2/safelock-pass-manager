@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const VaultModel = require('../models/Vault.cjs');
-const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs'); 
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
+const { io, connectedUsers } = require('../index.cjs');
 
 module.exports = (db) => {
     router.get('/', (req, res) => {
@@ -23,12 +23,24 @@ module.exports = (db) => {
                 { vaultId, credentialTitle, credentialOwner, credentialEmail, 
                     credentialUsername, credentialPassword, credentialLinks}
             );
-            const vaultResult = await VaultModel.addCredential(
-                vaultId, credentialResult.newCredential, db)
-            console.warn(`vaultResult: ${JSON.stringify(vaultResult)}`);
+            if (!credentialResult.vaultExists) return res.status(404).json({message: 'O vault não existe mais'})
+            const vaultResult = await VaultModel.addCredential(vaultId, credentialResult.newCredential, db)
+            const sharedUsers = await VaultModel.getSharedUsers(db, vaultId)
+            for (us of sharedUsers) {
+                let recipientSocket = connectedUsers.get(us)
+                if (recipientSocket) {
+                    recipientSocket.emit('credentialAdded', {
+                        vaultId,
+                        newCredential: credentialResult.newCredential,
+                        emitter: credentialOwner,
+                        message: `Uma nova credencial foi adicionada por ${credentialOwner} a um dos vaults`
+                    })
+                }
+            }
+            console.log(`vaultResult: ${JSON.stringify(vaultResult, null, 2)}`);
             return res.status(201).json(credentialResult.newCredential)
         } catch (err) {
-            console.warn('Erro ao inserir credencial:', err.message);
+            console.log('Erro ao inserir credencial:', err.message);
             return res.status(500).json({ message: 'Erro ao inserir credencial.' });
         }
     })

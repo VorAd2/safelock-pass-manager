@@ -27,7 +27,7 @@ function SignupPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password != confirmPassword) {
-      alert('As senhas devem ser iguais');
+      alert('Passwords must be the same');
       return;
     }
     const form = {username: username, email: email, password: password};
@@ -38,7 +38,6 @@ function SignupPage() {
       const payload = jwtDecode(token)
       const userData = payload.userData
       const username = userData.username
-      console.log(username)
       navigate(`/dashboard/${username}`);
     } catch (err) {
       if (err.response) {
@@ -46,9 +45,9 @@ function SignupPage() {
         const errorMessage = err.response.data.message
         setMessage(`Erro(${errorStatus}) ao tentar registro de usuário: ${errorMessage}`)
       } else if (err.request){
-        alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão')
+        alert('Unable to communicate with the server. Please check your connection.')
       } else {
-        alert('Erro ao enviar requisição')
+        alert('Error sending request')
       }
     }
   };

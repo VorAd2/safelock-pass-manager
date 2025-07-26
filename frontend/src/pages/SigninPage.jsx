@@ -34,7 +34,6 @@ function SigninPage() {
       const payload = jwtDecode(token);      
       const userData = payload.userData
       const username = userData.username
-      console.log(username)
       navigate(`/dashboard/${username}`);
     } catch (err) {
       if (err.response) {

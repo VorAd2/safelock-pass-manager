@@ -4,6 +4,7 @@ const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
+const { io, connectedUsers } = require('../index.cjs');
 
 module.exports = (db) => {
     router.get('/', (req, res) => {
@@ -79,7 +80,14 @@ module.exports = (db) => {
             if (recipientExists) {
                 await VaultModel.sharing(db, vaultId, recipientUsername)
                 await UserModel.addVault(recipientUsername, vaultId, db)
-                //disparar notificação no recipientUser para que ele refresh o panel de vaults
+                const recipientSocket = connectedUsers.get(recipientUsername);
+                if (recipientSocket) {
+                    recipientSocket.emit('vaultShared', {
+                        vaultId,
+                        emitter: senderUsername,
+                        message: `Você recebeu um novo vault de ${senderUsername}`
+                    });
+                }
                 return res.status(200).json(
                     {message: `Vault compartilhado com sucesso entre ${ownerUsername} e ${recipientUsername}`}
                 )
@@ -105,6 +113,16 @@ module.exports = (db) => {
             await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
             await CredentialModel.deleteAllCredentials(db, vaultId)
             await VaultModel.deleteVault(db, vaultId)
+            for (const username of sharedUsers) {
+                const recipientSocket = connectedUsers.get(username);
+                if (recipientSocket) {
+                    recipientSocket.emit('vaultDeleted', {
+                        vaultId,
+                        emitter: ownerUsername,
+                        message: `Um vault compartilhado com você foi deletado. Proprietário: ${ownerUsername}`
+                    });
+                }
+            }
             return res.status(200).json({message: 'Vault deleted successfully'})
         } catch (err) {
             console.log(`Erro ao deletar vault: ${err}`)

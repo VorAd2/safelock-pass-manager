@@ -3,6 +3,7 @@ import {Sidebar, DashboardHeader, Notification } from "../components";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useVaults } from "../components/context/useVaults";
+import { socket, registerSocket } from '../socket'
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 const titlesMap = {
@@ -54,30 +55,34 @@ function DashboardPage({username}) {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        response.status === 200 && setAllVaults(response.data);
-        console.log("Vaults carregados:", response.data, response.status);
+        response.status === 200 && setAllVaults(response.data)
+        console.log("Vaults carregados:", response.data, response.status)
         setLoading(false);
+        registerSocket(username)
       } catch (err) {
-        console.error("ERROR:", err);
-        console.error(err.response);
+        console.error("ERROR:", err)
+        console.error(err.response)
         setLoading(false);
         if (err.response && err.response.status === 403) {
           alert(
             "Acesso negado ou sessão expirada. Por favor, faça login novamente."
-          );
-          localStorage.removeItem("authToken");
+          )
+          localStorage.removeItem("authToken")
           navigate("/signin");
         } else if (err.response && err.response.status === 204) {
-          console.log("Nenhum vault encontrado para este usuário.");
-          setAllVaults([]);
+          console.log("Nenhum vault encontrado para este usuário.")
+          setAllVaults([])
           return
         } else {
-          alert("Ocorreu um erro ao carregar os dados do cofre.");
+          alert("Ocorreu um erro ao carregar os dados do cofre.")
         }
       }
     };
-
     fetchVaults();
+    return () => {
+      socket.off('vaultShared')
+      socket.off('vaultDeleted')
+    }
   }, [username]);
 
   if (isLoading) {

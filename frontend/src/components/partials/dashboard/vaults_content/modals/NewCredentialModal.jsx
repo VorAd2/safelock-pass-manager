@@ -16,7 +16,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
     const [credentialPassword, setPassword] = useState('');
     const [credentialLinks, setLinks] = useState([]);
 
-    const { vaults, addCredentialByVaultTitle } = useVaults();
+    const { addCredentialByVaultTitle } = useVaults();
     const navigate = useNavigate();
 
     const resetForm = () => {
@@ -45,19 +45,22 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
             return;
         }
         try {
-            console.log('Credential a ser inserida:', newCredential);
             const response = await axios.post(`${backUrl}/dashboard/vaults/credentials`, 
                 newCredential, 
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
-            console.log('Nova credencial postada:', response.data);
             addCredentialByVaultTitle(vaultTitle, response.data);
-            console.log(`vaults context: ${JSON.stringify(vaults)}`)
         } catch (err) {
             if (err.response && err.response.status === 403) {
-                alert("Acesso negado ou sessão expirada. Por favor, faça login novamente.");
+                alert("Access denied or session expired. Please log in again.");
                 localStorage.removeItem("authToken");
                 navigate("/signin");
+            } else if (err.response && err.response.status === 404) {
+                const msg = err.response.data.message
+                console.log(`Mensagem de erro em newCredential: ${msg}`)
+                if (msg === 'O vault não existe mais') {
+                    alert("The vault no longer exists")
+                }
             } else {
                 alert("Ocorreu um erro ao carregar os dados do cofre.");
                 console.warn(err);

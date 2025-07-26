@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { ObjectId } = require('mongodb');
 
 class VaultModel {
+
     async insertVault(data, db) {
         const {ownerUser, title, pin, desc} = data
         let hashedPin = null
@@ -62,6 +63,12 @@ class VaultModel {
     async deleteVault(db, vaultId) {
         const filter = {_id: new ObjectId(String(vaultId))}
         await db.collection('user_vaults').deleteOne(filter)
+    }
+
+    async getSharedUsers(db, vaultId) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        const vault = await db.collection('user_vaults').findOne(filter)
+        return vault.sharedUsers
     }
 
 }
