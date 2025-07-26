@@ -12,7 +12,7 @@ import axios from "axios";
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
-const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) => {
+const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, setSendModalVisible }) => {
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: []}
   const vaultTitle = data.title;
   const vaultId = data._id;
@@ -23,7 +23,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) =
   const credentials = data ? data.credentials : [];
   const navigate = useNavigate();
 
-  const { setFavoritism } = useVaults()
+  const { setFavoritism, deleteVault } = useVaults()
   const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
 
   const handleFavoriteAction = async (e, closePopover) => {
@@ -70,10 +70,48 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) =
     }
   }
 
+  const handleSendAction = (e, closePopover) => {
+    closePopover(e)
+    setSendModalVisible(true)
+  }
+
+  const handleDeleteAction = async (e, closePopover) => {
+        e.stopPropagation()
+        try {
+            let authToken = localStorage.getItem('authToken')
+            if (!authToken) {
+                console.warn("No token found. Redirecting to signin.");
+                navigate("/signin");
+                return;
+            }
+            const route = `${BACK_URL}/dashboard/vaults`
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+                data: {
+                    ownerUsername: data.ownerUser,
+                    vaultId: vaultId
+                }
+            }
+            await axios.delete(route, config)
+            deleteVault(vaultId)
+            notificationHandler(true, 'Vault deleted successfully', 'success')
+        } catch (err) {
+            console.warn(`Erro ao deletar vault: ${err}`)
+        } finally {
+            closePopover(e)
+            onHide()
+        }   
+    }
+
 
   function getVaultEllipsisModal() {
     const canShareVault = !(data.sharedUsers.some(u => u === username))
     const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
+    const canDeleteVault = data.ownerUser === username
+    const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
+    const deleteSpanStyle = canDeleteVault ? '' : 'text-decoration-line-through text-secondary'
+    const noHoverClassDelete = canDeleteVault ? '' : 'noHoverClass'
+
     return (
       <MiniModal
         ButtonIcon={VerticalEllipsisIcon}
@@ -89,19 +127,34 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler }) =
                     <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
                   </div>
                 </button>
-                <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Compartilhar vault"); closePopover(e); }}>
+                <button type="button" 
+                className={`${popoverItemClass} ${noHoverClassSend}`} 
+                onClick={
+                  (e) => {
+                    e.stopPropagation()
+                    if (canShareVault) handleSendAction(e, closePopover); 
+                  }
+                }
+                style={{cursor: canShareVault ? 'pointer' : 'not-allowed'}}
+                >
                   <div className="d-flex align-items-center">
                     <SendIcon className={`me-2 ${sendSpanStyle}`}/>
                     <span className={sendSpanStyle}>Share</span>
                   </div>
                 </button>
                 <button type="button" 
-                className={popoverItemClass}
-                style={{color:'var(--red-color)', fill:'var(--red-color)'}}
-                onClick={(e) => { console.log("Excluir vault"); closePopover(e); }}>
+                className={`${popoverItemClass} text-danger ${noHoverClassDelete}`}
+                style={{color:'var(--red-color)', fill:'var(--red-color)', cursor: canDeleteVault ? 'pointer' : 'not-allowed'}}
+                onClick={
+                  (e) => {
+                    e.stopPropagation()
+                    if (canDeleteVault) handleDeleteAction(e, closePopover); 
+                  }
+                }
+                >
                   <div className="d-flex align-items-center">
-                    <TrashIcon className='me-2'/>
-                    <span>Delete</span>
+                    <TrashIcon className={`me-2 ${deleteSpanStyle}`}/>
+                    <span className={deleteSpanStyle}>Delete</span>
                   </div>
                 </button>
               </>

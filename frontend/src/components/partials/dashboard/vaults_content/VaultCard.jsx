@@ -71,7 +71,7 @@ function VaultCard({
             const config = {
                 headers: { Authorization: `Bearer ${authToken}` },
                 data: {
-                    ownerUsername: username,
+                    ownerUsername: vault.ownerUser,
                     vaultId: vault._id
                 }
             }
