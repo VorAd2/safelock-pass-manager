@@ -1,19 +1,28 @@
-import { useState } from 'react'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import {Modal, Form} from 'react-bootstrap';
 import { EyeIcon, EyeSlashIcon, TrashIcon } from '../../../../../assets/dashboard';
 import { CopyIcon } from '../../../../../assets/shared';
-import styles from '../../../../../styles/CredentialInfoModal.module.css'
+import styles from '../../../../../styles/CredentialInfoModal.module.css';
+
+const BACK_URL = import.meta.env.VITE_BACK_URL;
+import { useVaults } from '../../../../context/useVaults';
 
 
-function CredentialInfoModal({credential, modalState, setModalState}) {
+function CredentialInfoModal({credential, modalState, setModalState, username, notificationHandler}) {
     const title = credential && credential.credentialTitle
-    // eslint-disable-next-line no-unused-vars
     const owner = credential && credential.credentialOwner
     const email = credential && credential.credentialEmail
     const password = credential && credential.credentialPassword
-    const username = credential && credential.credentialUsername
+    const credUsername = credential && credential.credentialUsername
     const links = credential && (credential.credentialLinks.join(', '))
     const [showPassword, setShowPassword] = useState(false)
+    const navigate = useNavigate()
+    const { deleteCredential } = useVaults()
+
+    const canDeleteCredential = owner === username
+
 
     function closeModal() {
         setModalState({
@@ -32,6 +41,41 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
 
     if (credential == undefined) {
         return null
+    }
+
+    const handleDeleteCredential = async (e) => {
+        e.stopPropagation()
+        try {
+            let authToken = localStorage.getItem('authToken')
+            if (!authToken) {
+                console.warn("No token found. Redirecting to signin.");
+                navigate("/signin");
+                return;
+            }
+            const route = `${BACK_URL}/dashboard/vaults/credentials`
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+                data: {
+                vaultId: credential.vaultId,
+                credential,
+                username
+                }
+            }
+            const response = await axios.delete(route, config)
+            deleteCredential(credential.vaultId, credential)
+            closeModal()
+            notificationHandler(true, response.data.message, 'success')
+        } catch (err) {
+            if (err.response && err.response.data.status === 403) {
+                    const msg = err.response.data.message
+                    if (msg === "You can't delete other user's credentials") {
+                    alert(msg)
+                } else {
+                    alert('Unknown error. Please, try again')
+                    console.warn(`Erro desconhecido na deleção de credential: ${err}`)
+                }
+            }
+        }
     }
 
     return (
@@ -54,7 +98,7 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                     <div
                     role='button'
                     tabIndex={0}
-                    onClick={() => {handleCredentialCopy(username)}}
+                    onClick={() => {handleCredentialCopy(credUsername)}}
                     >
                         <CopyIcon/>
                         <span>Copy username</span>
@@ -67,12 +111,16 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                         <CopyIcon/>
                         <span>Copy password</span>
                     </div>
+                    {canDeleteCredential && 
                     <div
                     role='button'
                     tabIndex={0}
+                    onClick={(e) => {e.stopPropagation(); if(canDeleteCredential) handleDeleteCredential(e) }}
                     >
                         <TrashIcon style={{fill:'red', marginRight:'0px',}}/>
                     </div>
+                    }
+                    
                 </div>
                 <Form style={{pointerEvents:'none'}}>
                     <Form.Group>
@@ -88,7 +136,7 @@ function CredentialInfoModal({credential, modalState, setModalState}) {
                         <Form.Label className='fs-5'>Username</Form.Label>
                         <Form.Control
                         type='text'
-                        value={username || ""}
+                        value={credUsername || ""}
                         readOnly
                         />
                     </Form.Group>

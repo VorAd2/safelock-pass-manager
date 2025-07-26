@@ -39,6 +39,17 @@ class VaultModel {
         return result
     }
 
+    
+    async  removeCredential(db, vaultId, credential) {
+        const filter = { _id: new ObjectId(String(vaultId)) };
+        const update = {
+            $pull: {
+                credentials: { _id: new ObjectId(String(credential._id)) }
+            }
+        };
+        await db.collection('user_vaults').updateOne(filter, update);
+    }
+
     async getVaultsByUser(username, db) {
         const filter = {$or: [{ownerUser: username}, {sharedUsers: username} ]}
         const vaultsArray = await db.collection('user_vaults').find(filter).toArray()

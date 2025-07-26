@@ -25,7 +25,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
   const credentials = data ? data.credentials : [];
   const navigate = useNavigate();
 
-  const { setFavoritism, deleteVault } = useVaults()
+  const { setFavoritism, deleteVault, deleteCredential } = useVaults()
   const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
 
   const handleFavoriteAction = async (e, closePopover) => {
@@ -166,10 +166,47 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
     )
   }
 
+  const handleCredentialDelete = async (e, credential, closePopover) => {
+    e.stopPropagation()
+    try {
+      let authToken = localStorage.getItem('authToken')
+      if (!authToken) {
+        console.warn("No token found. Redirecting to signin.");
+        navigate("/signin");
+        return;
+      }
+      const route = `${BACK_URL}/dashboard/vaults/credentials`
+      const config = {
+        headers: { Authorization: `Bearer ${authToken}` },
+        data: {
+          vaultId,
+          credential,
+          username
+        }
+      }
+      const response = await axios.delete(route, config)
+      deleteCredential(vaultId, credential)
+      closePopover(e)
+      notificationHandler(true, response.data.message, 'success')
+    } catch (err) {
+      if (err.response && err.response.data.status === 403) {
+        const msg = err.response.data.message
+        if (msg === "You can't delete other user's credentials") {
+          alert(msg)
+        } else {
+          alert('Unknown error. Please, try again')
+          console.warn(`Erro desconhecido na deleção de credential: ${err}`)
+        }
+      }
+    }
+  }
+
   function getCredentialEllipsisModal(credential) {
     const email = credential.credentialEmail
     const password = credential.credentialPassword
-    const username = credential.credentialUsername
+    const canDeleteCredential = username === credential.credentialOwner
+    const deleteSpanStyle = canDeleteCredential ? '' : 'text-decoration-line-through text-secondary'
+    const noHoverClassDelete = canDeleteCredential ? '' : 'noHoverClass'
     return (
       <MiniModal
       ButtonIcon={VerticalEllipsisIcon}
@@ -190,16 +227,20 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
                   <span>Copy password</span>
                 </div>
               </button>
-              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(username); closePopover(e); }}>
+              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(credential.credentialOwner); closePopover(e); }}>
                 <div className="d-flex align-items-center fs-9">
                   <CopyIcon className='me-2'/>
                   <span>Copy username</span>
                 </div>
               </button>
-              <button type="button" className={popoverItemClass} onClick={(e) => { console.log("Excluir credential"); closePopover(e); }}>
-                <div className="d-flex align-items-center ">
-                  <TrashIcon className='me-2' style={{fill:'var(--red-color)'}}/>
-                  <span style={{color:'var(--red-color)'}}>Delete</span>
+              <button type="button" 
+              className={`${popoverItemClass} text-danger ${noHoverClassDelete}`} 
+              onClick={(e) => { e.stopPropagation(); if (canDeleteCredential) handleCredentialDelete(e, credential, closePopover) }}
+              style={{cursor: canDeleteCredential ? 'pointer' : 'not-allowed'}}
+              >
+                <div className='d-flex align-items-center'>
+                  <TrashIcon className={`me-2 ${deleteSpanStyle}`}/>
+                  <span className={deleteSpanStyle}>Delete</span>
                 </div>
               </button>
             </>
@@ -274,6 +315,8 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
         credential={credentialInfoModalState.credential}
         modalState={credentialInfoModalState}
         setModalState={setCredentialInfoModalState}
+        username={username}
+        notificationHandler={notificationHandler}
         />
 
 

@@ -40,6 +40,7 @@ module.exports = (db) => {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
         }
         try {
+            //Impedir vaults de mesmo title para o mesmo ownerUser
             const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
             console.log(`novo vault: ${JSON.stringify(newVaultData.vault)}`)

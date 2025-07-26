@@ -1,4 +1,5 @@
 const VaultModel = require('../models/Vault.cjs')
+const { ObjectId } = require('mongodb');
 
 class CredentialModel {
     async credentialExists(db, data) {
@@ -31,6 +32,11 @@ class CredentialModel {
     async deleteAllCredentials(db, vaultId) {
         const filter = {vaultId: vaultId}
         await db.collection('credentials').deleteMany(filter)
+    }
+
+    async deleteCredential(db, credential) {
+        const filter = {_id: new ObjectId(String(credential._id))}
+        await db.collection('credentials').deleteOne(filter)
     }
 
 }

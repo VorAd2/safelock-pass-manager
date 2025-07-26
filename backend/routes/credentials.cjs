@@ -12,6 +12,8 @@ module.exports = (db) => {
     });
 
     router.post('/', authenticateToken, async (req, res) => {
+        //Ntf nao esta sendo disparada para o owner quando um shared adiciona;
+        //Um shared esta sendo notificado quando ele mesmo adiciona
         const { vaultId, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks } = req.body;
         if (req.userData.username !== credentialOwner) {
@@ -42,7 +44,6 @@ module.exports = (db) => {
                     })
                 }
             }
-            console.log(`vaultResult: ${JSON.stringify(vaultResult, null, 2)}`);
             return res.status(201).json(credentialResult.newCredential)
         } catch (err) {
             console.log('Erro ao inserir credencial:', err.message);
@@ -50,6 +51,23 @@ module.exports = (db) => {
         }
     })
 
+    router.delete('/', async (req, res) => {
+        const { vaultId, credential, username } = req.body
+        console.log(`owner: ${credential.credentialOwner}  username: ${username}`)
+        if (credential.credentialOwner !== username) {
+            console.log('entrou')
+            return res.status(403).json({message: "You can't delete other user's credentials"})
+        }
+        try {
+            await VaultModel.removeCredential(db, vaultId, credential)
+            await CredentialModel.deleteCredential(db, credential)
+            console.log('Sem error na deleção credencial')
+            return res.status(200).json({message: 'Credential deleted successfully'})
+        } catch (err) {
+            console.warn(`Erro inesperado na deleção de credencial: ${err}`)
+            return res.status(500).json({message: 'Unknown error'})
+        }
+    })
 
     return router;
 }
