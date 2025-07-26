@@ -61,15 +61,17 @@ const BellPopover = () => {
           }
         </ListGroup>
         <div className="d-flex justify-content-center gap-4 mt-3">
-          <Button variant="primary" disabled={notifications.length === 0} size='sm'>
+          <Button variant="primary" disabled={notifications.length === 0} size='sm' onClick={() => window.location.reload()}>
             <div className='d-flex justify-content-center align-items-center'>
               <RefreshIcon className=' me-1' style={{}}/>
               <span>Refresh vaults</span>
             </div>
           </Button>
-          <Button variant='outline-danger' disabled={notifications.length === 0} 
+          <Button variant='outline-danger' 
+          disabled={notifications.length === 0} 
           className='d-flex justify-content-center align-items-center'
           size='sm'
+          onClick={() => setNotifications([])}
           > 
             <TrashIcon/> 
           </Button>

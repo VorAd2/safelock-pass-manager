@@ -6,8 +6,6 @@ import {Sidebar, DashboardHeader, Notification } from "../components";
 import axios from "axios";
 import { useVaults } from "../components/context/useVaults";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
-
-
 const titlesMap = {
   vaults: "Vaults",
   tools: "Explore Our Tools",
@@ -17,6 +15,7 @@ const titlesMap = {
   settings: "Settings",
   contactus: "Contact Us",
 };
+
 
 function DashboardPage({username}) {
   const [notification, setNotification] = useState({
