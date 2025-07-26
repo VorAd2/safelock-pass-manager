@@ -1,6 +1,13 @@
 const VaultModel = require('../models/Vault.cjs')
 
 class CredentialModel {
+    async credentialExists(db, data) {
+        const { vaultId, credentialTitle} = data
+        const filter = {$and: [{vaultId},{credentialTitle}]}
+        const result = await db.collection('credentials').findOne(filter);
+        return result !== null;
+    }
+
     async insertCredential(db, data) {
         const { vaultId, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks } = data;

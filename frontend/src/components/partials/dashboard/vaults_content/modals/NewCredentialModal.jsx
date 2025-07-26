@@ -21,11 +21,12 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
     const navigate = useNavigate();
 
     const resetForm = () => {
-        setEmail('');
-        setUsername('');
-        setPassword('');
-        setLinks([]);
-        setShowPassword(false);
+        setTitle('')
+        setEmail('')
+        setUsername('')
+        setPassword('')
+        setLinks([])
+        setShowPassword(false)
     };
 
     const handleClose = () => {
@@ -51,6 +52,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
             addCredentialByVaultTitle(vaultTitle, response.data);
+            handleClose()
         } catch (err) {
             if (err.response && err.response.status === 403) {
                 alert("Access denied or session expired. Please log in again.");
@@ -58,16 +60,15 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
                 navigate("/signin");
             } else if (err.response && err.response.status === 404) {
                 const msg = err.response.data.message
-                console.log(`Mensagem de erro em newCredential: ${msg}`)
-                if (msg === 'O vault não existe mais') {
-                    alert("The vault no longer exists")
-                }
+                if (msg === 'The vault no longer exists') alert(msg);
+            } else if (err.response && err.response.status === 409) {
+                const msg = err.response.data.message
+                if (msg == 'Credential title already in use') alert(msg);
             } else {
-                alert("Ocorreu um erro ao carregar os dados do cofre.");
-                console.warn(err);
+                alert("Ocorreu um erro ao carregar os dados do cofre.")
+                console.warn(err)
             }
         }
-        handleClose()
     };
 
     

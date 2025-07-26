@@ -19,12 +19,16 @@ module.exports = (db) => {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
         }
         try {
+            const credentialExists = await CredentialModel.credentialExists(db, {vaultId, credentialTitle})
+            if (credentialExists) {
+                return res.status(409).json({message: 'Credential title already in use'})
+            }
             const credentialResult = await CredentialModel.insertCredential(
                 db, 
                 { vaultId, credentialTitle, credentialOwner, credentialEmail, 
                     credentialUsername, credentialPassword, credentialLinks}
             );
-            if (!credentialResult.vaultExists) return res.status(404).json({message: 'O vault não existe mais'})
+            if (!credentialResult.vaultExists) return res.status(404).json({message: 'The vault no longer exists'})
             const vaultResult = await VaultModel.addCredential(vaultId, credentialResult.newCredential, db)
             const sharedUsers = await VaultModel.getSharedUsers(db, vaultId)
             for (us of sharedUsers) {
