@@ -62,10 +62,10 @@ class VaultModel {
         return vault
     }
 
-    async getSharedUsers(db, vaultId) {
+    async getSharedUsersAndOwner(db, vaultId) {
         const filter = {_id: new ObjectId(String(vaultId))}
         const vault = await db.collection('user_vaults').findOne(filter)
-        return vault.sharedUsers
+        return {sharedUsers: vault.sharedUsers, vaultOwner: vault.ownerUser}
     }    
 
     async favoritism(toFavorite, vaultId, username, db) {

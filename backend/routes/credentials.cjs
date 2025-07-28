@@ -32,9 +32,10 @@ module.exports = (db) => {
             );
             if (!credentialResult.vaultExists) return res.status(404).json({message: 'The vault no longer exists'})
             const vaultResult = await VaultModel.addCredential(vaultId, credentialResult.newCredential, db)
-            const sharedUsers = await VaultModel.getSharedUsers(db, vaultId)
+            const {sharedUsers, vaultOwner} = await VaultModel.getSharedUsersAndOwner(db, vaultId)
+            let recipientSocket;
             for (us of sharedUsers) {
-                let recipientSocket = connectedUsers.get(us)
+                recipientSocket = connectedUsers.get(us === credentialOwner ? vaultOwner : us)
                 if (recipientSocket) {
                     recipientSocket.emit('credentialAdded', {
                         vaultId,
