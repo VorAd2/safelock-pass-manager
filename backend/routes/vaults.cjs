@@ -66,7 +66,7 @@ module.exports = (db) => {
     })
 
     router.patch('/sharing', authenticateToken, async (req, res) => {
-        const {ownerUsername, senderUsername, vaultId, recipientUsername} = req.body
+        const {ownerUsername, senderUsername, vaultId, vaultTitle, recipientUsername} = req.body
         console.log(`recipientUsername: ${recipientUsername}`)
         if (ownerUsername !== senderUsername) {
             const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
@@ -79,7 +79,6 @@ module.exports = (db) => {
         }
         try {
             const recipientExists = await UserModel.existsUser(recipientUsername, null, db)
-            console.log(`recipientExists: ${recipientExists}`)
             if (recipientExists) {
                 await VaultModel.sharing(db, vaultId, recipientUsername)
                 await UserModel.addVault(recipientUsername, vaultId, db)
@@ -88,7 +87,7 @@ module.exports = (db) => {
                     recipientSocket.emit('vaultShared', {
                         vaultId,
                         emitter: senderUsername,
-                        message: `Você recebeu um novo vault de ${senderUsername}`
+                        message: `${ownerUsername} shared the vault ${vaultTitle} with you.`
                     });
                 }
                 return res.status(200).json(
@@ -107,12 +106,10 @@ module.exports = (db) => {
 
     router.delete('/', authenticateToken, async (req, res) => {
         try {
-            const {ownerUsername, vaultId} = req.body
+            const {ownerUsername, vaultId, vaultTitle} = req.body
             console.log(`${ownerUsername} e vault ${vaultId}`)
             const vault = await VaultModel.getVaultById(db, vaultId)
             const sharedUsers = vault.sharedUsers
-            console.log(`sharedUsers; ${sharedUsers}`)
-
             await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
             await CredentialModel.deleteAllCredentials(db, vaultId)
             await VaultModel.deleteVault(db, vaultId)
@@ -122,7 +119,7 @@ module.exports = (db) => {
                     recipientSocket.emit('vaultDeleted', {
                         vaultId,
                         emitter: ownerUsername,
-                        message: `Um vault compartilhado com você foi deletado. Proprietário: ${ownerUsername}`
+                        message: `The vault ${vaultTitle} (${ownerUsername}) shared with you has been deleted`
                     });
                 }
             }

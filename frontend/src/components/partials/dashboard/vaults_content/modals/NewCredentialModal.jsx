@@ -37,7 +37,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newCredential = {
-            vaultId, credentialTitle, credentialOwner, credentialEmail, 
+            vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks 
         }
         const authToken = localStorage.getItem("authToken");

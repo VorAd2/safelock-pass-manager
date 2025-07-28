@@ -91,7 +91,8 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
                 headers: { Authorization: `Bearer ${authToken}` },
                 data: {
                     ownerUsername: data.ownerUser,
-                    vaultId: vaultId
+                    vaultId: vaultId,
+                    vaultTitle
                 }
             }
             await axios.delete(route, config)
@@ -180,6 +181,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
         headers: { Authorization: `Bearer ${authToken}` },
         data: {
           vaultId,
+          vaultTitle,
           credential,
           username
         }

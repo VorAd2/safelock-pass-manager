@@ -45,7 +45,8 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username, notifi
             ownerUsername: ownerUser,
             senderUsername: username,
             recipientUsername: recipientUsername,
-            vaultId
+            vaultId,
+            vaultTitle
         }
         try {
             await axios.patch(`${BACK_URL}/dashboard/vaults/sharing`,

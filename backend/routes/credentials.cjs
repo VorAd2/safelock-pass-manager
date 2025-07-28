@@ -12,9 +12,7 @@ module.exports = (db) => {
     });
 
     router.post('/', authenticateToken, async (req, res) => {
-        //Ntf nao esta sendo disparada para o owner quando um shared adiciona;
-        //Um shared esta sendo notificado quando ele mesmo adiciona
-        const { vaultId, credentialTitle, credentialOwner, credentialEmail, 
+        const { vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks } = req.body;
         if (req.userData.username !== credentialOwner) {
             console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
@@ -41,7 +39,7 @@ module.exports = (db) => {
                         vaultId,
                         newCredential: credentialResult.newCredential,
                         emitter: credentialOwner,
-                        message: `Uma nova credencial foi adicionada por ${credentialOwner} a um dos vaults`
+                        message: `A new credential has been added by ${credentialOwner} to the vault ${vaultTitle} (${vaultOwner})`
                     })
                 }
             }
@@ -53,15 +51,25 @@ module.exports = (db) => {
     })
 
     router.delete('/', async (req, res) => {
-        const { vaultId, credential, username } = req.body
-        console.log(`owner: ${credential.credentialOwner}  username: ${username}`)
+        const { vaultId, vaultTitle, credential, username } = req.body
         if (credential.credentialOwner !== username) {
-            console.log('entrou')
             return res.status(403).json({message: "You can't delete other user's credentials"})
         }
         try {
             await VaultModel.removeCredential(db, vaultId, credential)
             await CredentialModel.deleteCredential(db, credential)
+            const {sharedUsers, vaultOwner} = await VaultModel.getSharedUsersAndOwner(db, vaultId)
+            const credentialOwner = credential.credentialOwner
+            for (us of sharedUsers) {
+                recipientSocket = connectedUsers.get(us === credentialOwner ? vaultOwner : us)
+                if (recipientSocket) {
+                    recipientSocket.emit('credentialDeleted', {
+                        vaultId,
+                        emitter: credentialOwner,
+                        message: `The credential ${credential.credentialTitle} (${credentialOwner}) has been deleted from the vault ${vaultTitle} (${vaultOwner}).`
+                    })
+                }
+            }
             console.log('Sem error na deleção credencial')
             return res.status(200).json({message: 'Credential deleted successfully'})
         } catch (err) {

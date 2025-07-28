@@ -74,7 +74,8 @@ function VaultCard({
                 headers: { Authorization: `Bearer ${authToken}` },
                 data: {
                     ownerUsername: vault.ownerUser,
-                    vaultId: vault._id
+                    vaultId: vault._id,
+                    vaultTitle
                 }
             }
             await axios.delete(route, config)
