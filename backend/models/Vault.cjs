@@ -31,6 +31,12 @@ class VaultModel {
         await db.collection('user_vaults').deleteOne(filter)
     }
 
+    async isDuplicateVault(db, vaultTitle, ownerUser) {
+        const filter = {$and: [{title: vaultTitle}, {ownerUser: ownerUser}]}
+        const result = await db.collection('user_vaults').findOne(filter)
+        return result !== null
+    }
+
     async addCredential(vaultId, credential, db) {
         const result = await db.collection('user_vaults').updateOne(
             {_id: new ObjectId(String(vaultId))},
@@ -39,7 +45,6 @@ class VaultModel {
         return result
     }
 
-    
     async  removeCredential(db, vaultId, credential) {
         const filter = { _id: new ObjectId(String(vaultId)) };
         const update = {

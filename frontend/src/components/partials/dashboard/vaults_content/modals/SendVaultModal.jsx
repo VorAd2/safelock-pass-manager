@@ -83,7 +83,7 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
                 console.log(`Erro message: ${err.response.data.message}`)
                 setErrMsg(err.response.data.message)
             } else {
-                setErrMsg('Erro inesperado ao compartilhar vault')
+                setErrMsg('Unknown error. Please, try again')
             }
         }
     }
@@ -107,6 +107,7 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
                         value={recipientUsername}
                         placeholder="Type the name of the recipient user"
                         onChange={(e) => setRecipientUsername(e.target.value)}
+                        isInvalid={!!errMsg}
                         required
                         />
                         {errMsg && ( <Form.Text className="text-danger">{errMsg}</Form.Text> )}

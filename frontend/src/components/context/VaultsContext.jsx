@@ -6,9 +6,15 @@ export const VaultsContext = createContext();
 export function VaultsProvider({ children }) {
   const [vaults, setVaults] = useState([])
 
-  const addVault = (vault) => setVaults((prev) => [...prev, vault]);
+  const addVault = (vault) => setVaults((prev) => [...prev, vault])
   const deleteVault = (vaultId) => {
     setVaults((prev) => prev.filter(vault => vault._id !== vaultId));
+  }
+  const isDuplicateVault = (vaultTitle, ownerUser) => {
+    for (let vault of vaults) {
+      if (vault.title === vaultTitle && vault.ownerUser === ownerUser) return true;
+    }
+    return false
   }
 
   const setAllVaults = (vaultsArr) => setVaults(vaultsArr);
@@ -82,7 +88,7 @@ export function VaultsProvider({ children }) {
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, deleteVault, setAllVaults, addCredentialByVaultTitle, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
+      { vaults, addVault, deleteVault, isDuplicateVault, setAllVaults, addCredentialByVaultTitle, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
     }>
       {children}
     </VaultsContext.Provider>

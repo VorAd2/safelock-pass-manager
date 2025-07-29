@@ -40,7 +40,11 @@ module.exports = (db) => {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
         }
         try {
-            //Impedir vaults de mesmo title para o mesmo ownerUser
+            const isDuplicateVault = await VaultModel.isDuplicateVault(db, title, ownerUser)
+            if (isDuplicateVault) {
+                console.log(`Duplicate vault ${title} for ${ownerUser}`)
+                return res.status(409).json({code: 'DUPLICATE_VAULT'})
+            }
             const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
             console.log(`novo vault: ${JSON.stringify(newVaultData.vault)}`)

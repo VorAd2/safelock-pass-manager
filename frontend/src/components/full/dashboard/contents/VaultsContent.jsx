@@ -116,7 +116,17 @@ function VaultsContent() {
           vaultId={currentVaultData && currentVaultData._id}
           vaultTitle={currentVaultData && currentVaultData.title}
           modalVisible={newCredentialModalVisible}
-          onHide={() => {setNewCredentialModalVisible(false); setVaultInfoModalVisible(true)}}
+          onHide={() => {
+              setNewCredentialModalVisible(false);
+               setTimeout(() => {
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+                document.body.classList.remove('modal-open');
+                setVaultInfoModalVisible(true)
+              }, 200);
+              
+            }
+          }
           credentialOwner={username}
         />        
 
@@ -132,7 +142,7 @@ function VaultsContent() {
                 if (backdrop) backdrop.remove();
                 document.body.classList.remove('modal-open');
                 if (fromVaultInfo) setVaultInfoModalVisible(true);
-            }, 200);
+              }, 200);
             } 
           }
         />

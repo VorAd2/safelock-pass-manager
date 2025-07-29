@@ -10,41 +10,51 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
-    const navigate = useNavigate();
-    const { addVault } = useVaults();
+    const navigate = useNavigate()
+    const { addVault, isDuplicateVault } = useVaults()
     
-    const [title, setTitle] = useState('');
-    const [pin, setPin] = useState('');
-    const [showPin, setShowPin] = useState(false);
-    const [desc, setDescription] = useState('');
+    const [title, setTitle] = useState('')
+    const [pin, setPin] = useState('')
+    const [showPin, setShowPin] = useState(false)
+    const [desc, setDescription] = useState('')
     const maxTitleLength = 20;
     const maxDescriptionLength = 100;
+    const [titleError, setTitleError] = useState('')
 
     const handleCreate = async (vaultData) => {
-        const { title, pin, desc } = vaultData;
+        setTitleError('')
+        const { title, pin, desc } = vaultData
         let authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
-            navigate("/signin");
-            return;
+            console.warn("No token found. Redirecting to signin.")
+            navigate("/signin")
+            return
+        }
+        if (isDuplicateVault(title, ownerUser)) {
+            setTitleError(`You already have a vault with that title`)
+            return
         }
         try {
-            const response = await axios.post(
-                `${backUrl}/dashboard/vaults`,
-                { newVaultData: { ownerUser, title, pin, desc } }, // body
-                { headers: { 'Authorization': `Bearer ${authToken}` } } // config
-            );
-            const newVault = response.data.vault;
-            addVault(newVault);
-            await onCreate();
+            const body = { newVaultData: { ownerUser, title, pin, desc } }
+            const config = { headers: { 'Authorization': `Bearer ${authToken}` } }
+            const response = await axios.post(`${backUrl}/dashboard/vaults`, body, config)
+            const newVault = response.data.vault
+            addVault(newVault)
+            await onCreate()
         } catch (err) {
             if (err.response && err.response.status === 403) {
-                alert("Acesso negado ou sessão expirada. Por favor, faça login novamente.");
-                localStorage.removeItem("authToken");
-                navigate("/signin");
+                alert('Access denied or session expired. Please log in again.')
+                localStorage.removeItem("authToken")
+                navigate("/signin")
+            } else if (err.response && err.response.status === 409) {
+                const code = err.response.data.code
+                if (code === 'DUPLICATE_VAULT') {
+                    setTitleError('You already have a vault with that title')
+                }
+                alert('Unknown error. Please, try again')
             } else {
-                alert("Ocorreu um erro inesperado ao criar o vault.");
-                console.warn(err);
+                alert('Unknown error. Please, try again')
+                console.warn(err)
             }
         }
     };
@@ -64,7 +74,11 @@ const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
                 maxLength={maxTitleLength}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                isInvalid={!!titleError} 
                 />
+                <Form.Control.Feedback type="invalid">
+                    {titleError}
+                </Form.Control.Feedback>
                 <div className="text-end text-muted small">
                 {title.length}/{maxTitleLength}
                 </div>
