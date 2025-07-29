@@ -1,14 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, SendVaultModal } from "../../../index"
+import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
 
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
   const [vaultInfoModalVisible, setVaultInfoModalVisible] = useState(false)
-  const [sendModalVisible, setSendModalVisible] = useState(false)
+  const [credentialInfoModalState, setCredentialInfoModalState] = useState(
+    {visible: false, credential: null}
+  )
+  const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false)
+  const [sendModalVisibleState, setSendModalVisibleState] = useState({show: false, fromVaultInfo: null})
 
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
@@ -52,7 +56,6 @@ function VaultsContent() {
       const updated = vaults.find(v => v._id === currentVaultData._id)
       if (updated) setCurrentVaultData(updated)
     }
-    console.log(`Vaults favoritos: ${JSON.stringify(getFavorites(username), null, 2)}`)
   }, [vaults])
 
 
@@ -73,36 +76,65 @@ function VaultsContent() {
 
       <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
         <VaultPanel 
-        username={username}
-        modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
-        vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
-        vaultEllipsisClick={handleVaultEllpsisClick}
-        notificationHandler={notificationHandler}
-        vaultsFilter={vaultsFilter}
-        vaultsSubgroup={getVaultsSubgroup()}
-        setSendModalVisible={setSendModalVisible}
+          username={username}
+          modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
+          vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+          vaultEllipsisClick={handleVaultEllpsisClick}
+          notificationHandler={notificationHandler}
+          vaultsFilter={vaultsFilter}
+          vaultsSubgroup={getVaultsSubgroup()}
+          setSendModalVisibleState={setSendModalVisibleState}
         />
+
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
             onCreate={onConfirmNewVaultModal}
             ownerUser={username} 
           />
         }
+
         <VaultInfoModal 
-        data={currentVaultData} 
-        show={vaultInfoModalVisible} 
-        onHide={() => setVaultInfoModalVisible(false)}
-        username={username}
-        notificationHandler={notificationHandler}
-        setSendModalVisible={setSendModalVisible} 
+          data={currentVaultData} 
+          username={username}
+          notificationHandler={notificationHandler}
+          show={vaultInfoModalVisible} 
+          onHide={() => setVaultInfoModalVisible(false)}
+          onNewCredentialModal={() => {setVaultInfoModalVisible(false); setNewCredentialModalVisible(true)} }
+          onSendModal={() => {setVaultInfoModalVisible(false); setSendModalVisibleState({show: true, fromVaultInfo: true})} }
+          onCredentialClick={(credential) => {setVaultInfoModalVisible(false); setCredentialInfoModalState({visible: true, credential})} }
         />
 
+        <CredentialInfoModal
+          modalState={credentialInfoModalState}
+          setModalState={setCredentialInfoModalState}
+          username={username}
+          notificationHandler={notificationHandler}
+          onHide={() => {setCredentialInfoModalState({visible: false, credential: null}); setVaultInfoModalVisible(true)} }
+        />
+
+        <NewCredentialModal
+          vaultId={currentVaultData && currentVaultData._id}
+          vaultTitle={currentVaultData && currentVaultData.title}
+          modalVisible={newCredentialModalVisible}
+          onHide={() => {setNewCredentialModalVisible(false); setVaultInfoModalVisible(true)}}
+          credentialOwner={username}
+        />        
+
         <SendVaultModal 
-        show={sendModalVisible}
-        setSendModalVisible={setSendModalVisible}
-        vaultData={currentVaultData}
-        username={username}
-        notificationHandler={notificationHandler}
+          vaultData={currentVaultData}
+          username={username}
+          notificationHandler={notificationHandler}
+          visibleState={sendModalVisibleState}
+          onHide={(fromVaultInfo) => {
+              setSendModalVisibleState({show: false, fromVaultInfo: null})
+              setTimeout(() => {
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+                document.body.classList.remove('modal-open');
+                if (fromVaultInfo) setVaultInfoModalVisible(true);
+            }, 200);
+            } 
+          }
         />
 
       </div>

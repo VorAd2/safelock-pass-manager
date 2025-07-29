@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom"
 import { useVaults } from "../../../../context/useVaults"
 import axios from 'axios'
 import { Modal, Form } from "react-bootstrap"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-function SendVaultModal({ show, setSendModalVisible, vaultData, username, notificationHandler }) {
+function SendVaultModal({ vaultData, username, notificationHandler, visibleState, onHide }) {
     const [recipientUsername, setRecipientUsername] = useState('')
     const [errMsg, setErrMsg] = useState('')
     vaultData = vaultData ?? {title: '', vaultId: '', ownerUser: ''}
@@ -18,6 +18,17 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username, notifi
     const { setSharing } = useVaults()
     const navigate = useNavigate();
 
+
+    useEffect(() => {
+        return () => {
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop?.parentNode) {
+              backdrop.parentNode.removeChild(backdrop);
+            }
+            document.body.classList.remove('modal-open');
+          };
+        }, [])
+
     const resetForm = () => {
         setRecipientUsername('')
     }
@@ -25,7 +36,17 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username, notifi
     const handleClose = () => {
         resetForm()
         setErrMsg('')
-        setSendModalVisible(false)
+        onHide(visibleState.fromVaultInfo)
+
+        setTimeout(() => {
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop?.parentNode) {
+                backdrop.parentNode.removeChild(backdrop);
+            }
+            if (document.body.classList.contains('modal-open')) {
+                document.body.classList.remove('modal-open');
+            }
+        }, 100);
     }
 
     const handleSubmit = async (e) => {
@@ -68,7 +89,7 @@ function SendVaultModal({ show, setSendModalVisible, vaultData, username, notifi
     }
 
     return (
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal show={visibleState.show} onHide={handleClose} centered>
             <Modal.Header>
                 <Modal.Title>
                     <span>Share Your Vault</span> 

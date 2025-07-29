@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useVaults } from "../../../../context/useVaults";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,27 +5,24 @@ import { Modal } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
-import { CredentialInfoModal } from "../../../../index"
-import NewCredentialModal from "./NewCredentialModal";
 import styles from "../../../../../styles/VaultModal.module.css"; 
-
-
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
-const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, setSendModalVisible }) => {
+
+const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: []}
   const vaultTitle = data.title;
   const vaultId = data._id;
-  const [credentialInfoModalState, setCredentialInfoModalState] = useState(
-    {visible: false, credential: undefined}
-  )
-  const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false);
+  
   const credentials = data ? data.credentials : [];
   const navigate = useNavigate();
 
   const { setFavoritism, deleteVault, deleteCredential } = useVaults()
   const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
+
+
+  
 
   const handleFavoriteAction = async (e, closePopover) => {
         e.stopPropagation()
@@ -57,13 +53,6 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
         }
     }
 
-  const handleCredentialClick = (credential) => {
-    setCredentialInfoModalState({
-      visible: true,
-      credential: credential
-    })
-  }
-
   const handleCredentialCopy = async (field) => {
     try {
       await navigator.clipboard.writeText(field)
@@ -74,7 +63,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
 
   const handleSendAction = (e, closePopover) => {
     closePopover(e)
-    setSendModalVisible(true)
+    onSendModal()
   }
 
   const handleDeleteAction = async (e, closePopover) => {
@@ -104,8 +93,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
             closePopover(e)
             onHide()
         }   
-    }
-
+  }
 
   function getVaultEllipsisModal() {
     const canShareVault = !(data.sharedUsers.some(u => u === username))
@@ -252,8 +240,12 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
     )
   }
 
+  const handleClose = () => {
+    onHide()
+  }
+
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
+    <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
           {getVaultEllipsisModal()}
@@ -271,7 +263,7 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
             <button
               type="button"
               className={styles.addCredentialBtn}
-              onClick={() => setNewCredentialModalVisible(true)}
+              onClick={() => onNewCredentialModal()}
               title="Adicionar credential"
             >
               <PlusIcon style={{ width: 18, height: 18, fill:'white'}} />
@@ -281,11 +273,10 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
 
         <hr className="m-0" />
 
-        {/* Conteúdo scrollável */}
         <div className={styles.panelContent}>
           {credentials.map((credential) => (
             <div className={styles.gridRow} key={credential._id} 
-            onClick={() => handleCredentialClick(credential)}
+            onClick={() => onCredentialClick(credential)}
             >
               <div><CustomCheckbox onClick={(e) => e.stopPropagation()}/></div>
               <div><FingerprintIcon style={{width:'20px', height:'20px'}} /></div>
@@ -302,26 +293,6 @@ const VaultInfoModal = ({ data, show, onHide, username, notificationHandler, set
             </div>
           ))}
         </div>
-
-
-
-        <NewCredentialModal
-          vaultId={vaultId}
-          vaultTitle={vaultTitle}
-          modalVisible={newCredentialModalVisible}
-          setModalVisible={setNewCredentialModalVisible}
-          credentialOwner={username}
-        />
-
-        <CredentialInfoModal
-        credential={credentialInfoModalState.credential}
-        modalState={credentialInfoModalState}
-        setModalState={setCredentialInfoModalState}
-        username={username}
-        notificationHandler={notificationHandler}
-        />
-
-
       </Modal.Body>
     </Modal>
   );

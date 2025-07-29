@@ -9,16 +9,16 @@ import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible, credentialOwner}) => {
-    const [credentialTitle, setTitle] = useState('');
-    const [credentialEmail, setEmail] = useState('');
-    const [credentialUsername, setUsername] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [credentialPassword, setPassword] = useState('');
-    const [credentialLinks, setLinks] = useState([]);
+const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credentialOwner}) => {
+    const [credentialTitle, setTitle] = useState('')
+    const [credentialEmail, setEmail] = useState('')
+    const [credentialUsername, setUsername] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const [credentialPassword, setPassword] = useState('')
+    const [credentialLinks, setLinks] = useState([])
 
-    const { addCredentialByVaultTitle } = useVaults();
-    const navigate = useNavigate();
+    const { addCredentialByVaultTitle } = useVaults()
+    const navigate = useNavigate()
 
     const resetForm = () => {
         setTitle('')
@@ -27,12 +27,12 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, setModalVisible
         setPassword('')
         setLinks([])
         setShowPassword(false)
-    };
+    }
 
     const handleClose = () => {
-        resetForm();
-        setModalVisible(false);
-    };
+        resetForm()
+        onHide()
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();

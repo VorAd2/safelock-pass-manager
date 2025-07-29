@@ -10,7 +10,8 @@ const BACK_URL = import.meta.env.VITE_BACK_URL;
 import { useVaults } from '../../../../context/useVaults';
 
 
-function CredentialInfoModal({credential, modalState, setModalState, username, notificationHandler}) {
+function CredentialInfoModal({modalState, username, notificationHandler, onHide}) {
+    const credential = modalState.credential
     const title = credential && credential.credentialTitle
     const owner = credential && credential.credentialOwner
     const email = credential && credential.credentialEmail
@@ -22,14 +23,6 @@ function CredentialInfoModal({credential, modalState, setModalState, username, n
     const { deleteCredential } = useVaults()
 
     const canDeleteCredential = owner === username
-
-
-    function closeModal() {
-        setModalState({
-            visible: false,
-            credential: undefined
-        })
-    }
 
     const handleCredentialCopy = async (field) => {
         try {
@@ -63,7 +56,7 @@ function CredentialInfoModal({credential, modalState, setModalState, username, n
             }
             const response = await axios.delete(route, config)
             deleteCredential(credential.vaultId, credential)
-            closeModal()
+            onHide()
             notificationHandler(true, response.data.message, 'success')
         } catch (err) {
             if (err.response && err.response.data.status === 403) {
@@ -78,8 +71,9 @@ function CredentialInfoModal({credential, modalState, setModalState, username, n
         }
     }
 
+
     return (
-        <Modal show={modalState.visible} onHide={closeModal} centered>
+        <Modal show={modalState.visible} onHide={onHide} centered>
             <Modal.Header closeButton>
                 <Modal.Title className='fs-3 d-flex align-items-center'>
                     <span>{title}</span> 

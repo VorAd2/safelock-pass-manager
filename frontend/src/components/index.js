@@ -23,6 +23,7 @@ export { default as VaultPanel } from './partials/dashboard/vaults_content/Vault
 export { default as VaultCard } from './partials/dashboard/vaults_content/VaultCard.jsx'
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/modals/NewVaultModal.jsx'
 export { default as VaultInfoModal } from './partials/dashboard/vaults_content/modals/VaultInfoModal.jsx'
+export { default as NewCredentialModal } from './partials/dashboard/vaults_content/modals/NewCredentialModal.jsx'
 export { default as CredentialInfoModal } from './partials/dashboard/vaults_content/modals/CredentialInfoModal.jsx'
 export { default as SendVaultModal } from './partials/dashboard/vaults_content/modals/SendVaultModal.jsx'
 export { default as BellPopover } from './partials/dashboard/header/BellPopover.jsx'

@@ -8,7 +8,7 @@ import styles from '../../../../styles/VaultsContent.module.css';
 function VaultPanel({ 
     username, modalVisibleCallback, vaultCardClick, 
     vaultEllipsisClick, notificationHandler, vaultsFilter,
-    vaultsSubgroup, setSendModalVisible }) 
+    vaultsSubgroup, setSendModalVisibleState }) 
 {
     let emptyPanelText
     switch (vaultsFilter) {
@@ -54,7 +54,7 @@ function VaultPanel({
                                 ellipsisClick={vaultEllipsisClick} 
                                 username={username} 
                                 notificationHandler={notificationHandler}
-                                setSendModalVisible={setSendModalVisible}
+                                setSendModalVisibleState={setSendModalVisibleState}
                                 />
                             </Col>
                             ))}

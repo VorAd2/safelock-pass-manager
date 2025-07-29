@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  transition: background-color 0.08s ease;
+  
 }
 .customCheckbox.checked {
   background-color: #1e54ca;

@@ -11,7 +11,7 @@ const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
 function VaultCard({
     vault, onClick, username, 
-    ellipsisClick, notificationHandler, setSendModalVisible
+    ellipsisClick, notificationHandler, setSendModalVisibleState
 }) {
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
@@ -57,7 +57,7 @@ function VaultCard({
 
     const handleSendAction = (e, closePopover) => {
         closePopover(e)
-        setSendModalVisible(true)
+        setSendModalVisibleState({show: true, fromVaultInfo: false})
     }
 
     const handleDeleteAction = async (e, closePopover) => {
