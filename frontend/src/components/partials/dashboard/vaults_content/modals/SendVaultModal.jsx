@@ -82,7 +82,11 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
             if (err.response && err.response.status === 404) {
                 console.log(`Erro message: ${err.response.data.message}`)
                 setErrMsg(err.response.data.message)
-            } else {
+            } 
+            else if (err.response && err.response.data.code === 'RECIPIENT_ALREADY') {
+                setErrMsg('Recipient user already has this vault')
+            }
+            else {
                 setErrMsg('Unknown error. Please, try again')
             }
         }

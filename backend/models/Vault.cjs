@@ -86,6 +86,14 @@ class VaultModel {
         const update = {$addToSet: {sharedUsers: recipientUsername}}
         await db.collection('user_vaults').updateOne(filter, update)
     }
+
+    async removeVaultSharing(db, vaultId, recipientUsername) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        const update = {$pull: {sharedUsers: recipientUsername}}
+        const result = await db.collection('user_vaults').updateOne(filter, update)
+        return result.modifiedCount > 0;
+    }
+
 }
 
 module.exports = new VaultModel()

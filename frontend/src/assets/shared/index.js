@@ -5,6 +5,7 @@ import CopyIcon from './copy.svg?react';
 import ArrowUpIcon from './arrow-up.svg?react';
 import BellIcon from './bell.svg?react';
 import RefreshIcon from './refresh.svg?react';
+import RemoveIcon from './remove.svg?react';
 
 export {
   DashIcon,
@@ -13,5 +14,6 @@ export {
   CopyIcon,
   ArrowUpIcon,
   BellIcon,
-  RefreshIcon
+  RefreshIcon,
+  RemoveIcon
 }

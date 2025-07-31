@@ -82,25 +82,25 @@ module.exports = (db) => {
             return res.status(403).json({message: msg})
         }
         try {
-            const recipientExists = await UserModel.existsUser(recipientUsername, null, db)
-            if (recipientExists) {
-                await VaultModel.sharing(db, vaultId, recipientUsername)
-                await UserModel.addVault(recipientUsername, vaultId, db)
-                const recipientSocket = connectedUsers.get(recipientUsername);
-                if (recipientSocket) {
-                    recipientSocket.emit('vaultShared', {
-                        vaultId,
-                        emitter: senderUsername,
-                        message: `${ownerUsername} shared the vault ${vaultTitle} with you.`
-                    });
-                }
-                return res.status(200).json(
-                    {message: `Vault compartilhado com sucesso entre ${ownerUsername} e ${recipientUsername}`}
-                )
-            } else {
-                return res.status(404).json({message: "Recipient user doesn't exist"})
+            const recipientData = await UserModel.getUserByName(db, recipientUsername)
+            if (recipientData === null) {
+                return res.status(404).json({message: 'Recipient user not found', code: 'RECIPIENT_NOT_FOUND'})
+            } else if (recipientData.allVaults.includes(vaultId)) {
+                return res.status(409).json({message: 'Recipient user already has this vault', code: 'RECIPIENT_ALREADY'}) 
             }
-            
+            await VaultModel.sharing(db, vaultId, recipientUsername)
+            await UserModel.addVault(recipientUsername, vaultId, db)
+            const recipientSocket = connectedUsers.get(recipientUsername);
+            if (recipientSocket) {
+                recipientSocket.emit('vaultShared', {
+                    vaultId,
+                    emitter: senderUsername,
+                    message: `${ownerUsername} shared the vault ${vaultTitle} with you.`
+                });
+            }
+            return res.status(200).json(
+                {message: `Vault compartilhado com sucesso entre ${ownerUsername} e ${recipientUsername}`}
+            )
         } catch (err) {
             console.log(`Erro no compartilhamento de vault: ${err}`)
             return res.status(500).json({ message: 'Erro interno ao compartilhar vault' })
@@ -131,6 +131,22 @@ module.exports = (db) => {
         } catch (err) {
             console.log(`Erro ao deletar vault: ${err}`)
             return res.status(500).json({message: 'Erro ao deletar vault'})
+        }
+    })
+
+    router.delete('/sharing', authenticateToken, async (req, res) => {
+        const {vaultId, username} = req.body
+        try {
+            const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
+            if (thereWasVault) {
+                await VaultModel.removeVaultSharing(db, vaultId, username)
+                return res.status(200).json({message: 'Vault sharing removed successfully'})
+            } else {
+                return res.status(404).json({code: 'VAULT_SHARING_NOT_FOUND'})
+            }
+        } catch (err) {
+            console.log(`Erro ao deletar compartilhamento de vault: ${err}`)
+            return res.status(500).json({message: 'Error deleting vault sharing. Please, try again'})
         }
     })
 

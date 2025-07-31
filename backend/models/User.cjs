@@ -25,6 +25,12 @@ class UserModel {
         return user;
     }
 
+    async getUserByName(db, username) {
+        const filter = {username: username}
+        const user = await db.collection('users').findOne(filter)
+        return user;
+    }
+
     async matchPassword(user, potentialPass, db) {
         return (await bcrypt.compare(potentialPass, user.password))
     }
@@ -44,6 +50,13 @@ class UserModel {
         }
         const filter = {username: ownerUsername}
         await db.collection('users').updateOne(filter, update)
+    }
+
+    async removeVaultSharing(db, vaultId, recipientUsername) {
+        const filter = {username: recipientUsername}
+        const update = {$pull: {allVaults: vaultId}}
+        const result = await db.collection('users').updateOne(filter, update)
+        return result.modifiedCount > 0;
     }
 
     async vaultFavoritism(toFavorite, vaultId, username, db) {

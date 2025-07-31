@@ -30,7 +30,7 @@ function CredentialInfoModal({modalState, username, notificationHandler, onHide}
         } catch (err) {
             alert(`Error copying field: ${err.message}`)
         }
-  }
+    }
 
     if (credential == undefined) {
         return null

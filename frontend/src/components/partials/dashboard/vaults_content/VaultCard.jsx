@@ -1,9 +1,9 @@
 import { useVaults } from '../../../context/useVaults';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
+import { RemoveIcon } from '../../../../assets/shared';
 import styles from '../../../../styles/VaultsContent.module.css';
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
@@ -17,10 +17,6 @@ function VaultCard({
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
     const { setFavoritism, deleteVault } = useVaults()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        console.log(`toFavorite de ${vaultTitle}: ${toFavorite}`)
-    })
 
     const handleCheckboxClick = (e) => {
         e.stopPropagation();
@@ -60,7 +56,7 @@ function VaultCard({
         setSendModalVisibleState({show: true, fromVaultInfo: false})
     }
 
-    const handleDeleteAction = async (e, closePopover) => {
+    const handleDelete = async (e, closePopover) => {
         e.stopPropagation()
         try {
             let authToken = localStorage.getItem('authToken')
@@ -88,14 +84,49 @@ function VaultCard({
         }   
     }
 
+    const handleRemoveSharing = (e, closePopover) => {
+        e.stopPropagation()
+        const authToken = localStorage.getItem('authToken')
+        if (!authToken) {
+            console.warn("No token found. Redirecting to signin.");
+            navigate("/signin");
+            return;
+        }
+        const route = `${BACK_URL}/dashboard/vaults/sharing`
+        const config = {
+            headers: { Authorization: `Bearer ${authToken}` },
+            data: {
+                vaultId: vault._id,
+                username
+            }
+        }
+        axios.delete(route, config)
+            .then(() => {
+                deleteVault(vault._id)
+                notificationHandler(true, 'Vault sharing removed successfully', 'success')
+            })
+            .catch(err => {
+                if (err.response && err.response.data.code === 'VAULT_SHARING_NOT_FOUND') {
+                    notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
+                } else {
+                    console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
+                }
+            })
+            .finally(() => { 
+                closePopover(e)
+            })
+    }
+
     function getEllipsisModal() {
         const canShareVault = !(vault.sharedUsers.some(u => u === username))
         const canDeleteVault = vault.ownerUser === username
         const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
         const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
-        const deleteSpanStyle = canDeleteVault ? '' : 'text-decoration-line-through text-secondary'
-        const noHoverClassDelete = canDeleteVault ? '' : 'noHoverClass'
+        const exclusionStyle = canDeleteVault 
+            ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
+            : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
         const modalClick = () => ellipsisClick(vault.title)
+
         return (
             <MiniModal
                 ButtonIcon={EllipsisIcon}
@@ -126,18 +157,21 @@ function VaultCard({
                                 </div>
                             </button>
                             <button type="button" 
-                            className={`${popoverItemClass} text-danger ${noHoverClassDelete}`}
-                            style={{cursor: canDeleteVault ? 'pointer' : 'not-allowed'}}
+                            className={popoverItemClass}
                             onClick={
                                 (e) => {
                                     e.stopPropagation()
-                                    if (canDeleteVault) handleDeleteAction(e, closePopover); 
+                                    if (canDeleteVault) {
+                                        handleDelete(e, closePopover)
+                                    } else {
+                                        handleRemoveSharing(e, closePopover)
+                                    }
                                 }
                             }
                             >
-                                <div className="d-flex align-items-center">
-                                    <TrashIcon className={`me-2 ${deleteSpanStyle}`}/>
-                                    <span className={deleteSpanStyle}>Delete</span>
+                                <div className={`d-flex align-items-center`} style={exclusionStyle}>
+                                    {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
+                                    <span>{canDeleteVault ? 'Delete' : 'Unlink'}</span>
                                 </div>
                             </button>
                         </>
