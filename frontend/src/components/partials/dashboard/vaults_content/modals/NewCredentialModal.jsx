@@ -29,9 +29,9 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
         setShowPassword(false)
     }
 
-    const handleClose = () => {
+    const handleClose = (added = false) => {
         resetForm()
-        onHide()
+        onHide(added)
     }
 
     const handleSubmit = async (e) => {
@@ -52,7 +52,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
             addCredential(vaultId, response.data);
-            handleClose()
+            handleClose(true)
         } catch (err) {
             if (err.response && err.response.status === 403) {
                 alert("Access denied or session expired. Please log in again.");

@@ -116,13 +116,16 @@ function VaultsContent() {
           vaultId={currentVaultData && currentVaultData._id}
           vaultTitle={currentVaultData && currentVaultData.title}
           modalVisible={newCredentialModalVisible}
-          onHide={() => {
+          onHide={(added) => {
               setNewCredentialModalVisible(false);
                setTimeout(() => {
                 const backdrop = document.querySelector('.modal-backdrop');
                 if (backdrop) backdrop.remove();
                 document.body.classList.remove('modal-open');
                 setVaultInfoModalVisible(true)
+                if (added === true) {
+                  notificationHandler(true, 'Credential added successfully!', 'success');
+                }
               }, 200);
               
             }

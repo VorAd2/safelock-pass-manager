@@ -6,7 +6,7 @@ import { EyeIcon, EyeSlashIcon, TrashIcon } from '../../../../../assets/dashboar
 import { CopyIcon } from '../../../../../assets/shared';
 import styles from '../../../../../styles/CredentialInfoModal.module.css';
 
-const BACK_URL = import.meta.env.VITE_BACK_URL;
+const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 import { useVaults } from '../../../../context/useVaults';
 
 
@@ -106,13 +106,13 @@ function CredentialInfoModal({modalState, username, notificationHandler, onHide}
                         <span>Copy password</span>
                     </div>
                     {canDeleteCredential && 
-                    <div
-                    role='button'
-                    tabIndex={0}
-                    onClick={(e) => {e.stopPropagation(); if(canDeleteCredential) handleDeleteCredential(e) }}
-                    >
-                        <TrashIcon style={{fill:'red', marginRight:'0px',}}/>
-                    </div>
+                        <div
+                        role='button'
+                        tabIndex={0}
+                        onClick={(e) => {e.stopPropagation(); if(canDeleteCredential) handleDeleteCredential(e) }}
+                        >
+                            <TrashIcon style={{fill:'red', marginRight:'0px',}}/>
+                        </div>
                     }
                     
                 </div>
