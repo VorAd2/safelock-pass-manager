@@ -61,6 +61,7 @@ const BellPopover = () => {
           }
         </ListGroup>
         <div className="d-flex justify-content-center gap-4 mt-3">
+          {/* Recarregar apenas o conteudo de VaultsContent, não DashboardPage inteira */}
           <Button variant="primary" disabled={notifications.length === 0} size='sm' onClick={() => window.location.reload()}>
             <div className='d-flex justify-content-center align-items-center'>
               <RefreshIcon className=' me-1' style={{}}/>

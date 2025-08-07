@@ -10,7 +10,7 @@ const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 function VaultCard({
-    vault, onClick, username, 
+    vault, vaultCardClick, username, 
     ellipsisClick, notificationHandler, setSendModalVisibleState
 }) {
     const vaultTitle = vault.title
@@ -39,7 +39,7 @@ function VaultCard({
             await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, data,
                 { headers: {Authorization: `Bearer ${authToken}` }}
             )
-            setFavoritism(vaultTitle, username, toFavorite)
+            setFavoritism(vault._id, username, toFavorite)
             const message = toFavorite
                 ? 'Vault favorited successfully'
                 : 'Vault unfavorited successfully'
@@ -125,7 +125,7 @@ function VaultCard({
         const exclusionStyle = canDeleteVault 
             ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
             : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
-        const modalClick = () => ellipsisClick(vault.title)
+        const modalClick = () => ellipsisClick(vault._id)
 
         return (
             <MiniModal
@@ -182,7 +182,7 @@ function VaultCard({
     }
 
     return (
-        <div className={styles.vaultCard} onClick={() => onClick(vaultTitle)}>
+        <div className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>
             <div className={styles.topBar}>
                 <CustomCheckbox onClick={handleCheckboxClick}/>
                 {getEllipsisModal()}

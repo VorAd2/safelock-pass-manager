@@ -17,7 +17,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
     const [credentialPassword, setPassword] = useState('')
     const [credentialLinks, setLinks] = useState([])
 
-    const { addCredentialByVaultTitle } = useVaults()
+    const { addCredential } = useVaults()
     const navigate = useNavigate()
 
     const resetForm = () => {
@@ -51,7 +51,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
                 newCredential, 
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
-            addCredentialByVaultTitle(vaultTitle, response.data);
+            addCredential(vaultId, response.data);
             handleClose()
         } catch (err) {
             if (err.response && err.response.status === 403) {

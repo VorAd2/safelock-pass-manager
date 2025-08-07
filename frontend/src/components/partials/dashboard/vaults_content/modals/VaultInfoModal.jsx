@@ -11,7 +11,7 @@ const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
 const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
-  data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: []}
+  data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
   const vaultTitle = data.title;
   const vaultId = data._id;
   
@@ -287,7 +287,11 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
           {getVaultEllipsisModal()}
-          <Modal.Title className="mb-0 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
+          <Modal.Title className="mb-0 me-3 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
+          <div className="d-flex align-items-center">
+            <UserAvatar className={styles.userAvatar}/>
+            {data.ownerUser}
+          </div>
         </div> 
       </Modal.Header>
 
@@ -321,7 +325,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
               <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
               <div className={`${styles.truncate} fs-6`}>
                 <div>
-                  <UserAvatar style={{fill:'white'}}/>
+                  <UserAvatar className={styles.userAvatar}/>
                 </div>
                 {credential.credentialOwner}
               </div>

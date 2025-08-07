@@ -15,7 +15,20 @@
   max-height: 300px; /* ou qualquer altura desejada */
   overflow-y: auto;
 }
-
+.userAvatar {
+  fill: white;
+  display: flex;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--lessdark-blue-color);
+  transition: background-color 0.2s ease;
+  padding: 6px;
+  justify-content: center;
+  margin-right: 0.7rem;
+  align-items: center;
+}
 
 .ellipsisWrapper {
   display: flex;
@@ -78,19 +91,7 @@
   display: flex;
   align-items: center;
 }
-.truncate div {
-  display: flex;
-  width: 26px;
-  height: 26px;
-  border: none;
-  border-radius: 50%;
-  background-color: var(--lessdark-blue-color);
-  transition: background-color 0.2s ease;
-  padding: 6px;
-  justify-content: center;
-  margin-right: 0.7rem;
-  align-items: center;
-}
+
 
 
 .credentialEllipsisWrapper {

@@ -8,6 +8,38 @@ const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
 
 
+function emitSocketEvent(data) {
+    const {recipientUsername, vaultId, senderUsername, ownerUsername, vaultTitle, sharedUsers, event} = data
+    switch (event) {
+        case 'vaultShared':
+            const recipientSocket = connectedUsers.get(recipientUsername);
+            if (recipientSocket) {
+                recipientSocket.emit('vaultShared', {
+                    vaultId,
+                    emitter: senderUsername,
+                    message: `${ownerUsername} shared the vault ${vaultTitle} with you.`
+                });
+            }
+            break
+        case 'vaultDeleted':
+            for (const username of sharedUsers) {
+                const recipientSocket = connectedUsers.get(username);
+                if (recipientSocket) {
+                    recipientSocket.emit('vaultDeleted', {
+                        vaultId,
+                        emitter: ownerUsername,
+                        message: `The vault ${vaultTitle} (${ownerUsername}) shared with you has been deleted`
+                    });
+                }
+            }
+            break
+        default:
+            console.error(`Unknown event type: ${event}`);
+    }
+    
+}
+
+
 module.exports = (db) => {
     router.get('/', (req, res) => {
         res.json({ message: 'Get na API de Vault!' });
@@ -16,10 +48,8 @@ module.exports = (db) => {
     router.get('/:username', authenticateToken, async (req, res) => {
         const { username } = req.params;
         if (req.userData.username !== username) {
-            console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
-        console.log(`username: ${username}`)
         try {
             const vaultsArray = await VaultModel.getVaultsByUser(username, db);
             if (vaultsArray.length === 0) {
@@ -34,23 +64,18 @@ module.exports = (db) => {
 
     router.post('/', authenticateToken, async (req, res) => {
         const {ownerUser, title, pin, desc} = req.body.newVaultData
-        console.log(`userData Username: ${req.userData.username}  ownerUser: ${ownerUser}`)
         if (req.userData.username !== ownerUser) {
-            console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
         try {
             const isDuplicateVault = await VaultModel.isDuplicateVault(db, title, ownerUser)
             if (isDuplicateVault) {
-                console.log(`Duplicate vault ${title} for ${ownerUser}`)
                 return res.status(409).json({code: 'DUPLICATE_VAULT'})
             }
             const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
-            console.log(`novo vault: ${JSON.stringify(newVaultData.vault)}`)
             const vault = newVaultData.vault
             await UserModel.addVault(ownerUser, vaultId, db)
-            console.log('POST de Vault finalizado sem err')
             return res.status(201).json({ message: 'Vault criado com sucesso', vault: vault });
         } catch (err) {
             console.log('Erro inesperado no POST de Vault: ' + err.message)
@@ -71,10 +96,8 @@ module.exports = (db) => {
 
     router.patch('/sharing', authenticateToken, async (req, res) => {
         const {ownerUsername, senderUsername, vaultId, vaultTitle, recipientUsername} = req.body
-        console.log(`recipientUsername: ${recipientUsername}`)
         if (ownerUsername !== senderUsername) {
             const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
-            console.log(msg)
             return res.status(403).json({message: msg})
         }
         if (ownerUsername === recipientUsername) {
@@ -90,14 +113,7 @@ module.exports = (db) => {
             }
             await VaultModel.sharing(db, vaultId, recipientUsername)
             await UserModel.addVault(recipientUsername, vaultId, db)
-            const recipientSocket = connectedUsers.get(recipientUsername);
-            if (recipientSocket) {
-                recipientSocket.emit('vaultShared', {
-                    vaultId,
-                    emitter: senderUsername,
-                    message: `${ownerUsername} shared the vault ${vaultTitle} with you.`
-                });
-            }
+            emitSocketEvent({recipientUsername, vaultId, senderUsername, ownerUsername, vaultTitle, event: 'vaultShared'})
             return res.status(200).json(
                 {message: `Vault compartilhado com sucesso entre ${ownerUsername} e ${recipientUsername}`}
             )
@@ -111,22 +127,18 @@ module.exports = (db) => {
     router.delete('/', authenticateToken, async (req, res) => {
         try {
             const {ownerUsername, vaultId, vaultTitle} = req.body
-            console.log(`${ownerUsername} e vault ${vaultId}`)
             const vault = await VaultModel.getVaultById(db, vaultId)
             const sharedUsers = vault.sharedUsers
             await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
             await CredentialModel.deleteAllCredentials(db, vaultId)
             await VaultModel.deleteVault(db, vaultId)
-            for (const username of sharedUsers) {
-                const recipientSocket = connectedUsers.get(username);
-                if (recipientSocket) {
-                    recipientSocket.emit('vaultDeleted', {
-                        vaultId,
-                        emitter: ownerUsername,
-                        message: `The vault ${vaultTitle} (${ownerUsername}) shared with you has been deleted`
-                    });
-                }
-            }
+            emitSocketEvent({
+                vaultId,
+                vaultTitle,
+                ownerUsername,
+                sharedUsers,
+                event: 'vaultDeleted'
+            })
             return res.status(200).json({message: 'Vault deleted successfully'})
         } catch (err) {
             console.log(`Erro ao deletar vault: ${err}`)
@@ -134,6 +146,7 @@ module.exports = (db) => {
         }
     })
 
+    //Excluir as credenciais do user que fez unlink
     router.delete('/sharing', authenticateToken, async (req, res) => {
         const {vaultId, username} = req.body
         try {

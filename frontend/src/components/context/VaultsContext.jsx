@@ -19,10 +19,10 @@ export function VaultsProvider({ children }) {
 
   const setAllVaults = (vaultsArr) => setVaults(vaultsArr);
 
-  const addCredentialByVaultTitle = (vaultTitle, credential) => {
+  const addCredential = (vaultId, credential) => {
     setVaults((prev) =>
       prev.map(vault =>
-        vault.title === vaultTitle
+        vault._id === vaultId
           ? { ...vault, credentials: [...(vault.credentials || []), credential] }
           : vault
       )
@@ -39,10 +39,10 @@ export function VaultsProvider({ children }) {
     })
   }
 
-  const setFavoritism = (vaultTitle, username, toFavorite) => {
+  const setFavoritism = (vaultId, username, toFavorite) => {
     setVaults((prev) =>
       prev.map((vault) => {
-        if (vault.title !== vaultTitle) return vault;
+        if (vault._id !== vaultId) return vault;
         const alreadyFavorited = vault.favoritedBy.includes(username);
         let updatedFavoritedBy;
         if (toFavorite && !alreadyFavorited) {
@@ -66,10 +66,10 @@ export function VaultsProvider({ children }) {
     return vaults.filter(vault => vault.favoritedBy.includes(username))
   }
 
-  const setSharing = (vaultTitle, recipientUsername) => {
+  const setSharing = (vaultId, recipientUsername) => {
     setVaults((prev) => {
       return prev.map(vault => {
-        if (vault.title !== vaultTitle) return vault;
+        if (vault._id !== vaultId) return vault;
         let updatedSharedUsers = [...vault.sharedUsers, recipientUsername];
         const newVault = {
           ...vault,
@@ -88,7 +88,7 @@ export function VaultsProvider({ children }) {
   return (
     <VaultsContext.Provider 
     value={
-      { vaults, addVault, deleteVault, isDuplicateVault, setAllVaults, addCredentialByVaultTitle, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
+      { vaults, addVault, deleteVault, isDuplicateVault, setAllVaults, addCredential, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
     }>
       {children}
     </VaultsContext.Provider>

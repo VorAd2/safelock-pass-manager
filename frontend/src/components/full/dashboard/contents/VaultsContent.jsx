@@ -20,22 +20,22 @@ function VaultsContent() {
   const { vaults, getFavorites, getShared } = useVaults()
   const [vaultsFilter, setVaultsFilter] = useState('all') 
 
-  const getVaultData = (vaultTitle) => {
+  const getVaultData = (vaultId) => {
     for (let vault of vaults) {
-      if (vault.title === vaultTitle) {
+      if (vault._id === vaultId) {
         return vault
       }
     }
   }
 
-  const handleVaultClick = (vaultTitle) => {
-    let data =  getVaultData(vaultTitle)
+  const handleVaultClick = (vaultId) => {
+    let data =  getVaultData(vaultId)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)
   }
 
-  const handleVaultEllpsisClick = (vaultTitle) => {
-    setCurrentVaultData(getVaultData(vaultTitle))
+  const handleVaultEllpsisClick = (vaultId) => {
+    setCurrentVaultData(getVaultData(vaultId))
   }
 
   function getVaultsSubgroup() {
@@ -78,7 +78,7 @@ function VaultsContent() {
         <VaultPanel 
           username={username}
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
-          vaultCardClick={(vaultName) => handleVaultClick(vaultName)}
+          vaultCardClick={(vaultId) => handleVaultClick(vaultId)}
           vaultEllipsisClick={handleVaultEllpsisClick}
           notificationHandler={notificationHandler}
           vaultsFilter={vaultsFilter}

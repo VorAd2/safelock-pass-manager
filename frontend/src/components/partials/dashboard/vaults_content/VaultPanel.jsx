@@ -50,7 +50,7 @@ function VaultPanel({
                             <Col md={3} key={i}>
                                 <VaultCard 
                                 vault={vault} 
-                                onClick={vaultCardClick}
+                                vaultCardClick={vaultCardClick}
                                 ellipsisClick={vaultEllipsisClick} 
                                 username={username} 
                                 notificationHandler={notificationHandler}

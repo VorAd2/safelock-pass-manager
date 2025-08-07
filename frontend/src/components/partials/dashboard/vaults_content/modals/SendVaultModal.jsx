@@ -74,11 +74,12 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
                 reqBody,
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
-            setSharing(vaultTitle, recipientUsername)
+            setSharing(vaultId, recipientUsername)
             handleClose()
             notificationHandler(true, 'Vault shared successfully', 'success')
         } catch (err) {
             console.warn(`Erro ao compartilhar vault: ${err}`)
+            console.log(`Erro message: ${err.response.data.message}`)
             if (err.response && err.response.status === 404) {
                 console.log(`Erro message: ${err.response.data.message}`)
                 setErrMsg(err.response.data.message)
