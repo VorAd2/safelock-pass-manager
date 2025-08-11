@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import backCodes from '../../../../../back_codes';
 import {Modal, Form} from 'react-bootstrap';
 import { EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
 import styles from '../../../../../styles/VaultModal.module.css';
@@ -54,16 +55,14 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
             addCredential(vaultId, response.data);
             handleClose(true)
         } catch (err) {
-            if (err.response && err.response.status === 403) {
+            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
                 alert("Access denied or session expired. Please log in again.");
                 localStorage.removeItem("authToken");
                 navigate("/signin");
-            } else if (err.response && err.response.status === 404) {
-                const msg = err.response.data.message
-                if (msg === 'The vault no longer exists') alert(msg);
-            } else if (err.response && err.response.status === 409) {
-                const msg = err.response.data.message
-                if (msg == 'Credential title already in use') alert(msg);
+            } else if (err.response && err.response.data.code === backCodes.VAULT_NOT_FOUND) {
+                alert(err.response.data.message);
+            } else if (err.response && err.response.data.code === backCodes.DUPLICATE_CREDENTIAL) {
+                alert(err.response.data.message);
             } else {
                 alert("Ocorreu um erro ao carregar os dados do cofre.")
                 console.warn(err)
@@ -72,7 +71,6 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credent
     };
 
     
-
     return (
         <Modal show={modalVisible} onHide={handleClose} centered>
           <Modal.Header closeButton>

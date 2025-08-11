@@ -1,6 +1,7 @@
 import { useVaults } from '../../../context/useVaults';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import backCodes  from '../../../../back_codes';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import { RemoveIcon } from '../../../../assets/shared';
@@ -106,9 +107,10 @@ function VaultCard({
                 notificationHandler(true, 'Vault sharing removed successfully', 'success')
             })
             .catch(err => {
-                if (err.response && err.response.data.code === 'VAULT_SHARING_NOT_FOUND') {
+                if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
                     notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
                 } else {
+                    notificationHandler(true, 'Unknown error. Please, try again', 'error')
                     console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
                 }
             })

@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Modal, Form } from "react-bootstrap"
 import { useState, useEffect } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
+import backCodes from "../../../../../back_codes"
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -80,15 +81,15 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
         } catch (err) {
             console.warn(`Erro ao compartilhar vault: ${err}`)
             console.log(`Erro message: ${err.response.data.message}`)
-            if (err.response && err.response.status === 404) {
-                console.log(`Erro message: ${err.response.data.message}`)
+            if (err.response && err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
                 setErrMsg(err.response.data.message)
             } 
-            else if (err.response && err.response.data.code === 'RECIPIENT_ALREADY') {
+            else if (err.response && err.response.data.code === backCodes.RECIPIENT_ALREADY) {
                 setErrMsg('Recipient user already has this vault')
             }
             else {
                 setErrMsg('Unknown error. Please, try again')
+                console.warn(`Erro message: ${err.response.data.message}`)
             }
         }
     }

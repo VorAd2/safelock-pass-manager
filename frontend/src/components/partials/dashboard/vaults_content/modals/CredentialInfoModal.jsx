@@ -8,6 +8,7 @@ import styles from '../../../../../styles/CredentialInfoModal.module.css';
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 import { useVaults } from '../../../../context/useVaults';
+import backCodes from '../../../../../back_codes';
 
 
 function CredentialInfoModal({modalState, username, notificationHandler, onHide}) {
@@ -59,14 +60,12 @@ function CredentialInfoModal({modalState, username, notificationHandler, onHide}
             onHide()
             notificationHandler(true, response.data.message, 'success')
         } catch (err) {
-            if (err.response && err.response.data.status === 403) {
-                    const msg = err.response.data.message
-                    if (msg === "You can't delete other user's credentials") {
-                    alert(msg)
-                } else {
-                    alert('Unknown error. Please, try again')
-                    console.warn(`Erro desconhecido na deleção de credential: ${err}`)
-                }
+            if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
+                const msg = err.response.data.message
+                alert(msg)
+            } else {
+                alert('Unknow error. Please, try again')
+                console.warn(`Error desconhecido ao deletar credencial: ${err}`)
             }
         }
     }

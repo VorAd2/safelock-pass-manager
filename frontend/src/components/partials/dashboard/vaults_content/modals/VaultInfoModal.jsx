@@ -6,6 +6,7 @@ import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../asset
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import styles from "../../../../../styles/VaultModal.module.css"; 
+import backCodes from "../../../../../back_codes";
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -14,15 +15,11 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
   const vaultTitle = data.title;
   const vaultId = data._id;
-  
   const credentials = data ? data.credentials : [];
   const navigate = useNavigate();
-
   const { setFavoritism, deleteVault, deleteCredential } = useVaults()
   const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
 
-
-  
 
   const handleFavoriteAction = async (e, closePopover) => {
         e.stopPropagation()
@@ -41,12 +38,13 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
             await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
                 { headers: {Authorization: `Bearer ${authToken}` }}
             )
-            setFavoritism(vaultTitle, username, toFavorite)
+            setFavoritism(vaultId, username, toFavorite)
             const message = toFavorite
                 ? 'Vault favorited successfully'
                 : 'Vault unfavorited successfully'
             notificationHandler(true, message, 'success')
         } catch (err) {
+            notificationHandler(true, 'Unknown error. Please, try again', 'success')
             console.warn(`Erro no favoritismo: ${err}`)
         } finally {
             closePopover(e)
@@ -57,7 +55,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
     try {
       await navigator.clipboard.writeText(field)
     } catch (err) {
-      alert(`Erro ao copiar campo: ${err.message}`)
+      alert(`Error copying field: ${err.message}`)
     }
   }
 
@@ -88,6 +86,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
             deleteVault(vaultId)
             notificationHandler(true, 'Vault deleted successfully', 'success')
         } catch (err) {
+            notificationHandler(true, 'Unknown error. Please, try again', 'error')
             console.warn(`Erro ao deletar vault: ${err}`)
         } finally {
             closePopover(e)
@@ -97,7 +96,6 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
 
   const handleRemoveSharing = (e, closePopover) => {
         e.stopPropagation()
-      
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
             console.warn("No token found. Redirecting to signin.");
@@ -118,9 +116,10 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
                 notificationHandler(true, 'Vault sharing removed successfully', 'success')
             })
             .catch(err => {
-                if (err.response && err.response.data.code === 'VAULT_SHARING_NOT_FOUND') {
+                if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
                     notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
                 } else {
+                    notificationHandler(true, 'Unknown error. Please, try again', 'error')
                     console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
                 }
             })
@@ -217,14 +216,12 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
       closePopover(e)
       notificationHandler(true, response.data.message, 'success')
     } catch (err) {
-      if (err.response && err.response.data.status === 403) {
+      if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
         const msg = err.response.data.message
-        if (msg === "You can't delete other user's credentials") {
-          alert(msg)
-        } else {
-          alert('Unknown error. Please, try again')
-          console.warn(`Erro desconhecido na deleção de credential: ${err}`)
-        }
+        alert(msg)
+      } else {
+        alert('Unknown error. Please, try again')
+        console.warn(`Erro desconhecido ao deletar credencial: ${err}`)
       }
     }
   }

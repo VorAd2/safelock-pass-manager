@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import backCodes from '../../../../../back_codes';
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { QuestionIcon, EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
 import styles from '../../../../../styles/NewVaultModal.module.css';
@@ -12,7 +13,6 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
     const navigate = useNavigate()
     const { addVault, isDuplicateVault } = useVaults()
-    
     const [title, setTitle] = useState('')
     const [pin, setPin] = useState('')
     const [showPin, setShowPin] = useState(false)
@@ -42,16 +42,12 @@ const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
             addVault(newVault)
             await onCreate()
         } catch (err) {
-            if (err.response && err.response.status === 403) {
+            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
                 alert('Access denied or session expired. Please log in again.')
                 localStorage.removeItem("authToken")
                 navigate("/signin")
-            } else if (err.response && err.response.status === 409) {
-                const code = err.response.data.code
-                if (code === 'DUPLICATE_VAULT') {
-                    setTitleError('You already have a vault with that title')
-                }
-                alert('Unknown error. Please, try again')
+            } else if (err.response && err.response.data.code === backCodes.DUPLICATE_VAULT) {
+                setTitleError('You already have a vault with that title')
             } else {
                 alert('Unknown error. Please, try again')
                 console.warn(err)
