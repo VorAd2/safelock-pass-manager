@@ -81,7 +81,11 @@ function SendVaultModal({ vaultData, username, notificationHandler, visibleState
         } catch (err) {
             console.warn(`Erro ao compartilhar vault: ${err}`)
             console.log(`Erro message: ${err.response.data.message}`)
-            if (err.response && err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
+            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+                alert('Access denied or session expired. Please, log in again.')
+                navigate('/signin')
+            }
+            else if (err.response && err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
                 setErrMsg(err.response.data.message)
             } 
             else if (err.response && err.response.data.code === backCodes.RECIPIENT_ALREADY) {

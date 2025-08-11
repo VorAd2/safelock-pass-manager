@@ -60,7 +60,10 @@ function CredentialInfoModal({modalState, username, notificationHandler, onHide}
             onHide()
             notificationHandler(true, response.data.message, 'success')
         } catch (err) {
-            if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
+            if (err.respoonse && err.response.data.code === backCodes.ACCESS_DENIED) {
+                alert('Access denied or session expired. Please log in again.')
+                navigate("/signin")
+            } else if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
                 const msg = err.response.data.message
                 alert(msg)
             } else {

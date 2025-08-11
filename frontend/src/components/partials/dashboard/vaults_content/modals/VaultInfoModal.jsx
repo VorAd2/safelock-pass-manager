@@ -22,34 +22,39 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
 
 
   const handleFavoriteAction = async (e, closePopover) => {
-        e.stopPropagation()
-        const reqData = {
-            toFavorite: toFavorite,
-            vaultId: data._id,
-            username: username
-        }
-        const authToken = localStorage.getItem('authToken')
-        if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
-            navigate("/signin");
-            return;
-        }
-        try {
-            await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
-                { headers: {Authorization: `Bearer ${authToken}` }}
-            )
-            setFavoritism(vaultId, username, toFavorite)
-            const message = toFavorite
-                ? 'Vault favorited successfully'
-                : 'Vault unfavorited successfully'
-            notificationHandler(true, message, 'success')
-        } catch (err) {
-            notificationHandler(true, 'Unknown error. Please, try again', 'success')
-            console.warn(`Erro no favoritismo: ${err}`)
-        } finally {
-            closePopover(e)
-        }
+    e.stopPropagation()
+    const reqData = {
+        toFavorite: toFavorite,
+        vaultId: data._id,
+        username: username
     }
+    const authToken = localStorage.getItem('authToken')
+    if (!authToken) {
+        console.warn("No token found. Redirecting to signin.");
+        navigate("/signin");
+        return;
+    }
+    try {
+        await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
+            { headers: {Authorization: `Bearer ${authToken}` }}
+        )
+        setFavoritism(vaultId, username, toFavorite)
+        const message = toFavorite
+            ? 'Vault favorited successfully'
+            : 'Vault unfavorited successfully'
+        notificationHandler(true, message, 'success')
+    } catch (err) {
+        if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+          alert('Access denied or session expired. Please log in again.')
+          navigate('/signin')
+        } else {
+          notificationHandler(true, 'Unknown error. Please, try again', 'error')
+          console.warn(`Erro ao deletar vault: ${err}`)
+        }
+    } finally {
+        closePopover(e)
+    }
+  }
 
   const handleCredentialCopy = async (field) => {
     try {
@@ -65,69 +70,77 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
   }
 
   const handleVaultDelete = async (e, closePopover) => {
-        e.stopPropagation()
-        try {
-            let authToken = localStorage.getItem('authToken')
-            if (!authToken) {
-                console.warn("No token found. Redirecting to signin.");
-                navigate("/signin");
-                return;
-            }
-            const route = `${BACK_URL}/dashboard/vaults`
-            const config = {
-                headers: { Authorization: `Bearer ${authToken}` },
-                data: {
-                    ownerUsername: data.ownerUser,
-                    vaultId: vaultId,
-                    vaultTitle
-                }
-            }
-            await axios.delete(route, config)
-            deleteVault(vaultId)
-            notificationHandler(true, 'Vault deleted successfully', 'success')
-        } catch (err) {
-            notificationHandler(true, 'Unknown error. Please, try again', 'error')
-            console.warn(`Erro ao deletar vault: ${err}`)
-        } finally {
-            closePopover(e)
-            onHide()
-        }   
-  }
-
-  const handleRemoveSharing = (e, closePopover) => {
-        e.stopPropagation()
-        const authToken = localStorage.getItem('authToken')
+    e.stopPropagation()
+    try {
+        let authToken = localStorage.getItem('authToken')
         if (!authToken) {
             console.warn("No token found. Redirecting to signin.");
             navigate("/signin");
             return;
         }
-        const route = `${BACK_URL}/dashboard/vaults/sharing`
+        const route = `${BACK_URL}/dashboard/vaults`
         const config = {
             headers: { Authorization: `Bearer ${authToken}` },
             data: {
-                vaultId: data._id,
-                username
+                ownerUsername: data.ownerUser,
+                vaultId: vaultId,
+                vaultTitle
             }
         }
-        axios.delete(route, config)
-            .then(() => {
-                deleteVault(data._id)
-                notificationHandler(true, 'Vault sharing removed successfully', 'success')
-            })
-            .catch(err => {
-                if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
-                    notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
-                } else {
-                    notificationHandler(true, 'Unknown error. Please, try again', 'error')
-                    console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
-                }
-            })
-            .finally(() => { 
-                closePopover(e)
-                onHide()
-            })
+        await axios.delete(route, config)
+        deleteVault(vaultId)
+        notificationHandler(true, 'Vault deleted successfully', 'success')
+    } catch (err) {
+        if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+          alert('Access denied or session expired. Please log in again.')
+          navigate('/signin')
+        } else {
+          notificationHandler(true, 'Unknown error. Please, try again', 'error')
+          console.warn(`Erro ao deletar vault: ${err}`)
+        }
+    } finally {
+        closePopover(e)
+        onHide()
+    }   
+  }
+
+  const handleRemoveSharing = (e, closePopover) => {
+    e.stopPropagation()
+    const authToken = localStorage.getItem('authToken')
+    if (!authToken) {
+        console.warn("No token found. Redirecting to signin.");
+        navigate("/signin");
+        return;
     }
+    const route = `${BACK_URL}/dashboard/vaults/sharing`
+    const config = {
+        headers: { Authorization: `Bearer ${authToken}` },
+        data: {
+            vaultId: data._id,
+            username
+        }
+    }
+    axios.delete(route, config)
+      .then(() => {
+          deleteVault(data._id)
+          notificationHandler(true, 'Vault sharing removed successfully', 'success')
+      })
+      .catch(err => {
+          if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+            alert('Access denied or session expired. Please log in again.')
+            navigate('/signin')
+          } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
+              notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
+          } else {
+              notificationHandler(true, 'Unknown error. Please, try again', 'error')
+              console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
+          }
+      })
+      .finally(() => { 
+          closePopover(e)
+          onHide()
+      })
+  }
 
   function getVaultEllipsisModal() {
     const canShareVault = !(data.sharedUsers.some(u => u === username))
@@ -216,7 +229,10 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
       closePopover(e)
       notificationHandler(true, response.data.message, 'success')
     } catch (err) {
-      if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
+      if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+        alert('Access denied or session expired. Please log in again.')
+        navigate('/signin')
+      } else if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
         const msg = err.response.data.message
         alert(msg)
       } else {

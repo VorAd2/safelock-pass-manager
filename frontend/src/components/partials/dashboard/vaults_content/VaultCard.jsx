@@ -46,7 +46,13 @@ function VaultCard({
                 : 'Vault unfavorited successfully'
             notificationHandler(true, message, 'success')
         } catch (err) {
-            console.warn(`Erro no favoritismo: ${err}`)
+            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+                alert('Access denied or session expired. Please log in again.')
+                navigate('/signin')
+            } else {
+                notificationHandler(true, 'Unknown error. Please, try again', 'error')
+                console.warn(`Erro ao deletar vault: ${err}`)
+            }
         } finally {
             closePopover(e)
         }
@@ -79,7 +85,13 @@ function VaultCard({
             deleteVault(vault._id)
             notificationHandler(true, 'Vault deleted successfully', 'success')
         } catch (err) {
-            console.warn(`Erro ao deletar vault: ${err}`)
+            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+                alert('Access denied or session expired. Please log in again.')
+                navigate('/signin')
+            } else {
+                notificationHandler(true, 'Unknown error. Please, try again', 'error')
+                console.warn(`Erro ao deletar vault: ${err}`)
+            }
         } finally {
             closePopover(e)
         }   
@@ -107,11 +119,14 @@ function VaultCard({
                 notificationHandler(true, 'Vault sharing removed successfully', 'success')
             })
             .catch(err => {
-                if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
+                if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+                    alert('Access denied or session expired. Please log in again.')
+                    navigate('/signin')
+                } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
                     notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
                 } else {
                     notificationHandler(true, 'Unknown error. Please, try again', 'error')
-                    console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
+                    console.warn(`Erro ao deletar vault: ${err}`)
                 }
             })
             .finally(() => { 

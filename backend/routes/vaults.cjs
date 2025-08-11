@@ -84,7 +84,11 @@ module.exports = (db) => {
     })
 
     router.patch('/favoritism', authenticateToken, async (req, res) => {
-        const {toFavorite, vaultId, username} = req.body
+        const {username} = req.body
+        if (req.userData.username !== username) {
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+        }
+        const {toFavorite, vaultId} = req.body
         try {
             await VaultModel.favoritism(toFavorite, vaultId, username, db)
             return res.status(200).json({message: 'Favoritismo de vault atualizado'})
@@ -95,7 +99,11 @@ module.exports = (db) => {
     })
 
     router.patch('/sharing', authenticateToken, async (req, res) => {
-        const {ownerUsername, senderUsername, vaultId, vaultTitle, recipientUsername} = req.body
+        const { ownerUsername } = req.body
+        if (req.userData.username !== ownerUsername) {
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+        }
+        const {senderUsername, vaultId, vaultTitle, recipientUsername} = req.body
         if (ownerUsername !== senderUsername) {
             const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
             return res.status(403).json({message: msg})
@@ -125,8 +133,12 @@ module.exports = (db) => {
     })
 
     router.delete('/', authenticateToken, async (req, res) => {
+        const { ownerUsername } = req.body
+        if (req.userData.username !== ownerUsername) {
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+        }
         try {
-            const {ownerUsername, vaultId, vaultTitle} = req.body
+            const {vaultId, vaultTitle} = req.body
             const vault = await VaultModel.getVaultById(db, vaultId)
             const sharedUsers = vault.sharedUsers
             await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
@@ -149,6 +161,9 @@ module.exports = (db) => {
     //Excluir as credenciais do user que fez unlink
     router.delete('/sharing', authenticateToken, async (req, res) => {
         const {vaultId, username} = req.body
+        if (req.userData.username !== username) {
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+        }
         try {
             const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
             if (thereWasVault) {

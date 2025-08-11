@@ -61,8 +61,12 @@ module.exports = (db) => {
         }
     })
 
-    router.delete('/', async (req, res) => {
-        const { vaultId, vaultTitle, credential, username } = req.body
+    router.delete('/', authenticateToken, async (req, res) => {
+        const {username} = req.body
+        if (req.userData.username !== username) {
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+        }
+        const {vaultId, vaultTitle, credential} = req.body
         if (credential.credentialOwner !== username) {
             return res.status(403).json({message: "You can't delete other user's credentials", code: 'CREDENTIAL_ACCESS_DENIED'})
         }
