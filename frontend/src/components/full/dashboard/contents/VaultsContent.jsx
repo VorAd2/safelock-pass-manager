@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios'
+import backCodes from '../../../../back_codes'
 import { useState, useEffect } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useNavigate } from 'react-router-dom'
 import { FloatingBox, VaultPanel, NewVaultModal, VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
+
+const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 function VaultsContent() {
@@ -17,7 +21,9 @@ function VaultsContent() {
   const [currentVaultData, setCurrentVaultData] = useState(null)
   const { username, notificationHandler } = useOutletContext()
 
-  const { vaults, getFavorites, getShared } = useVaults()
+  const navigate = useNavigate()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const { vaults, setAllVaults, getFavorites, getShared } = useVaults()
   const [vaultsFilter, setVaultsFilter] = useState('all') 
 
   const getVaultData = (vaultId) => {
@@ -36,6 +42,34 @@ function VaultsContent() {
 
   const handleVaultEllpsisClick = (vaultId) => {
     setCurrentVaultData(getVaultData(vaultId))
+  }
+
+  const refreshVaults = async () => {
+    console.log('refresh vaults')
+    const authToken = localStorage.getItem("authToken")
+    if (!authToken) {
+      alert("Access denied or session expired. Please, log in again.")
+      navigate("/signin")
+      return
+    }
+    setIsRefreshing(true)
+    try {
+      const config = {headers: {Authorization: `Bearer ${authToken}`}}
+      const response = await axios.get(`${backUrl}/dashboard/${username}`, config)
+      setAllVaults(response.data)
+      setIsRefreshing(false)
+    } catch (err) {
+      if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+        alert("Access denied or session expired. Please, log in again.")
+        localStorage.removeItem("authToken")
+        navigate("/signin");
+      } else if (err.response && err.response.status === 204) {
+        console.log("Nenhum vault encontrado para este usuário.")
+        setAllVaults([])
+      } else {
+        alert("Ocorreu um erro ao carregar os dados do cofre.")
+      }
+    }
   }
 
   function getVaultsSubgroup() {
@@ -73,7 +107,6 @@ function VaultsContent() {
       <div className="p-3" style={{ width: '25%', minWidth: '250px' }}>
         <FloatingBox setVaultsFilter={setVaultsFilter} />
       </div>
-
       <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
         <VaultPanel 
           username={username}
@@ -84,15 +117,15 @@ function VaultsContent() {
           vaultsFilter={vaultsFilter}
           vaultsSubgroup={getVaultsSubgroup()}
           setSendModalVisibleState={setSendModalVisibleState}
+          refreshVaults={refreshVaults}
+          isRefreshing={isRefreshing}
         />
-
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
             onCreate={onConfirmNewVaultModal}
             ownerUser={username} 
           />
         }
-
         <VaultInfoModal 
           data={currentVaultData} 
           username={username}
@@ -103,7 +136,6 @@ function VaultsContent() {
           onSendModal={() => {setVaultInfoModalVisible(false); setSendModalVisibleState({show: true, fromVaultInfo: true})} }
           onCredentialClick={(credential) => {setVaultInfoModalVisible(false); setCredentialInfoModalState({visible: true, credential})} }
         />
-
         <CredentialInfoModal
           modalState={credentialInfoModalState}
           setModalState={setCredentialInfoModalState}
@@ -111,7 +143,6 @@ function VaultsContent() {
           notificationHandler={notificationHandler}
           onHide={() => {setCredentialInfoModalState({visible: false, credential: null}); setVaultInfoModalVisible(true)} }
         />
-
         <NewCredentialModal
           vaultId={currentVaultData && currentVaultData._id}
           vaultTitle={currentVaultData && currentVaultData.title}
@@ -132,7 +163,6 @@ function VaultsContent() {
           }
           credentialOwner={username}
         />        
-
         <SendVaultModal 
           vaultData={currentVaultData}
           username={username}
@@ -149,7 +179,6 @@ function VaultsContent() {
             } 
           }
         />
-
       </div>
     </div>
   );

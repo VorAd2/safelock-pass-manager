@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
-const { io, connectedUsers } = require('../index.cjs');
+const { connectedUsers } = require('../index.cjs');
 
 const VaultModel = require('../models/Vault.cjs');
 const CredentialModel = require('../models/Credential.cjs'); 

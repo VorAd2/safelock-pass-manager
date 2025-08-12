@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
-const { io, connectedUsers } = require('../index.cjs');
+const { connectedUsers } = require('../index.cjs');
 
 const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
@@ -99,11 +99,11 @@ module.exports = (db) => {
     })
 
     router.patch('/sharing', authenticateToken, async (req, res) => {
-        const { ownerUsername } = req.body
-        if (req.userData.username !== ownerUsername) {
+        const { senderUsername } = req.body
+        if (req.userData.username !== senderUsername) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
-        const {senderUsername, vaultId, vaultTitle, recipientUsername} = req.body
+        const {ownerUsername, vaultId, vaultTitle, recipientUsername} = req.body
         if (ownerUsername !== senderUsername) {
             const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
             return res.status(403).json({message: msg})

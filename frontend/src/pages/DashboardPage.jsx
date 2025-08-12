@@ -4,6 +4,7 @@ import { socket, registerSocket } from '../socket'
 import {Sidebar, DashboardHeader, Notification } from "../components";
 
 import axios from "axios";
+import backCodes from "../back_codes";
 import { useVaults } from "../components/context/useVaults";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 const titlesMap = {
@@ -41,44 +42,43 @@ function DashboardPage({username}) {
     }, 3500)
   }
 
-  useEffect(() => {
-    const fetchVaults = async () => {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        console.warn("Nenhum token encontrado. Redirecionando para login.");
+  const fetchVaults = async () => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      console.warn("Nenhum token encontrado. Redirecionando para login.");
+      navigate("/signin");
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await axios.get(backUrl + "/dashboard/" + username, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      response.status === 200 && setAllVaults(response.data)
+      setLoading(false);
+      registerSocket(username)
+    } catch (err) {
+      console.error("ERROR:", err)
+      console.error(err.response)
+      setLoading(false);
+      if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
+        alert(
+          "Access denied or session expired. Please, log in again."
+        )
+        localStorage.removeItem("authToken")
         navigate("/signin");
-        setLoading(false);
-        return;
+      } else if (err.response && err.response.status === 204) {
+        console.log("Nenhum vault encontrado para este usuário.")
+        setAllVaults([])
+      } else {
+        alert("Ocorreu um erro ao carregar os dados do cofre.")
       }
-      try {
-        const response = await axios.get(backUrl + "/dashboard/" + username, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        response.status === 200 && setAllVaults(response.data)
-        console.log("Vaults carregados:", response.data, response.status)
-        setLoading(false);
-        registerSocket(username)
-      } catch (err) {
-        console.error("ERROR:", err)
-        console.error(err.response)
-        setLoading(false);
-        if (err.response && err.response.status === 403) {
-          alert(
-            "Acesso negado ou sessão expirada. Por favor, faça login novamente."
-          )
-          localStorage.removeItem("authToken")
-          navigate("/signin");
-        } else if (err.response && err.response.status === 204) {
-          console.log("Nenhum vault encontrado para este usuário.")
-          setAllVaults([])
-          return
-        } else {
-          alert("Ocorreu um erro ao carregar os dados do cofre.")
-        }
-      }
-    };
+    }
+  };
+
+  useEffect(() => {
     fetchVaults();
     return () => {
       socket.off('vaultShared')
