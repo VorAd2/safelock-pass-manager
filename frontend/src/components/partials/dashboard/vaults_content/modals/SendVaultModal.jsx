@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useVaults } from "../../../../context/useVaults"
 import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'; 
 import { Modal, Form } from "react-bootstrap"
 import { useState, useEffect } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
@@ -9,7 +10,8 @@ import backCodes from "../../../../../back_codes"
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-function SendVaultModal({ vaultData, username, notificationHandler, visibleState, onHide }) {
+function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }) {
+    const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [recipientUsername, setRecipientUsername] = useState('')
     const [errMsg, setErrMsg] = useState('')
     vaultData = vaultData ?? {title: '', vaultId: '', ownerUser: ''}

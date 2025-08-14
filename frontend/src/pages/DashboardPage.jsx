@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { socket, registerSocket } from '../socket'
 import {Sidebar, DashboardHeader, Notification } from "../components";
-
 import axios from "axios";
 import backCodes from "../back_codes";
 import { useVaults } from "../components/context/useVaults";
+
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 const titlesMap = {
   vaults: "Vaults",

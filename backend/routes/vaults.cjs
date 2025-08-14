@@ -10,6 +10,7 @@ const CredentialModel = require('../models/Credential.cjs');
 
 function emitSocketEvent(data) {
     const {recipientUsername, vaultId, senderUsername, ownerUsername, vaultTitle, sharedUsers, event} = data
+    const { allUsers, emitter } = data
     switch (event) {
         case 'vaultShared':
             const recipientSocket = connectedUsers.get(recipientUsername);
@@ -29,6 +30,19 @@ function emitSocketEvent(data) {
                         vaultId,
                         emitter: ownerUsername,
                         message: `The vault ${vaultTitle} (${ownerUsername}) shared with you has been deleted`
+                    });
+                }
+            }
+            break
+        case 'vaultSharingRemoved':
+            const array = [...allUsers.sharedUsers, allUsers.vaultOwner];
+            for (const us of array) {
+                const recipientSocket = connectedUsers.get(us)
+                if (recipientSocket && us !== emitter) {
+                    recipientSocket.emit('vaultSharingRemoved', {
+                        vaultId,
+                        emitter: emitter,
+                        message: `${emitter} has left the shared vault ${vaultTitle}. All his relative credentials were deleted.`,
                     });
                 }
             }
@@ -142,7 +156,7 @@ module.exports = (db) => {
             const vault = await VaultModel.getVaultById(db, vaultId)
             const sharedUsers = vault.sharedUsers
             await UserModel.removeVault(db, vaultId, ownerUsername, sharedUsers)
-            await CredentialModel.deleteAllCredentials(db, vaultId)
+            await CredentialModel.deleteAllVaultCredentials(db, vaultId)
             await VaultModel.deleteVault(db, vaultId)
             emitSocketEvent({
                 vaultId,
@@ -158,9 +172,8 @@ module.exports = (db) => {
         }
     })
 
-    //Excluir as credenciais do user que fez unlink
     router.delete('/sharing', authenticateToken, async (req, res) => {
-        const {vaultId, username} = req.body
+        const {vaultId, vaultTitle, username} = req.body
         if (req.userData.username !== username) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
@@ -168,6 +181,15 @@ module.exports = (db) => {
             const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
             if (thereWasVault) {
                 await VaultModel.removeVaultSharing(db, vaultId, username)
+                await CredentialModel.deleteUnsharedCredentials(db, vaultId, username)
+                const allUsers = await VaultModel.getSharedUsersAndOwner(db, vaultId)
+                emitSocketEvent({
+                    vaultId,
+                    vaultTitle,
+                    allUsers,
+                    emitter: username,
+                    event: 'vaultSharingRemoved'
+                })
                 return res.status(200).json({message: 'Vault sharing removed successfully'})
             } else {
                 return res.status(404).json({code: 'VAULT_SHARING_NOT_FOUND'})

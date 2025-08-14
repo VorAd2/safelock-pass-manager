@@ -20,12 +20,14 @@ const BellPopover = () => {
 
     socket.on('vaultShared', (data) => addNotification(data, 'vault'))
     socket.on('vaultDeleted', (data) => addNotification(data, 'vault'))
+    socket.on('vaultSharingRemoved', (data) => addNotification(data, 'vault'))
     socket.on('credentialAdded', (data) => addNotification(data, 'credential'))
     socket.on('credentialDeleted', (data) => addNotification(data, 'credential'))
 
     return () => {
       socket.off('vaultShared')
       socket.off('vaultDeleted')
+      socket.off('vaultSharingRemoved')
       socket.off('credentialAdded')
       socket.off('credentialDeleted')
     }

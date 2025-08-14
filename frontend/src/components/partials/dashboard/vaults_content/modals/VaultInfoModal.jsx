@@ -1,6 +1,7 @@
 import { useVaults } from "../../../../context/useVaults";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode'; 
 import { Modal } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
@@ -11,7 +12,8 @@ import backCodes from "../../../../../back_codes";
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
+const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
+  const username = jwtDecode(localStorage.getItem('authToken')).userData.username
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
   const vaultTitle = data.title;
   const vaultId = data._id;
@@ -106,6 +108,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
 
   const handleRemoveSharing = (e, closePopover) => {
     e.stopPropagation()
+    
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
         console.warn("No token found. Redirecting to signin.");
@@ -117,6 +120,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
         headers: { Authorization: `Bearer ${authToken}` },
         data: {
             vaultId: data._id,
+            vaultTitle,
             username
         }
     }
@@ -195,7 +199,7 @@ const VaultInfoModal = ({ data, username, notificationHandler, show, onHide, onC
                             >
                                 <div className={`d-flex align-items-center`} style={exclusionStyle}>
                                     {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
-                                    <span>{canDeleteVault ? 'Delete' : 'Unlink'}</span>
+                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
                                 </div>
                             </button>
               </>

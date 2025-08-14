@@ -29,7 +29,7 @@ class CredentialModel {
         return { 'credentialId': result.insertedId, 'newCredential': newCredential, 'vaultExists': true };
     }
 
-    async deleteAllCredentials(db, vaultId) {
+    async deleteAllVaultCredentials(db, vaultId) {
         const filter = {vaultId: vaultId}
         await db.collection('credentials').deleteMany(filter)
     }
@@ -37,6 +37,11 @@ class CredentialModel {
     async deleteCredential(db, credential) {
         const filter = {_id: new ObjectId(String(credential._id))}
         await db.collection('credentials').deleteOne(filter)
+    }
+
+    async deleteUnsharedCredentials(db, vaultId, username) {
+        const filter = { $and: [{vaultId: vaultId}, {credentialOwner: username}] }
+        await db.collection('credentials').deleteMany(filter)
     }
 
 }

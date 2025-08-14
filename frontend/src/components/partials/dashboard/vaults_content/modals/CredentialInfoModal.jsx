@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; 
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import {Modal, Form} from 'react-bootstrap';
@@ -11,7 +12,8 @@ import { useVaults } from '../../../../context/useVaults';
 import backCodes from '../../../../../back_codes';
 
 
-function CredentialInfoModal({modalState, username, notificationHandler, onHide}) {
+function CredentialInfoModal({modalState, notificationHandler, onHide}) {
+    const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     const credential = modalState.credential
     const title = credential && credential.credentialTitle
     const owner = credential && credential.credentialOwner

@@ -99,6 +99,7 @@ function VaultCard({
 
     const handleRemoveSharing = (e, closePopover) => {
         e.stopPropagation()
+        console.log(`Removing sharing: ${vault._id} for user ${username}`)
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
             console.warn("No token found. Redirecting to signin.");
@@ -110,6 +111,7 @@ function VaultCard({
             headers: { Authorization: `Bearer ${authToken}` },
             data: {
                 vaultId: vault._id,
+                vaultTitle,
                 username
             }
         }
@@ -126,7 +128,7 @@ function VaultCard({
                     notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
                 } else {
                     notificationHandler(true, 'Unknown error. Please, try again', 'error')
-                    console.warn(`Erro ao deletar vault: ${err}`)
+                    console.warn(`Erro ao deletar sharing de vault: ${err}`)
                 }
             })
             .finally(() => { 
@@ -188,7 +190,7 @@ function VaultCard({
                             >
                                 <div className={`d-flex align-items-center`} style={exclusionStyle}>
                                     {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
-                                    <span>{canDeleteVault ? 'Delete' : 'Unlink'}</span>
+                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
                                 </div>
                             </button>
                         </>

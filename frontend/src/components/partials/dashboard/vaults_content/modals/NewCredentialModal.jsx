@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; 
 import backCodes from '../../../../../back_codes';
 import {Modal, Form} from 'react-bootstrap';
 import { EyeIcon, EyeSlashIcon } from '../../../../../assets/dashboard';
@@ -10,7 +11,8 @@ import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide, credentialOwner}) => {
+const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide }) => {
+    const credentialOwner = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [credentialTitle, setTitle] = useState('')
     const [credentialEmail, setEmail] = useState('')
     const [credentialUsername, setUsername] = useState('')

@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode'; 
 import { Container, Row, Col, Spinner} from 'react-bootstrap';
 import { PlusIcon } from '../../../../assets/dashboard';
 import { RefreshIcon } from '../../../../assets/shared';
@@ -7,11 +8,12 @@ import styles from '../../../../styles/VaultsContent.module.css';
 
 
 function VaultPanel({ 
-    username, modalVisibleCallback, vaultCardClick, 
+    modalVisibleCallback, vaultCardClick, 
     vaultEllipsisClick, notificationHandler, vaultsFilter,
     vaultsSubgroup, setSendModalVisibleState, refreshVaults,
     isRefreshing }) 
 {
+    const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     let emptyPanelText
     switch (vaultsFilter) {
         case 'all':

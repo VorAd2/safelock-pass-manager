@@ -109,7 +109,6 @@ function VaultsContent() {
       </div>
       <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
         <VaultPanel 
-          username={username}
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultId) => handleVaultClick(vaultId)}
           vaultEllipsisClick={handleVaultEllpsisClick}
@@ -123,12 +122,10 @@ function VaultsContent() {
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
             onCreate={onConfirmNewVaultModal}
-            ownerUser={username} 
           />
         }
         <VaultInfoModal 
           data={currentVaultData} 
-          username={username}
           notificationHandler={notificationHandler}
           show={vaultInfoModalVisible} 
           onHide={() => setVaultInfoModalVisible(false)}
@@ -139,7 +136,6 @@ function VaultsContent() {
         <CredentialInfoModal
           modalState={credentialInfoModalState}
           setModalState={setCredentialInfoModalState}
-          username={username}
           notificationHandler={notificationHandler}
           onHide={() => {setCredentialInfoModalState({visible: false, credential: null}); setVaultInfoModalVisible(true)} }
         />
@@ -158,14 +154,11 @@ function VaultsContent() {
                   notificationHandler(true, 'Credential added successfully!', 'success');
                 }
               }, 200);
-              
             }
           }
-          credentialOwner={username}
         />        
         <SendVaultModal 
           vaultData={currentVaultData}
-          username={username}
           notificationHandler={notificationHandler}
           visibleState={sendModalVisibleState}
           onHide={(fromVaultInfo) => {

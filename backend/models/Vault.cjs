@@ -45,7 +45,7 @@ class VaultModel {
         return result
     }
 
-    async  removeCredential(db, vaultId, credential) {
+    async removeCredential(db, vaultId, credential) {
         const filter = { _id: new ObjectId(String(vaultId)) };
         const update = {
             $pull: {
@@ -88,10 +88,13 @@ class VaultModel {
     }
 
     async removeVaultSharing(db, vaultId, recipientUsername) {
-        const filter = {_id: new ObjectId(String(vaultId))}
-        const update = {$pull: {sharedUsers: recipientUsername}}
-        const result = await db.collection('user_vaults').updateOne(filter, update)
-        return result.modifiedCount > 0;
+        const filter1 = {_id: new ObjectId(String(vaultId))}
+        const update1 = {$pull: {sharedUsers: recipientUsername}}
+        const result1 = await db.collection('user_vaults').updateOne(filter1, update1)
+        const filter2 = {_id: new ObjectId(String(vaultId))}
+        const update2 = {$pull: {credentials: {credentialOwner: recipientUsername}}}
+        await db.collection('user_vaults').updateOne(filter2, update2)
+        return result1.modifiedCount > 0;
     }
 
 }

@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode'; 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,7 +11,8 @@ import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-const NewVaultModal = ({ onClose, onCreate, ownerUser }) => {
+const NewVaultModal = ({ onClose, onCreate }) => {
+    const ownerUser = jwtDecode(localStorage.getItem('authToken')).userData.username
     const navigate = useNavigate()
     const { addVault, isDuplicateVault } = useVaults()
     const [title, setTitle] = useState('')
