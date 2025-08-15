@@ -6,7 +6,7 @@ import { CustomCheckbox, MiniModal } from '../../../shared';
 import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import { RemoveIcon } from '../../../../assets/shared';
 import styles from '../../../../styles/VaultsContent.module.css';
-
+import { AvatarColorManager } from '../../../shared';
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
 
@@ -14,6 +14,9 @@ function VaultCard({
     vault, vaultCardClick, username, 
     ellipsisClick, notificationHandler, setSendModalVisibleState
 }) {
+    const avatarBackColor = vault.ownerUser === username 
+        ? 'var(--lessdark-blue-color)' 
+        : AvatarColorManager.getAvatarBgColor(vault.ownerUser)
     const vaultTitle = vault.title
     const toFavorite = !(vault.favoritedBy.some(u => u === username ))
     const { setFavoritism, deleteVault } = useVaults()
@@ -82,7 +85,7 @@ function VaultCard({
                 }
             }
             await axios.delete(route, config)
-            deleteVault(vault._id)
+            deleteVault(vault._id, vault.ownerUser)
             notificationHandler(true, 'Vault deleted successfully', 'success')
         } catch (err) {
             if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
@@ -117,7 +120,7 @@ function VaultCard({
         }
         axios.delete(route, config)
             .then(() => {
-                deleteVault(vault._id)
+                deleteVault(vault._id, vault.ownerUser)
                 notificationHandler(true, 'Vault sharing removed successfully', 'success')
             })
             .catch(err => {
@@ -200,20 +203,19 @@ function VaultCard({
         )
     }
 
+
     return (
         <div className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>
             <div className={styles.topBar}>
                 <CustomCheckbox onClick={handleCheckboxClick}/>
                 {getEllipsisModal()}
             </div>
-
             <div className={styles.iconArea}>
                 <VaultIcon className={styles.vaultIcon} />
             </div>
-
             <div className={styles.bottomRow}>
                 <span className={styles.vaultName}>{vaultTitle}</span>
-                <div className={styles.avatarCircle}>
+                <div className={styles.avatarCircle} style={{ backgroundColor: avatarBackColor }}>
                     <UserAvatar />
                 </div>
             </div>

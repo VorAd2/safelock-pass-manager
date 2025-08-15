@@ -6,7 +6,8 @@ import { Modal } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
-import styles from "../../../../../styles/VaultModal.module.css"; 
+import styles from "../../../../../styles/VaultModal.module.css";
+import {AvatarColorManager} from "../../../../shared"; 
 import backCodes from "../../../../../back_codes";
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
@@ -15,6 +16,7 @@ const BACK_URL = import.meta.env.VITE_BACKEND_URL
 const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
   const username = jwtDecode(localStorage.getItem('authToken')).userData.username
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
+  const avatarBackColor = data.ownerUser === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(data.ownerUser);
   const vaultTitle = data.title;
   const vaultId = data._id;
   const credentials = data ? data.credentials : [];
@@ -90,7 +92,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
             }
         }
         await axios.delete(route, config)
-        deleteVault(vaultId)
+        deleteVault(vaultId, data.ownerUser)
         notificationHandler(true, 'Vault deleted successfully', 'success')
     } catch (err) {
         if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
@@ -108,7 +110,6 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
 
   const handleRemoveSharing = (e, closePopover) => {
     e.stopPropagation()
-    
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
         console.warn("No token found. Redirecting to signin.");
@@ -126,7 +127,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     }
     axios.delete(route, config)
       .then(() => {
-          deleteVault(data._id)
+          deleteVault(data._id, data.ownerUser)
           notificationHandler(true, 'Vault sharing removed successfully', 'success')
       })
       .catch(err => {
@@ -306,7 +307,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
           {getVaultEllipsisModal()}
           <Modal.Title className="mb-0 me-3 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
           <div className="d-flex align-items-center">
-            <UserAvatar className={styles.userAvatar}/>
+            <UserAvatar className={styles.userAvatar} style={{backgroundColor: avatarBackColor}}/>
             {data.ownerUser}
           </div>
         </div> 
@@ -333,7 +334,9 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
         <hr className="m-0" />
 
         <div className={styles.panelContent}>
-          {credentials.map((credential) => (
+          {credentials.map((credential) => { 
+            const avatarBackColor = credential.credentialOwner === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(credential.credentialOwner);
+            return (
             <div className={styles.gridRow} key={credential._id} 
             onClick={() => onCredentialClick(credential)}
             >
@@ -342,7 +345,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
               <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
               <div className={`${styles.truncate} fs-6`}>
                 <div>
-                  <UserAvatar className={styles.userAvatar}/>
+                  <UserAvatar className={styles.userAvatar} style={{ backgroundColor: avatarBackColor }}/>
                 </div>
                 {credential.credentialOwner}
               </div>
@@ -350,7 +353,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
                 {getCredentialEllipsisModal(credential)}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </Modal.Body>
     </Modal>

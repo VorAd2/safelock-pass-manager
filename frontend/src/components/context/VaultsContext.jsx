@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState } from "react";
+import { AvatarColorManager } from "../shared";
 
 export const VaultsContext = createContext();
 
@@ -7,9 +8,15 @@ export function VaultsProvider({ children }) {
   const [vaults, setVaults] = useState([])
 
   const addVault = (vault) => setVaults((prev) => [...prev, vault])
-  const deleteVault = (vaultId) => {
+
+  const deleteVault = (vaultId, vaultOwner) => {
     setVaults((prev) => prev.filter(vault => vault._id !== vaultId));
+    const ownerStillExists = vaults.find(vault => vault.ownerUser === vaultOwner)
+    if (!ownerStillExists) {
+      AvatarColorManager.removeUserColor(vaultOwner);
+    }
   }
+
   const isDuplicateVault = (vaultTitle, ownerUser) => {
     for (let vault of vaults) {
       if (vault.title === vaultTitle && vault.ownerUser === ownerUser) return true;
