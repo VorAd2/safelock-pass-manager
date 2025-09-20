@@ -176,6 +176,7 @@ module.exports = (db) => {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
         try {
+            //
             const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
             if (thereWasVault) {
                 await VaultModel.removeVaultSharing(db, vaultId, username)
