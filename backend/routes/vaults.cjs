@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
 const { connectedUsers } = require('../index.cjs');
-
 const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
@@ -52,7 +51,6 @@ function emitSocketEvent(data) {
     }
     
 }
-
 
 module.exports = (db) => {
     router.get('/', (req, res) => {

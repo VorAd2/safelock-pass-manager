@@ -52,7 +52,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
           alert('Access denied or session expired. Please log in again.')
           navigate('/signin')
         } else {
-          notificationHandler(true, 'Unknown error. Please, try again', 'error')
+          notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
           console.warn(`Erro ao deletar vault: ${err}`)
         }
     } finally {
@@ -99,7 +99,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
           alert('Access denied or session expired. Please log in again.')
           navigate('/signin')
         } else {
-          notificationHandler(true, 'Unknown error. Please, try again', 'error')
+          notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
           console.warn(`Erro ao deletar vault: ${err}`)
         }
     } finally {
@@ -135,9 +135,9 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
             alert('Access denied or session expired. Please log in again.')
             navigate('/signin')
           } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
-              notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
+              notificationHandler(true, 'Vault sharing not found. Please, try again or refresh your vaults.', 'danger')
           } else {
-              notificationHandler(true, 'Unknown error. Please, try again', 'error')
+              notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
               console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
           }
       })
@@ -273,7 +273,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
                   <span>Copy password</span>
                 </div>
               </button>
-              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(credential.credentialOwner); closePopover(e); }}>
+              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(credential.credentialUsername); closePopover(e); }}>
                 <div className="d-flex align-items-center fs-9">
                   <CopyIcon className='me-2'/>
                   <span>Copy username</span>

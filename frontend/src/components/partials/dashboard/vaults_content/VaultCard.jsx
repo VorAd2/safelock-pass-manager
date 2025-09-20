@@ -53,7 +53,7 @@ function VaultCard({
                 alert('Access denied or session expired. Please log in again.')
                 navigate('/signin')
             } else {
-                notificationHandler(true, 'Unknown error. Please, try again', 'error')
+                notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
                 console.warn(`Erro ao deletar vault: ${err}`)
             }
         } finally {
@@ -92,7 +92,7 @@ function VaultCard({
                 alert('Access denied or session expired. Please log in again.')
                 navigate('/signin')
             } else {
-                notificationHandler(true, 'Unknown error. Please, try again', 'error')
+                notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
                 console.warn(`Erro ao deletar vault: ${err}`)
             }
         } finally {
@@ -128,9 +128,9 @@ function VaultCard({
                     alert('Access denied or session expired. Please log in again.')
                     navigate('/signin')
                 } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
-                    notificationHandler(true, 'Vault sharing not found. Please, try again or verify your vaults', 'error')
+                    notificationHandler(true, 'Vault sharing not found. Please, try again or refresh your vaults.', 'danger')
                 } else {
-                    notificationHandler(true, 'Unknown error. Please, try again', 'error')
+                    notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
                     console.warn(`Erro ao deletar sharing de vault: ${err}`)
                 }
             })
