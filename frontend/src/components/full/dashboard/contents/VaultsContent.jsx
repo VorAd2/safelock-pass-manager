@@ -35,6 +35,12 @@ function VaultsContent() {
   }
 
   const handleVaultClick = (vaultId) => {
+    const authToken = localStorage.getItem('authToken')
+    if (!authToken) {
+      alert('No token found. Redirecting...')
+      navigate('/signin')
+      return
+    }
     let data =  getVaultData(vaultId)
     setCurrentVaultData(data)
     setVaultInfoModalVisible(true)

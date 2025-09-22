@@ -31,6 +31,18 @@ function DashboardPage({username}) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const handleStorageChange = (event) => {
+    if (event.key === "authToken") {
+      if (!event.newValue) {
+        alert('Token removed. Redirecting...')
+        navigate('/signin')
+      } else {
+        alert('New authentication detected. Redirecting...')
+        navigate('/signin')
+      }
+    }
+  };
+
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
@@ -61,28 +73,31 @@ function DashboardPage({username}) {
       registerSocket(username)
     } catch (err) {
       console.warn("ERROR:", err)
-      console.warn(err.response)
       setLoading(false);
       if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
         alert(
           "Access denied or session expired. Please, log in again."
         )
         localStorage.removeItem("authToken")
-        navigate("/signin");
+        navigate("/signin")
       } else if (err.response && err.response.status === 204) {
         console.log("Nenhum vault encontrado para este usuário.")
         setAllVaults([])
       } else {
-        alert("Ocorreu um erro ao carregar os dados do cofre.")
+        alert("Unknown error loading data. Please, refresh the page")
+        localStorage.removeItem("authToken")
+        navigate("/signin")
       }
     }
   };
 
   useEffect(() => {
+    window.addEventListener('storage', handleStorageChange)
     fetchVaults();
     return () => {
       socket.off('vaultShared')
       socket.off('vaultDeleted')
+      window.removeEventListener('storage', handleStorageChange)
     }
   }, [username]);
 
@@ -96,7 +111,7 @@ function DashboardPage({username}) {
     : titlesMap[currentPathSegment];
 
 
-
+    
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />

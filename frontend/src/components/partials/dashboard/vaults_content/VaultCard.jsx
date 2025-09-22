@@ -35,9 +35,9 @@ function VaultCard({
         }
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
-            navigate("/signin");
-            return;
+            alert('No token found. Redirecting...')
+            navigate("/signin")
+            return
         }
         try {
             await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, data,
@@ -71,9 +71,9 @@ function VaultCard({
         try {
             let authToken = localStorage.getItem('authToken')
             if (!authToken) {
-                console.warn("No token found. Redirecting to signin.");
-                navigate("/signin");
-                return;
+                alert('No token found. Redirecting...')
+                navigate("/signin")
+                return
             }
             const route = `${BACK_URL}/dashboard/vaults`
             const config = {
@@ -105,9 +105,9 @@ function VaultCard({
         console.log(`Removing sharing: ${vault._id} for user ${username}`)
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
-            navigate("/signin");
-            return;
+            alert('No token found. Redirecting...')
+            navigate("/signin")
+            return
         }
         const route = `${BACK_URL}/dashboard/vaults/sharing`
         const config = {

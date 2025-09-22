@@ -14,7 +14,7 @@ const io = new Server(server, {
     credentials: true
   }
 });
-
+const authenticateToken = require('./middlewares/authMiddleware.cjs');
 
 app.use(cors({
   origin: process.env.FRONT_URI,
@@ -24,7 +24,7 @@ app.use(cors({
 }));
 app.use(express.json()); 
 
-//lógica de conexão dos sockets
+
 const connectedUsers = new Map();
 io.on('connection', (socket) => {
   console.log('Novo socket conectado');
@@ -57,7 +57,6 @@ module.exports = { io, connectedUsers };
         await client.connect();
         console.log('MongoDB conectado');
         db = client.db('safelock-pass-manager'); 
-
         const signinRouter = require('./routes/signin.cjs')(db);
         const signupRouter = require('./routes/signup.cjs')(db);
         const dashboardRouter = require('./routes/dashboard.cjs')(db);
@@ -66,11 +65,15 @@ module.exports = { io, connectedUsers };
         
         app.use('/signin', signinRouter);
         app.use('/signup', signupRouter);
-        app.use('/dashboard', dashboardRouter);
-        app.use('/dashboard/vaults', vaultsRouter);
-        app.use('/dashboard/vaults/credentials', credentialsRouter);
-        app.use('/', homeRouter);
 
+
+        //Comentario
+        app.use('/dashboard', authenticateToken, dashboardRouter);
+        app.use('/dashboard/vaults', authenticateToken, vaultsRouter);
+        app.use('/dashboard/vaults/credentials', authenticateToken, credentialsRouter);
+        //Comentario
+
+        app.use('/', homeRouter);
         app.get('/', (req, res) => res.send('API funcionando!'));
         server.listen(port, () => console.log('Servidor na porta ' + port));
     } catch (err) {

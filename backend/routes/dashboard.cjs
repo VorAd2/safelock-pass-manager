@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middlewares/authMiddleware.cjs');
 const VaultModel = require('../models/Vault.cjs');
+const { default: errorCodes } = require('../errorCodes');
 
 module.exports = (db) => {
-    router.get('/:username', authenticateToken, async (req, res) => {
+    router.get('/:username', async (req, res) => {
         const { username } = req.params;
         if (req.userData.username !== username) {
             console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.' });
+            return res.status(403).json({ message: 'Access denied for the requested profile.', code: errorCodes.ACCESS_DENIED});
         }
         let vaultsArray = [];
         try {

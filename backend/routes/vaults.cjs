@@ -57,7 +57,7 @@ module.exports = (db) => {
         res.json({ message: 'Get na API de Vault!' });
     });
 
-    router.get('/:username', authenticateToken, async (req, res) => {
+    router.get('/:username', async (req, res) => {
         const { username } = req.params;
         if (req.userData.username !== username) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
@@ -74,8 +74,9 @@ module.exports = (db) => {
         }
     });
 
-    router.post('/', authenticateToken, async (req, res) => {
+    router.post('/', async (req, res) => {
         const {ownerUser, title, pin, desc} = req.body.newVaultData
+        console.log(`Log em postVaults: ${req.userData.username}  ${ownerUser}`)
         if (req.userData.username !== ownerUser) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
         }
@@ -95,7 +96,7 @@ module.exports = (db) => {
         }
     })
 
-    router.patch('/favoritism', authenticateToken, async (req, res) => {
+    router.patch('/favoritism', async (req, res) => {
         const {username} = req.body
         if (req.userData.username !== username) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
@@ -110,7 +111,7 @@ module.exports = (db) => {
         }
     })
 
-    router.patch('/sharing', authenticateToken, async (req, res) => {
+    router.patch('/sharing', async (req, res) => {
         const { senderUsername } = req.body
         if (req.userData.username !== senderUsername) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
@@ -144,7 +145,7 @@ module.exports = (db) => {
          
     })
 
-    router.delete('/', authenticateToken, async (req, res) => {
+    router.delete('/', async (req, res) => {
         const { ownerUsername } = req.body
         if (req.userData.username !== ownerUsername) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
@@ -170,7 +171,7 @@ module.exports = (db) => {
         }
     })
 
-    router.delete('/sharing', authenticateToken, async (req, res) => {
+    router.delete('/sharing', async (req, res) => {
         const {vaultId, vaultTitle, username} = req.body
         if (req.userData.username !== username) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });

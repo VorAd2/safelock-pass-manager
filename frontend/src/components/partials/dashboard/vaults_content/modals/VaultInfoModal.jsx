@@ -24,7 +24,6 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
   const { setFavoritism, deleteVault, deleteCredential } = useVaults()
   const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
 
-
   const handleFavoriteAction = async (e, closePopover) => {
     e.stopPropagation()
     const reqData = {
@@ -34,7 +33,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     }
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
-        console.warn("No token found. Redirecting to signin.");
+        alert('No token found. Redirecting...')
         navigate("/signin");
         return;
     }
@@ -78,7 +77,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     try {
         let authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
+            alert('No token found. Redirecting...')
             navigate("/signin");
             return;
         }
@@ -112,7 +111,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     e.stopPropagation()
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
-        console.warn("No token found. Redirecting to signin.");
+        alert('No token found. Redirecting...')
         navigate("/signin");
         return;
     }
@@ -152,9 +151,9 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     try {
       let authToken = localStorage.getItem('authToken')
       if (!authToken) {
-        console.warn("No token found. Redirecting to signin.");
-        navigate("/signin");
-        return;
+        alert('No token found. Redirecting...')
+        navigate("/signin")
+        return
       }
       const route = `${BACK_URL}/dashboard/vaults/credentials`
       const config = {

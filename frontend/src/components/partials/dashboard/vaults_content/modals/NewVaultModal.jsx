@@ -28,7 +28,7 @@ const NewVaultModal = ({ onClose, onCreate }) => {
         const { title, pin, desc } = vaultData
         let authToken = localStorage.getItem('authToken')
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.")
+            alert('No token found. Redirecting...')
             navigate("/signin")
             return
         }
@@ -44,6 +44,7 @@ const NewVaultModal = ({ onClose, onCreate }) => {
             addVault(newVault)
             await onCreate()
         } catch (err) {
+            console.log('Entrou no catch')
             if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
                 alert('Access denied or session expired. Please log in again.')
                 localStorage.removeItem("authToken")

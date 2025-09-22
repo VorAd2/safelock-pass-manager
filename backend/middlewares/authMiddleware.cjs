@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const authenticateToken = (req, res, next) => {
+    console.log(`Entrou no middleware`)
     const authHeader = req.headers['authorization']
     let token;
     if (authHeader) {
@@ -14,6 +15,7 @@ const authenticateToken = (req, res, next) => {
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         req.userData = payload.userData;
+        console.log(`Payload:  ${JSON.stringify(payload, null, 2)}`)
         next()
     } catch (error) {
         res.status(403).json({ message: 'Token inválido ou expirado.', code: 'ACCESS_DENIED' })
