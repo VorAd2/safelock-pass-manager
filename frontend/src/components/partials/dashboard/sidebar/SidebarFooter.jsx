@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import {ArrowLeftIcon, ArrowRightIcon, PremiumIcon} from '../../../../assets/dashboard';
+import {ArrowLeftIcon, ArrowRightIcon2, PremiumIcon} from '../../../../assets/dashboard';
 import { ACCOUNT_UP_ROUTE } from '../../../../routes'; 
 import styles from '../../../../styles/Sidebar.module.css';
 
@@ -18,7 +18,7 @@ function SidebarFooter({isExpanded, onClick}) {
                 </div>
             </div>
             <button type='button' className={`${styles.sidebarToggleBtn}`} onClick={onClick}>
-                {isExpanded ? <ArrowLeftIcon className={styles.toogleBtnIcon}/> : <ArrowRightIcon className={styles.toogleBtnIcon}/>}
+                {isExpanded ? <ArrowLeftIcon className={styles.toogleBtnIcon}/> : <ArrowRightIcon2 className={styles.toogleBtnIcon}/>}
             </button>
         </div>
         </>

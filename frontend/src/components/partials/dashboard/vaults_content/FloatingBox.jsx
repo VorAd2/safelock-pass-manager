@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BoxesIcon, StarIcon, PeopleIcon } from '../../../../assets/dashboard'
+import { BoxesIcon, StarIcon, PeopleIcon2 } from '../../../../assets/dashboard'
 import styles from '../../../../styles/FloatingBox.module.css'
 
 
@@ -53,7 +53,7 @@ function FloatingBox({ setVaultsFilter }) {
                 > 
                     <div className='d-flex align-items-center'>
                         {active === 'shared' && <div className={styles.activeRectangle}></div>}
-                        <span className='ms-1'><PeopleIcon/> Shared</span>
+                        <span className='ms-1'><PeopleIcon2/> Shared</span>
                     </div>
                     
                 </div>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import backCodes  from '../../../../back_codes';
 import { CustomCheckbox, MiniModal } from '../../../shared';
-import { VaultIcon, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
+import { VaultIcon2, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import { RemoveIcon } from '../../../../assets/shared';
 import styles from '../../../../styles/VaultsContent.module.css';
 import { AvatarColorManager } from '../../../shared';
@@ -211,7 +211,7 @@ function VaultCard({
                 {getEllipsisModal()}
             </div>
             <div className={styles.iconArea}>
-                <VaultIcon className={styles.vaultIcon} />
+                <VaultIcon2 className={styles.vaultIcon} />
             </div>
             <div className={styles.bottomRow}>
                 <span className={styles.vaultName}>{vaultTitle}</span>

@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middlewares/authMiddleware.cjs');
 const { connectedUsers } = require('../index.cjs');
 
 const VaultModel = require('../models/Vault.cjs');
@@ -33,7 +32,7 @@ module.exports = (db) => {
         res.json({ message: 'Get na API de Credentials!' });
     });
 
-    router.post('/', authenticateToken, async (req, res) => {
+    router.post('/', async (req, res) => {
         const { vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks } = req.body;
         if (req.userData.username !== credentialOwner) {
@@ -61,7 +60,7 @@ module.exports = (db) => {
         }
     })
 
-    router.delete('/', authenticateToken, async (req, res) => {
+    router.delete('/', async (req, res) => {
         const {username} = req.body
         if (req.userData.username !== username) {
             return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });

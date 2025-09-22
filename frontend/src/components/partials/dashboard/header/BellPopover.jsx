@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { socket } from '../../../../socket';
 import { OverlayTrigger, Popover, ListGroup, Button, Row, Col } from 'react-bootstrap';
 import { BellIcon, RefreshIcon } from '../../../../assets/shared';
-import { VaultIcon, FingerprintIcon, TrashIcon } from '../../../../assets/dashboard';
+import { VaultIcon2, FingerprintIcon, TrashIcon } from '../../../../assets/dashboard';
 import styles from '../../../../styles/DashboardHeader.module.css';
 
 
@@ -47,7 +47,7 @@ const BellPopover = () => {
             <ListGroup.Item key={ntf.notificationId}>
               <Row>
                 <Col xs="auto">
-                  {ntf.type === 'vault' ? <VaultIcon/> : <FingerprintIcon/>}
+                  {ntf.type === 'vault' ? <VaultIcon2/> : <FingerprintIcon/>}
                 </Col>
                 <Col>
                   <div className="fw-semibold">{ntf.emitter}</div>

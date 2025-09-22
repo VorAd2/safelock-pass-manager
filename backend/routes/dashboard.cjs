@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middlewares/authMiddleware.cjs');
 const VaultModel = require('../models/Vault.cjs');
 const { default: errorCodes } = require('../errorCodes');
 

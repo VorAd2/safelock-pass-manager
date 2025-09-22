@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { NavLink as RouterNavLink} from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
-import {VaultIcon,
+import {VaultIcon2,
     FeaturesIcon,
     SendIcon,
     CardIcon,
@@ -9,13 +9,13 @@ import {VaultIcon,
     InfoIcon,
     SettingsIcon,
     ArrowLeftIcon,
-    ArrowRightIcon,
+    ArrowRightIcon2,
   } from '../../../../assets/dashboard';
 import styles from '../../../../styles/Sidebar.module.css';
 import sectionStyles from '../../../../styles/SidebarSection.module.css'; 
 
 const iconMap = {
-  'vaults': VaultIcon,
+  'vaults': VaultIcon2,
   'tools': FeaturesIcon,
   'send': SendIcon,
   'cards': CardIcon,
@@ -23,7 +23,7 @@ const iconMap = {
   'contactus': InfoIcon,
   'settings': SettingsIcon,
   'arrow-left': ArrowLeftIcon,
-  'arrow-right': ArrowRightIcon
+  'arrow-right': ArrowRightIcon2
 }
 
 function SidebarSection(

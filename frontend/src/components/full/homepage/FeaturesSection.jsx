@@ -1,8 +1,6 @@
 import { Container, Row} from 'react-bootstrap';
 import FeatureCol from '../../partials/homepage/FeatureCol';
-import VaultIcon from '../../../assets/features/vault-icon.svg?react';
-import CredentialIcon from '../../../assets/features/credential-icon.svg?react';
-import PeopleIcon from '../../../assets/features/people-icon.svg?react';
+import { VaultIcon1, CredentialIcon1, PeopleIcon1 } from '../../../assets/features';
 
 
 export default function FeaturesSection() {
@@ -15,21 +13,21 @@ export default function FeaturesSection() {
             <Container className='pb-5'>
                 <Row className='align-items-center'>
                     <FeatureCol
-                    icon={VaultIcon}
+                    icon={VaultIcon1}
                     title="Safe storage"
                     description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
                     linkText="Learn more"
                     linkHref="#"
                     />
                     <FeatureCol
-                    icon={CredentialIcon}
+                    icon={CredentialIcon1}
                     title="Credentials generator"
                     description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
                     linkText="Learn more"
                     linkHref="#"
                     />
                     <FeatureCol
-                    icon={PeopleIcon}
+                    icon={PeopleIcon1}
                     title="Shareable data"
                     description="Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
                     linkText="Learn more"

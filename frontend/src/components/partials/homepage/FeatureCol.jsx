@@ -1,5 +1,5 @@
 import { Col } from 'react-bootstrap';
-import ArrowRightIcon from '../../../assets/features/arrow-right.svg?react';
+import { ArrowRightIcon1 } from '../../../assets/features';
 import styles from '../../../styles/HomePage.module.css';
 
 const FeatureCol = ({ icon: IconComponent, title, description, linkText, linkHref }) => {
@@ -10,7 +10,7 @@ const FeatureCol = ({ icon: IconComponent, title, description, linkText, linkHre
       </div>
       <h3 style={{fontSize:'1.8rem'}}>{title}</h3>
       <p className='mt-3'>{description}</p>
-      <a href={linkHref}>{linkText} <ArrowRightIcon /></a>
+      <a href={linkHref}>{linkText} <ArrowRightIcon1 /></a>
     </Col>
   );
 };
