@@ -54,7 +54,7 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setErrMsg('')
+        setErrMsg()
         if (recipientUsername === username) {
             setErrMsg("You can't share a vault with yourself")
             return

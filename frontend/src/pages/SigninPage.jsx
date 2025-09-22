@@ -4,6 +4,7 @@ import { SIGNUP_ROUTE } from '../routes';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { Form, Button, Container, Card } from 'react-bootstrap';
+import backCodes from '../back_codes';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,6 +29,7 @@ function SigninPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Login attempt with:', { email, password });
+    setMessage()
     const form = {email, password}
     try {
       const res = await axios.post(backUrl + '/signin', form)
@@ -39,13 +41,13 @@ function SigninPage() {
       navigate(`/dashboard/${username}`);
     } catch (err) {
       if (err.response) {
-        const errorStatus = err.response.status
         const errorMsg = err.response.data.message
-        setMessage(`Erro(${errorStatus}) ao logar: ${errorMsg}`);
+        const errorCode = err.response.data.code
+        errorCode === backCodes.INVALID_AUTH ? setMessage(errorMsg) : alert('Unknown error. Please, try again.')
       } else if (err.request) {
-        alert('Não foi possível comunicar-se com o servidor. Verifique sua conexão')
+        alert('Unable to communicate with the server. Please check your connection.')
       } else {
-        alert('Erro ao tentar enviar requisição')
+        alert('Error while attempting to send request. Please, try again.')
       }
     }
   };
@@ -65,6 +67,7 @@ function SigninPage() {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                isInvalid={!!message}
                 required
               />
             </Form.Group>
@@ -76,6 +79,7 @@ function SigninPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                isInvalid={!!message}
                 required
               />
             </Form.Group>
@@ -83,7 +87,7 @@ function SigninPage() {
             <Button variant="primary" type="submit" className="w-100 fs-5">
               Login
             </Button>
-            <p>{message}</p>
+            <p style={{color: 'var(--red-color)'}}>{message}</p>
           </Form>
           <div className="mt-3 text-center">
             Don't have an account? <Link to={SIGNUP_ROUTE}>Register here</Link>

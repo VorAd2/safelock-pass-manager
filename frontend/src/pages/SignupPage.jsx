@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { SIGNIN_ROUTE } from '../routes';
+import backCodes from '../back_codes';
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,7 +14,7 @@ function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [invalidation, setInvalidation] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,10 +27,26 @@ function SignupPage() {
           })
     }, []);
   
+  function getSubmitInvalidation(err) {
+    const errorSource = err.response.data.source
+    const invalidation = {}
+    invalidation.msg = err.response.data.message 
+    switch (errorSource) {
+      case 'username':
+        invalidation.username = true
+        break
+      case 'email':
+        invalidation.email = true
+        break
+    }
+    return invalidation
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password != confirmPassword) {
-      alert('Passwords must be the same');
+    setInvalidation({})
+    if (password !== confirmPassword) {
+      setInvalidation({password: true, msg: 'Passwords must be the same'})
       return;
     }
     const form = {username: username, email: email, password: password};
@@ -43,9 +60,10 @@ function SignupPage() {
       navigate(`/dashboard/${username}`);
     } catch (err) {
       if (err.response) {
-        const errorStatus = err.response.status
-        const errorMessage = err.response.data.message
-        setMessage(`Erro(${errorStatus}) ao tentar registro de usuário: ${errorMessage}`)
+        const errorCode = err.response.data.code
+        errorCode === backCodes.INVALID_AUTH 
+          ? setInvalidation(getSubmitInvalidation(err)) 
+          : alert('Unknown error. Please, try again.')
       } else if (err.request){
         alert('Unable to communicate with the server. Please check your connection.')
       } else {
@@ -68,6 +86,7 @@ function SignupPage() {
                 placeholder="Enter name"
                 value={username}
                 onChange={(e) => setName(e.target.value)}
+                isInvalid={!!invalidation.username}
                 required
               />
             </Form.Group>
@@ -79,6 +98,7 @@ function SignupPage() {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                isInvalid={!!invalidation.email}
                 required
               />
             </Form.Group>
@@ -90,6 +110,7 @@ function SignupPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                isInvalid={!!invalidation.password}
                 required
               />
             </Form.Group>
@@ -101,6 +122,7 @@ function SignupPage() {
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                isInvalid={!!invalidation.password}
                 required
               />
             </Form.Group>
@@ -108,7 +130,7 @@ function SignupPage() {
             <Button variant="success" type="submit" className="w-100 fs-5">
               Register
             </Button>
-            <p>{message}</p>
+            <p style={{color: 'var(--red-color)'}}>{invalidation.msg}</p>
           </Form>
           <div className="mt-3 text-center">
             Already have an account? <Link to={SIGNIN_ROUTE}>Login here</Link>

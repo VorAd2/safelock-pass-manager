@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const UserModel = require('../models/User.cjs');
+const { default: errorCodes } = require('../errorCodes');
 dotenv.config({ path: '../.env' });;
 
 
@@ -36,10 +37,10 @@ module.exports = (db) => {
             }
           )
         } else {
-          res.status(401).json({message: 'Email ou senha inválidos'})
+          res.status(401).json({message: 'Invalid email or password', code: errorCodes.INVALID_AUTH})
         }
       } else {
-        res.status(401).json({message: 'Email ou senha inválidos'})
+        res.status(401).json({message: 'Invalid email or password', code: errorCodes.INVALID_AUTH})
       }
     } catch (err) {
       res.status(500).json({message: err.message})

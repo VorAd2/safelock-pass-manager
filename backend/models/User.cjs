@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 class UserModel {
     async existsUser(username, email, db) {
         const user = await db.collection('users').findOne({$or: [{username}, {email}] })
-        return user !== null
+        return user
     }
 
     async insertUser(userData, db) {

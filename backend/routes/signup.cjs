@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const UserModel = require('../models/User.cjs');
+const { default: errorCodes } = require('../errorCodes');
 dotenv.config({ path: '../.env' });
 
 
@@ -15,9 +16,13 @@ module.exports = (db) => {
   router.post('/', async (req, res) => {
     const {username, email, password} = req.body;
     try {
-      const existsUser = await UserModel.existsUser(username, email, db)
-      if (existsUser) {
-        res.status(409).json({error: 'Nome ou Email já está em uso'});
+      const existingUser = await UserModel.existsUser(username, email, db)
+      if (existingUser) {
+        if (existingUser.username === username) {
+          res.status(409).json({message: 'Username already in use', code: errorCodes.INVALID_AUTH, source: 'username'});
+        } else {
+          res.status(409).json({message: 'Email already in use', code: errorCodes.INVALID_AUTH, source: 'email'});
+        }
         return;
       };
       await UserModel.insertUser({username, email, password}, db);
