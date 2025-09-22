@@ -15,6 +15,10 @@
   max-height: 300px; /* ou qualquer altura desejada */
   overflow-y: auto;
 }
+.vaultTitle:hover{
+  text-decoration: underline;
+  cursor: default;
+}
 .userAvatar {
   fill: white;
   display: flex;

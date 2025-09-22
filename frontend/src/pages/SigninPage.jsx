@@ -15,13 +15,13 @@ function SigninPage() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-        axios.get(backUrl + '/signin')
-          .then(response => {
-            console.log('Mensagem do back: ' + response)
-          })
-          .catch(err => {
-            alert(err)
-          })
+    axios.get(backUrl + '/signin')
+      .then(response => {
+        console.log('Mensagem do back: ' + response)
+      })
+      .catch(err => {
+        alert(err)
+      })
     }, []);
 
   const navigate = useNavigate();

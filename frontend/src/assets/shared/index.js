@@ -6,6 +6,7 @@ import ArrowUpIcon from './arrow-up.svg?react';
 import BellIcon from './bell.svg?react';
 import RefreshIcon from './refresh.svg?react';
 import RemoveIcon from './remove.svg?react';
+import InfoOutline from './info-outline.svg?react';
 
 export {
   DashIcon,
@@ -15,5 +16,6 @@ export {
   ArrowUpIcon,
   BellIcon,
   RefreshIcon,
-  RemoveIcon
+  RemoveIcon,
+  InfoOutline
 }

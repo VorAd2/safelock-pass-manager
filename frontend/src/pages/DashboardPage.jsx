@@ -60,8 +60,8 @@ function DashboardPage({username}) {
       setLoading(false);
       registerSocket(username)
     } catch (err) {
-      console.error("ERROR:", err)
-      console.error(err.response)
+      console.warn("ERROR:", err)
+      console.warn(err.response)
       setLoading(false);
       if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
         alert(

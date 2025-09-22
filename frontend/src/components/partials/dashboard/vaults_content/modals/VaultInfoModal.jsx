@@ -2,7 +2,7 @@ import { useVaults } from "../../../../context/useVaults";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode'; 
-import { Modal } from "react-bootstrap";
+import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
@@ -147,69 +147,6 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
       })
   }
 
-  function getVaultEllipsisModal() {
-    const canShareVault = !(data.sharedUsers.some(u => u === username))
-    const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
-    const canDeleteVault = data.ownerUser === username
-    const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
-    const exclusionStyle = canDeleteVault 
-            ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
-            : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
-    return (
-      <MiniModal
-        ButtonIcon={VerticalEllipsisIcon}
-        buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
-        iconClass={styles.ellipsis}
-        placement="left"
-        >
-          {({ closePopover, popoverItemClass}) => (
-              <>
-                <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
-                  <div className="d-flex align-items-center">
-                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}   
-                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
-                  </div>
-                </button>
-                <button type="button" 
-                className={`${popoverItemClass} ${noHoverClassSend}`} 
-                onClick={
-                  (e) => {
-                    e.stopPropagation()
-                    if (canShareVault) handleSendAction(e, closePopover); 
-                  }
-                }
-                style={{cursor: canShareVault ? 'pointer' : 'not-allowed'}}
-                >
-                  <div className="d-flex align-items-center">
-                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
-                    <span className={sendSpanStyle}>Share</span>
-                  </div>
-                </button>
-                <button type="button" 
-                            className={popoverItemClass}
-                            onClick={
-                                (e) => {
-                                    e.stopPropagation()
-                                    if (canDeleteVault) {
-                                        handleVaultDelete(e, closePopover)
-                                    } else {
-                                        handleRemoveSharing(e, closePopover)
-                                    }
-                                }
-                            }
-                            >
-                                <div className={`d-flex align-items-center`} style={exclusionStyle}>
-                                    {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
-                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
-                                </div>
-                            </button>
-              </>
-            )
-          }
-        </MiniModal>
-    )
-  }
-
   const handleCredentialDelete = async (e, credential, closePopover) => {
     e.stopPropagation()
     try {
@@ -300,12 +237,86 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
     onHide()
   }
 
+  function getVaultEllipsisModal() {
+    const canShareVault = !(data.sharedUsers.some(u => u === username))
+    const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
+    const canDeleteVault = data.ownerUser === username
+    const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
+    const exclusionStyle = canDeleteVault 
+            ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
+            : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
+    return (
+      <MiniModal
+        ButtonIcon={VerticalEllipsisIcon}
+        buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
+        iconClass={styles.ellipsis}
+        placement="left"
+        >
+          {({ closePopover, popoverItemClass}) => (
+              <>
+                <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
+                  <div className="d-flex align-items-center">
+                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}   
+                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
+                  </div>
+                </button>
+                <button type="button" 
+                className={`${popoverItemClass} ${noHoverClassSend}`} 
+                onClick={
+                  (e) => {
+                    e.stopPropagation()
+                    if (canShareVault) handleSendAction(e, closePopover); 
+                  }
+                }
+                style={{cursor: canShareVault ? 'pointer' : 'not-allowed'}}
+                >
+                  <div className="d-flex align-items-center">
+                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
+                    <span className={sendSpanStyle}>Share</span>
+                  </div>
+                </button>
+                <button type="button" 
+                            className={popoverItemClass}
+                            onClick={
+                                (e) => {
+                                    e.stopPropagation()
+                                    if (canDeleteVault) {
+                                        handleVaultDelete(e, closePopover)
+                                    } else {
+                                        handleRemoveSharing(e, closePopover)
+                                    }
+                                }
+                            }
+                            >
+                                <div className={`d-flex align-items-center`} style={exclusionStyle}>
+                                    {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
+                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
+                                </div>
+                            </button>
+              </>
+            )
+          }
+        </MiniModal>
+    )
+  }
+
+  function getModalTitle() {
+    return (
+      <OverlayTrigger
+      placement="bottom"
+      overlay={<Tooltip id="vault-desc">{data.desc}</Tooltip>}
+      >
+        <Modal.Title className={`mb-0 me-3 fs-3 fw-semibold ${styles.vaultTitle}`}>{vaultTitle}</Modal.Title>
+      </OverlayTrigger>
+    )
+  }
+
   return (
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
           {getVaultEllipsisModal()}
-          <Modal.Title className="mb-0 me-3 fs-3 fw-semibold">{vaultTitle}</Modal.Title>
+          {getModalTitle()}
           <div className="d-flex align-items-center">
             <UserAvatar className={styles.userAvatar} style={{backgroundColor: avatarBackColor}}/>
             {data.ownerUser}

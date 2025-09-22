@@ -88,10 +88,10 @@ const NewVaultModal = ({ onClose, onCreate }) => {
                     <OverlayTrigger
                         placement="right"
                         overlay={
-                        <Tooltip id="pin-tooltip">
-                            The PIN is an optional numeric identification used to 
-                            protect access to the vault.
-                        </Tooltip>
+                            <Tooltip id="pin-tooltip">
+                                The PIN is an optional numeric identification used to 
+                                protect access to the vault.
+                            </Tooltip>
                         }
                     >
                         <span style={{marginLeft:'0.3rem', cursor: 'pointer', alignContent:'center' }}>

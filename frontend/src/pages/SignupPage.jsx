@@ -18,14 +18,14 @@ function SignupPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-        axios.get(backUrl + '/signup')
-          .then(response => {
-            console.log('Mensagem do back: ' + response)
-          })
-          .catch(err => {
-            alert(err)
-          })
-    }, []);
+    axios.get(backUrl + '/signup')
+      .then(response => {
+        console.log('Mensagem do back: ' + response)
+      })
+      .catch(err => {
+        alert(err)
+      })
+  }, []);
   
   function getSubmitInvalidation(err) {
     const errorSource = err.response.data.source
