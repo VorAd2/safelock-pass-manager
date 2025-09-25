@@ -31,6 +31,12 @@ class VaultModel {
         await db.collection('user_vaults').deleteOne(filter)
     }
 
+    async updateTitle(db, vaultId, newTitle) {
+        const filter = {_id: new ObjectId(String(vaultId))}
+        const update = {$set: {title: newTitle}}
+        await db.collection('user_vaults').updateOne(filter, update)
+    }
+
     async isDuplicateVault(db, vaultTitle, ownerUser) {
         const filter = {$and: [{title: vaultTitle}, {ownerUser: ownerUser}]}
         const result = await db.collection('user_vaults').findOne(filter)

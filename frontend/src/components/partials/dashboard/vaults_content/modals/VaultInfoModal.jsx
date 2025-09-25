@@ -13,7 +13,7 @@ import backCodes from "../../../../../back_codes";
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialClick, onNewCredentialModal, onSendModal }) => {
+const VaultInfoModal = ({ data,notificationHandler, show, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
   const username = jwtDecode(localStorage.getItem('authToken')).userData.username
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
   const avatarBackColor = data.ownerUser === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(data.ownerUser);
@@ -300,12 +300,19 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onCredentialCl
   }
 
   function getModalTitle() {
+    const isChangeAllowed = data.ownerUser === username
+    const onClick = isChangeAllowed ? onVaultTitleClick : null
+    const hoverCursor = isChangeAllowed ? 'pointer' : 'not-allowed'
     return (
       <OverlayTrigger
       placement="bottom"
       overlay={<Tooltip id="vault-desc">{data.desc}</Tooltip>}
       >
-        <Modal.Title className={`mb-0 me-3 fs-3 fw-semibold ${styles.vaultTitle}`}>{vaultTitle}</Modal.Title>
+        <Modal.Title 
+        onClick={onClick} 
+        style={{cursor: hoverCursor}} 
+        className={`mb-0 me-3 fs-3 fw-semibold ${styles.vaultTitle}`}
+        >{vaultTitle}</Modal.Title>
       </OverlayTrigger>
     )
   }

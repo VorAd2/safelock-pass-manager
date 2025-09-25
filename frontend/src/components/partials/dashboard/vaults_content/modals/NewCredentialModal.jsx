@@ -57,16 +57,17 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide }) => {
             addCredential(vaultId, response.data);
             handleClose(true)
         } catch (err) {
+            const message = err.response.data.message
             if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
                 alert("Access denied or session expired. Please log in again.");
                 localStorage.removeItem("authToken");
                 navigate("/signin");
             } else if (err.response && err.response.data.code === backCodes.VAULT_NOT_FOUND) {
-                alert(err.response.data.message);
+                alert(message);
             } else if (err.response && err.response.data.code === backCodes.DUPLICATE_CREDENTIAL) {
-                alert(err.response.data.message);
+                alert(message);
             } else {
-                alert("Ocorreu um erro ao carregar os dados do cofre.")
+                alert("An error occurred while loading the vault data. Please, try again.")
                 console.warn(err)
             }
         }

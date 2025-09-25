@@ -44,7 +44,6 @@ const NewVaultModal = ({ onClose, onCreate }) => {
             addVault(newVault)
             await onCreate()
         } catch (err) {
-            console.log('Entrou no catch')
             if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
                 alert('Access denied or session expired. Please log in again.')
                 localStorage.removeItem("authToken")

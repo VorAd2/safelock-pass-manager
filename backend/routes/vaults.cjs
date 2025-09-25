@@ -4,6 +4,7 @@ const { connectedUsers } = require('../index.cjs');
 const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
+const { default: errorCodes } = require('../errorCodes');
 
 
 function emitSocketEvent(data) {
@@ -59,7 +60,7 @@ module.exports = (db) => {
     router.get('/:username', async (req, res) => {
         const { username } = req.params;
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         try {
             const vaultsArray = await VaultModel.getVaultsByUser(username, db);
@@ -77,12 +78,12 @@ module.exports = (db) => {
         const {ownerUser, title, pin, desc} = req.body.newVaultData
         console.log(`Log em postVaults: ${req.userData.username}  ${ownerUser}`)
         if (req.userData.username !== ownerUser) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         try {
             const isDuplicateVault = await VaultModel.isDuplicateVault(db, title, ownerUser)
             if (isDuplicateVault) {
-                return res.status(409).json({code: 'DUPLICATE_VAULT'})
+                return res.status(409).json({code: errorCodes.DUPLICATE_VAULT})
             }
             const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
@@ -95,10 +96,28 @@ module.exports = (db) => {
         }
     })
 
+    router.patch('/title', async (req, res) => {
+        const {ownerUsername} = req.body
+        if (req.userData.username !== ownerUsername) {
+            return res.status(403).json({ message: 'Access denied for the requested profile.', code: errorCodes.ACCESS_DENIED });
+        }
+        const {vaultId, newTitle} = req.body
+        try {
+            const isDuplicate = await VaultModel.isDuplicateVault(db, newTitle, ownerUsername)
+            if (isDuplicate) return res.status(409).json({message: 'There is already a vault with that title.', code: errorCodes.DUPLICATE_VAULT})
+            await VaultModel.updateTitle(db, vaultId, newTitle)
+            return res.status(200).send()
+        } catch (err) {
+            console.log('Erro inesperado no PATCH de vault title: ' + err.message)
+            return res.status(500).json({message: err.message});
+        }
+
+    }) 
+
     router.patch('/favoritism', async (req, res) => {
         const {username} = req.body
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         const {toFavorite, vaultId} = req.body
         try {
@@ -113,7 +132,7 @@ module.exports = (db) => {
     router.patch('/sharing', async (req, res) => {
         const { senderUsername } = req.body
         if (req.userData.username !== senderUsername) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         const {ownerUsername, vaultId, vaultTitle, recipientUsername} = req.body
         if (ownerUsername !== senderUsername) {
@@ -147,7 +166,7 @@ module.exports = (db) => {
     router.delete('/', async (req, res) => {
         const { ownerUsername } = req.body
         if (req.userData.username !== ownerUsername) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         try {
             const {vaultId, vaultTitle} = req.body
@@ -173,7 +192,7 @@ module.exports = (db) => {
     router.delete('/sharing', async (req, res) => {
         const {vaultId, vaultTitle, username} = req.body
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
         }
         try {
             const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
@@ -190,7 +209,7 @@ module.exports = (db) => {
                 })
                 return res.status(200).json({message: 'Vault sharing removed successfully'})
             } else {
-                return res.status(404).json({code: 'VAULT_SHARING_NOT_FOUND'})
+                return res.status(404).json({code: errorCodes.VAULT_SHARING_NOT_FOUND})
             }
         } catch (err) {
             console.log(`Erro ao deletar compartilhamento de vault: ${err}`)

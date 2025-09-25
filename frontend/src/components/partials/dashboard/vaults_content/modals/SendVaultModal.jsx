@@ -6,7 +6,6 @@ import { Modal, Form } from "react-bootstrap"
 import { useState, useEffect } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
 import backCodes from "../../../../../back_codes"
-
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
@@ -14,10 +13,9 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
     const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [recipientUsername, setRecipientUsername] = useState('')
     const [errMsg, setErrMsg] = useState('')
-    vaultData = vaultData ?? {title: '', vaultId: '', ownerUser: ''}
-    const vaultTitle = vaultData.title
-    const vaultId = vaultData._id
-    const ownerUser = vaultData.ownerUser
+    const vaultTitle = vaultData?.title
+    const vaultId = vaultData?._id
+    const ownerUser = vaultData?.ownerUser
     const { setSharing } = useVaults()
     const navigate = useNavigate();
 
@@ -61,7 +59,7 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
         }
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
+            alert("No token found. Redirecting to signin.");
             navigate("/signin");
             return;
         }
@@ -81,22 +79,27 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
             handleClose()
             notificationHandler(true, 'Vault shared successfully', 'success')
         } catch (err) {
-            console.warn(`Erro ao compartilhar vault: ${err}`)
-            console.log(`Erro message: ${err.response.data.message}`)
-            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert('Access denied or session expired. Please, log in again.')
-                navigate('/signin')
-            }
-            else if (err.response && err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
-                setErrMsg(err.response.data.message)
-            } 
-            else if (err.response && err.response.data.code === backCodes.RECIPIENT_ALREADY) {
-                setErrMsg('Recipient user already has this vault')
-            }
-            else {
+            if (err.response) {
+                const message = err.response.data.message
+                if (err.response.data.code === backCodes.ACCESS_DENIED) {
+                    alert('Access denied or session expired. Please, log in again.')
+                    navigate('/signin')
+                }
+                else if (err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
+                    setErrMsg(message)
+                } 
+                else if (err.response.data.code === backCodes.RECIPIENT_ALREADY) {
+                    setErrMsg(message)
+                }
+                else {
+                    setErrMsg('Unknown error. Please, try again')
+                    console.warn(`Erro: ${err}`)
+                }
+            } else {
                 setErrMsg('Unknown error. Please, try again')
-                console.warn(`Erro message: ${err.response.data.message}`)
+                console.warn(`Erro: ${err}`)
             }
+            
         }
     }
 
@@ -106,7 +109,7 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
                 <Modal.Title>
                     <span>Share Your Vault</span> 
                     <span className="ms-3">
-                        [<span className="p-1" style={{color:'var(--lessdark-blue-color)'}}>{vaultData.title}</span>]
+                        [<span className="p-1" style={{color:'var(--lessdark-blue-color)'}}>{vaultData?.title}</span>]
                     </span> 
                 </Modal.Title>
             </Modal.Header>
