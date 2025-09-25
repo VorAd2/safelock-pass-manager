@@ -11,7 +11,7 @@ import { useVaults } from '../../../../context/useVaults';
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide }) => {
+const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
     const credentialOwner = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [credentialTitle, setTitle] = useState('')
     const [credentialEmail, setEmail] = useState('')
@@ -75,7 +75,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, modalVisible, onHide }) => {
 
     
     return (
-        <Modal show={modalVisible} onHide={handleClose} centered>
+        <Modal show={true} onHide={handleClose} centered>
           <Modal.Header closeButton>
             <Modal.Title className='fs-3'>Add Credential</Modal.Title>
           </Modal.Header>

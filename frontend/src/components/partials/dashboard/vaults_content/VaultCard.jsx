@@ -63,7 +63,7 @@ function VaultCard({
 
     const handleSendAction = (e, closePopover) => {
         closePopover(e)
-        setSendModalVisibleState({show: true, fromVaultInfo: false})
+        setSendModalVisibleState({visible: true, fromVaultInfoModal: false})
     }
 
     const handleDelete = async (e, closePopover) => {

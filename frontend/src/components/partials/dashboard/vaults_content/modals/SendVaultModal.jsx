@@ -3,13 +3,13 @@ import { useVaults } from "../../../../context/useVaults"
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'; 
 import { Modal, Form } from "react-bootstrap"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
 import backCodes from "../../../../../back_codes"
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }) {
+function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide }) {
     const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [recipientUsername, setRecipientUsername] = useState('')
     const [errMsg, setErrMsg] = useState('')
@@ -19,17 +19,6 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
     const { setSharing } = useVaults()
     const navigate = useNavigate();
 
-
-    useEffect(() => {
-        return () => {
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop?.parentNode) {
-              backdrop.parentNode.removeChild(backdrop);
-            }
-            document.body.classList.remove('modal-open');
-          };
-        }, [])
-
     const resetForm = () => {
         setRecipientUsername('')
     }
@@ -37,17 +26,7 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
     const handleClose = () => {
         resetForm()
         setErrMsg('')
-        onHide(visibleState.fromVaultInfo)
-
-        setTimeout(() => {
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop?.parentNode) {
-                backdrop.parentNode.removeChild(backdrop);
-            }
-            if (document.body.classList.contains('modal-open')) {
-                document.body.classList.remove('modal-open');
-            }
-        }, 100);
+        onHide(fromVaultInfo)
     }
 
     const handleSubmit = async (e) => {
@@ -104,7 +83,7 @@ function SendVaultModal({ vaultData, notificationHandler, visibleState, onHide }
     }
 
     return (
-        <Modal show={visibleState.show} onHide={handleClose} centered>
+        <Modal show={true} onHide={handleClose} centered>
             <Modal.Header>
                 <Modal.Title>
                     <span>Share Your Vault</span> 

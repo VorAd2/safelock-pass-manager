@@ -12,9 +12,8 @@ import { useVaults } from '../../../../context/useVaults';
 import backCodes from '../../../../../back_codes';
 
 
-function CredentialInfoModal({modalState, notificationHandler, onHide}) {
+function CredentialInfoModal({credential, notificationHandler, onHide}) {
     const username = jwtDecode(localStorage.getItem('authToken')).userData.username
-    const credential = modalState.credential
     const title = credential && credential.credentialTitle
     const owner = credential && credential.credentialOwner
     const email = credential && credential.credentialEmail
@@ -77,7 +76,7 @@ function CredentialInfoModal({modalState, notificationHandler, onHide}) {
 
 
     return (
-        <Modal show={modalState.visible} onHide={onHide} centered>
+        <Modal show={true} onHide={onHide} centered>
             <Modal.Header closeButton>
                 <Modal.Title className='fs-3 d-flex align-items-center'>
                     <span>{title}</span> 

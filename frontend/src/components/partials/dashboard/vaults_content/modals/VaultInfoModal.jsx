@@ -13,7 +13,7 @@ import backCodes from "../../../../../back_codes";
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-const VaultInfoModal = ({ data,notificationHandler, show, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
+const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
   const username = jwtDecode(localStorage.getItem('authToken')).userData.username
   data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
   const avatarBackColor = data.ownerUser === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(data.ownerUser);
@@ -318,7 +318,7 @@ const VaultInfoModal = ({ data,notificationHandler, show, onHide, onVaultTitleCl
   }
 
   return (
-    <Modal show={show} onHide={handleClose} size="lg" centered>
+    <Modal show={true} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
           {getVaultEllipsisModal()}

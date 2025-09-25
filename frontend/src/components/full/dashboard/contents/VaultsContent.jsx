@@ -16,7 +16,7 @@ function VaultsContent() {
     {visible: false, credential: null}
   )
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false)
-  const [sendModalVisibleState, setSendModalVisibleState] = useState({show: false, fromVaultInfoModal: null})
+  const [sendModalVisibleState, setSendModalVisibleState] = useState({visible: false, fromVaultInfoModal: null})
   const [vaultTitleChangeModalVisible, setVaultTitleChangeVisible] = useState(false)
 
   const [currentVaultData, setCurrentVaultData] = useState(null)
@@ -127,7 +127,6 @@ function VaultsContent() {
           refreshVaults={refreshVaults}
           isRefreshing={isRefreshing}
         />
-        {/** Replicar a forma de redenrização abaixo */}
         {newVaultModalVisible && <NewVaultModal 
             onClose={onCloseNewVaultModal} 
             onCreate={onConfirmNewVaultModal}
@@ -145,56 +144,48 @@ function VaultsContent() {
           }
           />
         }
-        <VaultInfoModal 
+        {vaultInfoModalVisible && <VaultInfoModal 
           data={currentVaultData} 
           notificationHandler={notificationHandler}
-          show={vaultInfoModalVisible} 
           onHide={() => setVaultInfoModalVisible(false)}
           onVaultTitleClick={() => {setVaultInfoModalVisible(false); setVaultTitleChangeVisible(true)}}
           onNewCredentialModal={() => {setVaultInfoModalVisible(false); setNewCredentialModalVisible(true)} }
-          onSendModal={() => {setVaultInfoModalVisible(false); setSendModalVisibleState({show: true, fromVaultInfo: true})} }
+          onSendModal={() => {setVaultInfoModalVisible(false); setSendModalVisibleState({visible: true, fromVaultInfoModal: true})} }
           onCredentialClick={(credential) => {setVaultInfoModalVisible(false); setCredentialInfoModalState({visible: true, credential})} }
         />
+        }
         
-        <NewCredentialModal
+        {newCredentialModalVisible && <NewCredentialModal
           vaultId={currentVaultData && currentVaultData._id}
           vaultTitle={currentVaultData && currentVaultData.title}
-          modalVisible={newCredentialModalVisible}
           onHide={(added) => {
               setNewCredentialModalVisible(false)
-              setTimeout(() => {
-                const backdrop = document.querySelector('.modal-backdrop')
-                if (backdrop) backdrop.remove()
-                document.body.classList.remove('modal-open')
-                setVaultInfoModalVisible(true)
-                if (added === true) {
-                  notificationHandler(true, 'Credential added successfully!', 'success')
-                }
-              }, 200);
+              setVaultInfoModalVisible(true)
+              if (added === true) {
+                notificationHandler(true, 'Credential added successfully!', 'success')
+              }
             }
           }
         /> 
-        <CredentialInfoModal
-          modalState={credentialInfoModalState}
+        }
+        {credentialInfoModalState.visible && <CredentialInfoModal
+          credential={credentialInfoModalState.credential}
           setModalState={setCredentialInfoModalState}
           notificationHandler={notificationHandler}
           onHide={() => {setCredentialInfoModalState({visible: false, credential: null}); setVaultInfoModalVisible(true)} }
         />
-        <SendVaultModal 
+        }
+        {sendModalVisibleState.visible && <SendVaultModal 
           vaultData={currentVaultData}
           notificationHandler={notificationHandler}
-          visibleState={sendModalVisibleState}
+          fromVaultInfo={sendModalVisibleState.fromVaultInfoModal}
           onHide={(fromVaultInfo) => {
-              setSendModalVisibleState({show: false, fromVaultInfoModal: null})
-              setTimeout(() => {
-                const backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) backdrop.remove();
-                document.body.classList.remove('modal-open');
-                if (fromVaultInfo) setVaultInfoModalVisible(true);
-              }, 200);
+              setSendModalVisibleState({visible: false, fromVaultInfoModal: null})
+              if (fromVaultInfo) setVaultInfoModalVisible(true);
             } 
           }
         />
+        }
       </div>
     </div>
   );
