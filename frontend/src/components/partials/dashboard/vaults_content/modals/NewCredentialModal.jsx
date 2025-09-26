@@ -14,6 +14,7 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
     const credentialOwner = jwtDecode(localStorage.getItem('authToken')).userData.username
     const [credentialTitle, setTitle] = useState('')
+    const [errFeedback, setErrFeedback] = useState('')
     const [credentialEmail, setEmail] = useState('')
     const [credentialUsername, setUsername] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -39,6 +40,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setErrFeedback()
         const newCredential = {
             vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks 
@@ -67,7 +69,7 @@ const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
                 } else if (code === backCodes.VAULT_NOT_FOUND) {
                     alert(message)
                 } else if (code === backCodes.DUPLICATE_CREDENTIAL) {
-                    alert(message)
+                    setErrFeedback(message)
                 } else {
                     alert(backCodes.GENERIC_ERROR_FEEDBACK)
                     console.warn('Erro na presença de response:', err.response)
@@ -96,8 +98,10 @@ const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
                         type="text"
                         value={credentialTitle}
                         onChange={(e) => setTitle(e.target.value)}
+                        isInvalid={!!errFeedback}
                         required
                     />
+                    <Form.Control.Feedback type='invalid'>{errFeedback}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-1'>
                     <Form.Label className='fs-5'>Email <span className='text-danger'>*</span> </Form.Label>
