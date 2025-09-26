@@ -3,7 +3,8 @@ import axios from 'axios'
 import backCodes from '../../../../back_codes'
 import { useState, useEffect } from 'react'
 import { useOutletContext, useNavigate } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal, VaultTitleChangeModal, VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal } from "../../../index"
+import { FloatingBox, VaultPanel, NewVaultModal, VaultTitleChangeModal, VaultPinModal,
+    VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
@@ -11,6 +12,7 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 function VaultsContent() {
   const [newVaultModalVisible, setNewVaultModalVisible] = useState(false)
+  const [vaultPinModalVisible, setVaultPinModalVisible] = useState(false)
   const [vaultInfoModalVisible, setVaultInfoModalVisible] = useState(false)
   const [credentialInfoModalState, setCredentialInfoModalState] = useState(
     {visible: false, credential: null}
@@ -44,6 +46,10 @@ function VaultsContent() {
     }
     let data =  getVaultData(vaultId)
     setCurrentVaultData(data)
+    if (data.pin) {
+      setVaultPinModalVisible(true)
+      return
+    }
     setVaultInfoModalVisible(true)
   }
 
@@ -144,6 +150,16 @@ function VaultsContent() {
           }
           />
         }
+
+        {vaultPinModalVisible && <VaultPinModal
+          onHide={(isCorrect) => {
+            setVaultPinModalVisible(false)
+            if (isCorrect) setVaultInfoModalVisible(true)
+          }}
+          pin={currentVaultData.pin}
+        />
+        }
+
         {vaultInfoModalVisible && <VaultInfoModal 
           data={currentVaultData} 
           notificationHandler={notificationHandler}

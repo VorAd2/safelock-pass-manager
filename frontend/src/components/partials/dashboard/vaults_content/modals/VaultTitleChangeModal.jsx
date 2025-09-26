@@ -103,7 +103,7 @@ const VaultTitleChangeModal = ({data, onHide}) => {
                 type="submit"
                 form="changeVaultTitle"
                 className={styles.confirmCredentialModalBtn}
-                
+                disabled={newTitle === data.title}
                 >
                     Change
                 </button>

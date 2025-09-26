@@ -67,7 +67,7 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
                     localStorage.removeItem('authToken')
                     navigate('/signin')
                 } else if (potentialCodes.includes(code)) {
-                    alert(message)
+                    setErrMsg(message)
                 } else {
                     alert(backCodes.GENERIC_ERROR_FEEDBACK)
                     console.warn(`Erro na presença de response: ${err}`)

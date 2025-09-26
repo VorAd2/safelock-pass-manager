@@ -1,20 +1,14 @@
-const bcrypt = require('bcryptjs');
 const { ObjectId } = require('mongodb');
 
 class VaultModel {
 
     async insertVault(data, db) {
         const {ownerUser, title, pin, desc} = data
-        let hashedPin = null
-        if (pin != '') {
-            const salt = await bcrypt.genSalt(10)
-            hashedPin = await bcrypt.hash(pin, salt)
-        }
         const vault  = {
             ownerUser,
             sharedUsers: [],
             title,
-            pin: hashedPin,
+            pin,
             desc,
             credentials: [],
             favoritedBy: [],

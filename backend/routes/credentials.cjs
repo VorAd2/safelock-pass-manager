@@ -5,6 +5,7 @@ const { connectedUsers } = require('../index.cjs');
 const VaultModel = require('../models/Vault.cjs');
 const CredentialModel = require('../models/Credential.cjs'); 
 const { default: errorCodes } = require('../errorCodes');
+const { default: errorFeedbacks } = require('../errorFeedbacks');
 
 function emitSocketEvent(data) {
     const {credential, vaultId, vaultTitle, sharedUsers, vaultOwner, event} = data;
