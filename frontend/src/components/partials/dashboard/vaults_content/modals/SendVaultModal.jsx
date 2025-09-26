@@ -38,7 +38,7 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
         }
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-            alert("No token found. Redirecting to signin.");
+            alert("No token found. Redirecting to signin...");
             navigate("/signin");
             return;
         }
@@ -59,23 +59,24 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
             notificationHandler(true, 'Vault shared successfully', 'success')
         } catch (err) {
             if (err.response) {
-                const message = err.response.data.message
-                if (err.response.data.code === backCodes.ACCESS_DENIED) {
-                    alert('Access denied or session expired. Please, log in again.')
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                const potentialCodes = [backCodes.NOT_ALLOWED, backCodes.RECIPIENT_NOT_FOUND, backCodes.RECIPIENT_ALREADY]
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
                     navigate('/signin')
+                } else if (potentialCodes.includes(code)) {
+                    alert(message)
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn(`Erro na presença de response: ${err}`)
                 }
-                else if (err.response.data.code === backCodes.RECIPIENT_NOT_FOUND) {
-                    setErrMsg(message)
-                } 
-                else if (err.response.data.code === backCodes.RECIPIENT_ALREADY) {
-                    setErrMsg(message)
-                }
-                else {
-                    setErrMsg('Unknown error. Please, try again')
-                    console.warn(`Erro: ${err}`)
-                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                setErrMsg('Unknown error. Please, try again')
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
                 console.warn(`Erro: ${err}`)
             }
             

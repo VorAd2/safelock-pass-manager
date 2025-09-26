@@ -41,23 +41,26 @@ const VaultTitleChangeModal = ({data, onHide}) => {
             handleClose(true)
         } catch (err) {
             if (err.response) {
-                const code = err.response.data.code
-                const message = err.response.data.message
+                const code = err.response.data?.code
+                const message = err.response.data?.message
                 if (code === backCodes.ACCESS_DENIED) {
-                    setErrorMsg(message)
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
                 } else if (code === backCodes.DUPLICATE_VAULT) {
                     setErrorMsg(message)
                 } else {
-                    alert('Unknown error. Please, try again.')
-                    console.warn(`Erro: ${err}`)
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
                 }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                alert('Unknown error. Please, try again.')
-                console.warn(`Erro: ${err}`)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
-
         }
-        
     }
 
     const handleClose = (changed = false) => {

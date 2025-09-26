@@ -49,12 +49,23 @@ function VaultCard({
                 : 'Vault unfavorited successfully'
             notificationHandler(true, message, 'success')
         } catch (err) {
-            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert('Access denied or session expired. Please log in again.')
-                navigate('/signin')
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-                console.warn(`Erro ao deletar vault: ${err}`)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
         } finally {
             closePopover(e)
@@ -88,12 +99,23 @@ function VaultCard({
             deleteVault(vault._id, vault.ownerUser)
             notificationHandler(true, 'Vault deleted successfully', 'success')
         } catch (err) {
-            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert('Access denied or session expired. Please log in again.')
-                navigate('/signin')
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-                console.warn(`Erro ao deletar vault: ${err}`)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
         } finally {
             closePopover(e)
@@ -124,14 +146,25 @@ function VaultCard({
                 notificationHandler(true, 'Vault sharing removed successfully', 'success')
             })
             .catch(err => {
-                if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                    alert('Access denied or session expired. Please log in again.')
-                    navigate('/signin')
-                } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
-                    notificationHandler(true, 'Vault sharing not found. Please, try again or refresh your vaults.', 'danger')
+                if (err.response) {
+                    const code = err.response.data?.code
+                    const message = err.response.data?.message
+                    if (code === backCodes.ACCESS_DENIED) {
+                        alert(message)
+                        localStorage.removeItem('authToken')
+                        navigate('/signin')
+                    } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
+                        alert(message)
+                    } else {
+                        alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                        console.warn('Erro na presença de response:', err.response)
+                    }
+                } else if (err.request) {
+                    alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de request:', err.request)
                 } else {
-                    notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-                    console.warn(`Erro ao deletar sharing de vault: ${err}`)
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro inesperado:', err.message)
                 }
             })
             .finally(() => { 
@@ -202,7 +235,6 @@ function VaultCard({
             </MiniModal>
         )
     }
-
 
     return (
         <div className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>

@@ -4,6 +4,7 @@ const { connectedUsers } = require('../index.cjs');
 
 const VaultModel = require('../models/Vault.cjs');
 const CredentialModel = require('../models/Credential.cjs'); 
+const { default: errorCodes } = require('../errorCodes');
 
 function emitSocketEvent(data) {
     const {credential, vaultId, vaultTitle, sharedUsers, vaultOwner, event} = data;
@@ -36,21 +37,20 @@ module.exports = (db) => {
         const { vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks } = req.body;
         if (req.userData.username !== credentialOwner) {
-            console.log('Backend - Nomes diferentes! Acesso NEGADO (403).');
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         try {
             const credentialExists = await CredentialModel.credentialExists(db, {vaultId, credentialTitle})
             if (credentialExists) {
-                return res.status(409).json({message: 'Credential title already in use', code: 'DUPLICATE_CREDENTIAL'})
+                return res.status(409).json({message: errorFeedbacks.DUPLICATE_CREDENTIAL, code: errorCodes.DUPLICATE_CREDENTIAL})
             }
             const credentialResult = await CredentialModel.insertCredential(
                 db, 
                 { vaultId, credentialTitle, credentialOwner, credentialEmail, 
                     credentialUsername, credentialPassword, credentialLinks}
             );
-            if (!credentialResult.vaultExists) return res.status(404).json({message: 'The vault no longer exists', code: 'VAULT_NOT_FOUND'})
-            const vaultResult = await VaultModel.addCredential(vaultId, credentialResult.newCredential, db)
+            if (!credentialResult.vaultExists) return res.status(404).json({message: errorFeedbacks.VAULT_NOT_FOUND, code: errorCodes.VAULT_NOT_FOUND})
+            await VaultModel.addCredential(vaultId, credentialResult.newCredential, db)
             const {sharedUsers, vaultOwner} = await VaultModel.getSharedUsersAndOwner(db, vaultId)
             emitSocketEvent({credential: credentialResult.newCredential, vaultId, vaultTitle, sharedUsers, vaultOwner, event: 'credentialAdded'})
             return res.status(201).json(credentialResult.newCredential)
@@ -63,18 +63,17 @@ module.exports = (db) => {
     router.delete('/', async (req, res) => {
         const {username} = req.body
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: 'ACCESS_DENIED' });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         const {vaultId, vaultTitle, credential} = req.body
         if (credential.credentialOwner !== username) {
-            return res.status(403).json({message: "You can't delete other user's credentials", code: 'CREDENTIAL_ACCESS_DENIED'})
+            return res.status(403).json({message: errorFeedbacks.CREDENTIAL_ACCESS_DENIED, code: errorCodes.CREDENTIAL_ACCESS_DENIED})
         }
         try {
             await VaultModel.removeCredential(db, vaultId, credential)
             await CredentialModel.deleteCredential(db, credential)
             const {sharedUsers, vaultOwner} = await VaultModel.getSharedUsersAndOwner(db, vaultId)
             emitSocketEvent({sharedUsers, vaultId, vaultTitle, vaultOwner, credential, event: 'credentialDeleted'})
-            console.log('Sem error na deleção credencial')
             return res.status(200).json({message: 'Credential deleted successfully'})
         } catch (err) {
             console.warn(`Erro inesperado na deleção de credencial: ${err}`)

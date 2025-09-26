@@ -38,40 +38,49 @@ const NewCredentialModal = ({ vaultId, vaultTitle, onHide }) => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const newCredential = {
             vaultId, vaultTitle, credentialTitle, credentialOwner, credentialEmail, 
             credentialUsername, credentialPassword, credentialLinks 
         }
-        const authToken = localStorage.getItem("authToken");
+        const authToken = localStorage.getItem("authToken")
         if (!authToken) {
-            console.warn("No token found. Redirecting to signin.");
-            navigate("/signin");
-            return;
+            alert('No token found. Redirecting to signin...')
+            navigate('/signin')
+            return
         }
         try {
             const response = await axios.post(`${backUrl}/dashboard/vaults/credentials`, 
                 newCredential, 
                 { headers: { Authorization: `Bearer ${authToken}` }}
             )
-            addCredential(vaultId, response.data);
+            addCredential(vaultId, response.data)
             handleClose(true)
         } catch (err) {
-            const message = err.response.data.message
-            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert("Access denied or session expired. Please log in again.");
-                localStorage.removeItem("authToken");
-                navigate("/signin");
-            } else if (err.response && err.response.data.code === backCodes.VAULT_NOT_FOUND) {
-                alert(message);
-            } else if (err.response && err.response.data.code === backCodes.DUPLICATE_CREDENTIAL) {
-                alert(message);
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data.message
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
+                } else if (code === backCodes.VAULT_NOT_FOUND) {
+                    alert(message)
+                } else if (code === backCodes.DUPLICATE_CREDENTIAL) {
+                    alert(message)
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                alert("An error occurred while loading the vault data. Please, try again.")
-                console.warn(err)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
         }
-    };
+    }
 
     
     return (

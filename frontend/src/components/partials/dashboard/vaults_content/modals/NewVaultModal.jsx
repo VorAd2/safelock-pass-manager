@@ -19,8 +19,8 @@ const NewVaultModal = ({ onClose, onCreate }) => {
     const [pin, setPin] = useState('')
     const [showPin, setShowPin] = useState(false)
     const [desc, setDescription] = useState('')
-    const maxTitleLength = 20;
-    const maxDescriptionLength = 100;
+    const maxTitleLength = 20
+    const maxDescriptionLength = 100
     const [titleError, setTitleError] = useState('')
 
     const handleCreate = async (vaultData) => {
@@ -44,19 +44,28 @@ const NewVaultModal = ({ onClose, onCreate }) => {
             addVault(newVault)
             await onCreate()
         } catch (err) {
-            if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert('Access denied or session expired. Please log in again.')
-                localStorage.removeItem("authToken")
-                navigate("/signin")
-            } else if (err.response && err.response.data.code === backCodes.DUPLICATE_VAULT) {
-                setTitleError('You already have a vault with that title')
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if (code === backCodes.ACCESS_DENIED){
+                    alert(message)
+                    localStorage.removeItem("authToken")
+                    navigate('/signin')
+                } else if (code === backCodes.DUPLICATE_VAULT) {
+                    setTitleError(message)
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                alert('Unknown error. Please, try again')
-                console.warn(err)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
         }
-    };
-
+    }
 
     return (
         <div className={styles.backdrop}>
@@ -167,7 +176,7 @@ const NewVaultModal = ({ onClose, onCreate }) => {
             </Form>
         </div>
         </div>
-    );
-};
+    )
+}
 
 export default NewVaultModal;

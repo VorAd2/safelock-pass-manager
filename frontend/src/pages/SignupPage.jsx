@@ -10,12 +10,12 @@ const backUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 function SignupPage() {
-  const [username, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [invalidation, setInvalidation] = useState({});
-  const navigate = useNavigate();
+  const [username, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [invalidation, setInvalidation] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get(backUrl + '/signup')
@@ -49,21 +49,21 @@ function SignupPage() {
       setInvalidation({password: true, msg: 'Passwords must be the same'})
       return;
     }
-    const form = {username: username, email: email, password: password};
+    const form = {username: username, email: email, password: password}
     try {
-      const res = await axios.post(backUrl + '/signup', form);
+      const res = await axios.post(backUrl + '/signup', form)
       const {token} = res.data
       localStorage.setItem('authToken', token)
       const payload = jwtDecode(token)
       const userData = payload.userData
       const username = userData.username
-      navigate(`/dashboard/${username}`);
+      navigate(`/dashboard/${username}`)
     } catch (err) {
       if (err.response) {
         const errorCode = err.response.data.code
         errorCode === backCodes.INVALID_AUTH 
           ? setInvalidation(getSubmitInvalidation(err)) 
-          : alert('Unknown error. Please, try again.')
+          : alert(backCodes.GENERIC_ERROR_FEEDBACK)
       } else if (err.request){
         alert('Unable to communicate with the server. Please check your connection.')
       } else {
@@ -138,7 +138,7 @@ function SignupPage() {
         </Card.Body>
       </Card>
     </Container>
-  );
+  )
 }
 
-export default SignupPage;
+export default SignupPage

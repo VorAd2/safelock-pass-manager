@@ -47,12 +47,23 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
             : 'Vault unfavorited successfully'
         notificationHandler(true, message, 'success')
     } catch (err) {
-        if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-          alert('Access denied or session expired. Please log in again.')
-          navigate('/signin')
+        if (err.response) {
+            const code = err.response.data?.code
+            const message = err.response.data?.message
+            if (code === backCodes.ACCESS_DENIED) {
+                alert(message)
+                localStorage.removeItem('authToken')
+                navigate('/signin')
+            } else {
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro na presença de response:', err.response)
+            }
+        } else if (err.request) {
+            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+            console.warn('Erro na presença de request:', err.request)
         } else {
-          notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-          console.warn(`Erro ao deletar vault: ${err}`)
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro inesperado:', err.message)
         }
     } finally {
         closePopover(e)
@@ -75,31 +86,42 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
   const handleVaultDelete = async (e, closePopover) => {
     e.stopPropagation()
     try {
-        let authToken = localStorage.getItem('authToken')
-        if (!authToken) {
-            alert('No token found. Redirecting...')
-            navigate("/signin");
-            return;
-        }
-        const route = `${BACK_URL}/dashboard/vaults`
-        const config = {
-            headers: { Authorization: `Bearer ${authToken}` },
-            data: {
-                ownerUsername: data.ownerUser,
-                vaultId: vaultId,
-                vaultTitle
-            }
-        }
-        await axios.delete(route, config)
-        deleteVault(vaultId, data.ownerUser)
-        notificationHandler(true, 'Vault deleted successfully', 'success')
+      let authToken = localStorage.getItem('authToken')
+      if (!authToken) {
+          alert('No token found. Redirecting...')
+          navigate("/signin");
+          return;
+      }
+      const route = `${BACK_URL}/dashboard/vaults`
+      const config = {
+          headers: { Authorization: `Bearer ${authToken}` },
+          data: {
+              ownerUsername: data.ownerUser,
+              vaultId: vaultId,
+              vaultTitle
+          }
+      }
+      await axios.delete(route, config)
+      deleteVault(vaultId, data.ownerUser)
+      notificationHandler(true, 'Vault deleted successfully', 'success')
     } catch (err) {
-        if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-          alert('Access denied or session expired. Please log in again.')
-          navigate('/signin')
+        if (err.response) {
+          const code = err.response.data?.code
+          const message = err.response.data?.message
+          if (code === backCodes.ACCESS_DENIED) {
+            alert(message)
+            localStorage.removeItem('authToken')
+            navigate('/signin')
+          } else {
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro na presença de response:', err.response)
+          }
+        } else if (err.request) {
+            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+            console.warn('Erro na presença de request:', err.request)
         } else {
-          notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-          console.warn(`Erro ao deletar vault: ${err}`)
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro inesperado:', err.message)
         }
     } finally {
         closePopover(e)
@@ -126,23 +148,34 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
     }
     axios.delete(route, config)
       .then(() => {
-          deleteVault(data._id, data.ownerUser)
-          notificationHandler(true, 'Vault sharing removed successfully', 'success')
+        deleteVault(data._id, data.ownerUser)
+        notificationHandler(true, 'Vault sharing removed successfully', 'success')
       })
       .catch(err => {
-          if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-            alert('Access denied or session expired. Please log in again.')
+        if (err.response) {
+          const code = err.response.data?.code
+          const message = err.response.data?.message
+          if (code === backCodes.ACCESS_DENIED) {
+            alert(message)
+            localStorage.removeItem('authToken')
             navigate('/signin')
-          } else if (err.response && err.response.data.code === backCodes.VAULT_SHARING_NOT_FOUND) {
-              notificationHandler(true, 'Vault sharing not found. Please, try again or refresh your vaults.', 'danger')
+          } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
+              alert(message)
           } else {
-              notificationHandler(true, 'Unknown error. Please, try again.', 'danger')
-              console.warn(`Erro ao remover compartilhamento de vault: ${err}`)
+              alert(backCodes.GENERIC_ERROR_FEEDBACK)
+              console.warn('Erro na presença de response:', err.response)
           }
+        } else if (err.request) {
+            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+            console.warn('Erro na presença de request:', err.request)
+        } else {
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro inesperado:', err.message)
+        }
       })
       .finally(() => { 
-          closePopover(e)
-          onHide()
+        closePopover(e)
+        onHide()
       })
   }
 
@@ -170,15 +203,25 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
       closePopover(e)
       notificationHandler(true, response.data.message, 'success')
     } catch (err) {
-      if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-        alert('Access denied or session expired. Please log in again.')
-        navigate('/signin')
-      } else if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
-        const msg = err.response.data.message
-        alert(msg)
+      if (err.response) {
+        const code = err.response.data?.code
+        const message = err.response.data?.message
+        if (code === backCodes.ACCESS_DENIED) {
+          alert(message)
+          localStorage.removeItem('authToken')
+          navigate('/signin')
+        } else if (code === backCodes.CREDENTIAL_ACCESS_DENIED) {
+            alert(message)
+        } else {
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro na presença de response:', err.response)
+        }
+      } else if (err.request) {
+          alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+          console.warn('Erro na presença de request:', err.request)
       } else {
-        alert('Unknown error. Please, try again')
-        console.warn(`Erro desconhecido ao deletar credencial: ${err}`)
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro inesperado:', err.message)
       }
     }
   }

@@ -2,6 +2,7 @@ const backCodes = {
     INVALID_AUTH: 'INVALID_AUTH',
 
     ACCESS_DENIED:  'ACCESS_DENIED',
+    NOT_ALLOWED: 'NOT_ALLOWED',
     DUPLICATE_VAULT:  'DUPLICATE_VAULT',
     VAULT_NOT_FOUND: 'VAULT_NOT_FOUND',
     VAULT_SHARING_NOT_FOUND: 'VAULT_SHARING_NOT_FOUND',
@@ -11,6 +12,9 @@ const backCodes = {
     
     DUPLICATE_CREDENTIAL:  'DUPLICATE_CREDENTIAL',
     CREDENTIAL_ACCESS_DENIED: 'CREDENTIAL_ACCESS_DENIED',
+
+    GENERIC_ERROR_FEEDBACK: 'Unexpected error. Please, try again.',
+    RESPONSE_ERROR_FEEDBACK: 'No response from server. Please, check your connection.',
 };
 
 export default backCodes;

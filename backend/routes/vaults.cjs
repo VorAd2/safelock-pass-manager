@@ -5,6 +5,7 @@ const VaultModel = require('../models/Vault.cjs');
 const UserModel = require('../models/User.cjs');
 const CredentialModel = require('../models/Credential.cjs');
 const { default: errorCodes } = require('../errorCodes');
+const { default: errorFeedbacks } = require('../errorFeedbacks');
 
 
 function emitSocketEvent(data) {
@@ -60,7 +61,7 @@ module.exports = (db) => {
     router.get('/:username', async (req, res) => {
         const { username } = req.params;
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         try {
             const vaultsArray = await VaultModel.getVaultsByUser(username, db);
@@ -76,14 +77,13 @@ module.exports = (db) => {
 
     router.post('/', async (req, res) => {
         const {ownerUser, title, pin, desc} = req.body.newVaultData
-        console.log(`Log em postVaults: ${req.userData.username}  ${ownerUser}`)
         if (req.userData.username !== ownerUser) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         try {
             const isDuplicateVault = await VaultModel.isDuplicateVault(db, title, ownerUser)
             if (isDuplicateVault) {
-                return res.status(409).json({code: errorCodes.DUPLICATE_VAULT})
+                return res.status(409).json({message: errorFeedbacks.DUPLICATE_VAULT, code: errorCodes.DUPLICATE_VAULT})
             }
             const newVaultData = await VaultModel.insertVault({ownerUser, title, pin, desc}, db)
             const vaultId = newVaultData.insertedId
@@ -99,12 +99,12 @@ module.exports = (db) => {
     router.patch('/title', async (req, res) => {
         const {ownerUsername} = req.body
         if (req.userData.username !== ownerUsername) {
-            return res.status(403).json({ message: 'Access denied for the requested profile.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         const {vaultId, newTitle} = req.body
         try {
             const isDuplicate = await VaultModel.isDuplicateVault(db, newTitle, ownerUsername)
-            if (isDuplicate) return res.status(409).json({message: 'There is already a vault with that title.', code: errorCodes.DUPLICATE_VAULT})
+            if (isDuplicate) return res.status(409).json({message: errorFeedbacks.DUPLICATE_VAULT, code: errorCodes.DUPLICATE_VAULT})
             await VaultModel.updateTitle(db, vaultId, newTitle)
             return res.status(200).send()
         } catch (err) {
@@ -117,7 +117,7 @@ module.exports = (db) => {
     router.patch('/favoritism', async (req, res) => {
         const {username} = req.body
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         const {toFavorite, vaultId} = req.body
         try {
@@ -132,23 +132,23 @@ module.exports = (db) => {
     router.patch('/sharing', async (req, res) => {
         const { senderUsername } = req.body
         if (req.userData.username !== senderUsername) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         const {ownerUsername, vaultId, vaultTitle, recipientUsername} = req.body
         if (ownerUsername !== senderUsername) {
-            const msg = `Usuário remetente não possui autorização para compartilhar o cofre: ${ownerUsername} .. ${senderUsername}`
-            return res.status(403).json({message: msg})
+            const msg = 'You do not have permission to share the vault.'
+            return res.status(403).json({message: msg, code: errorCodes.NOT_ALLOWED})
         }
         if (ownerUsername === recipientUsername) {
-            const msg = `Usuário remetente não pode compartilhar um vault consigo mesmo`
-            return res.status(403).json({message: msg})
+            const msg = 'You cannot share a vault with yourself.'
+            return res.status(403).json({message: msg, code: errorCodes.NOT_ALLOWED})
         }
         try {
             const recipientData = await UserModel.getUserByName(db, recipientUsername)
             if (recipientData === null) {
-                return res.status(404).json({message: 'Recipient user not found', code: 'RECIPIENT_NOT_FOUND'})
+                return res.status(404).json({message: errorFeedbacks.RECIPIENT_NOT_FOUND, code: errorCodes.RECIPIENT_NOT_FOUND})
             } else if (recipientData.allVaults.includes(vaultId)) {
-                return res.status(409).json({message: 'Recipient user already has this vault', code: 'RECIPIENT_ALREADY'}) 
+                return res.status(409).json({message: 'Recipient user already has this vault', code: errorCodes.RECIPIENT_ALREADY}) 
             }
             await VaultModel.sharing(db, vaultId, recipientUsername)
             await UserModel.addVault(recipientUsername, vaultId, db)
@@ -166,7 +166,7 @@ module.exports = (db) => {
     router.delete('/', async (req, res) => {
         const { ownerUsername } = req.body
         if (req.userData.username !== ownerUsername) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         try {
             const {vaultId, vaultTitle} = req.body
@@ -192,7 +192,7 @@ module.exports = (db) => {
     router.delete('/sharing', async (req, res) => {
         const {vaultId, vaultTitle, username} = req.body
         if (req.userData.username !== username) {
-            return res.status(403).json({ message: 'Acesso negado para o perfil solicitado.', code: errorCodes.ACCESS_DENIED });
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
         }
         try {
             const thereWasVault = await UserModel.removeVaultSharing(db, vaultId, username)
@@ -209,7 +209,7 @@ module.exports = (db) => {
                 })
                 return res.status(200).json({message: 'Vault sharing removed successfully'})
             } else {
-                return res.status(404).json({code: errorCodes.VAULT_SHARING_NOT_FOUND})
+                return res.status(404).json({message: errorFeedbacks.VAULT_SHARING_NOT_FOUND, code: errorCodes.VAULT_SHARING_NOT_FOUND})
             }
         } catch (err) {
             console.log(`Erro ao deletar compartilhamento de vault: ${err}`)

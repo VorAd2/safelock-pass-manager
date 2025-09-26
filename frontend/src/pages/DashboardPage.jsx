@@ -72,21 +72,26 @@ function DashboardPage({username}) {
       setLoading(false);
       registerSocket(username)
     } catch (err) {
-      console.warn("ERROR:", err)
       setLoading(false);
-      if (err.response && err.response.data.code === backCodes.ACCESS_DENIED) {
-        alert(
-          "Access denied or session expired. Please, log in again."
-        )
-        localStorage.removeItem("authToken")
-        navigate("/signin")
-      } else if (err.response && err.response.status === 204) {
-        console.log("Nenhum vault encontrado para este usuário.")
-        setAllVaults([])
+      if (err.response) {
+        const code = err.response.data?.code
+        const message = err.response.data?.message
+        if (code === backCodes.ACCESS_DENIED) {
+          alert(message)
+          localStorage.removeItem("authToken")
+          navigate("/signin")
+        } else if (err.response.status === 204) {
+          setAllVaults([])
+        } else {
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro na presença de response:', err.response)
+        }
+      } else if (err.request) {
+          alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+          console.warn('Erro na presença de request:', err.request)
       } else {
-        alert("Unknown error loading data. Please, refresh the page")
-        localStorage.removeItem("authToken")
-        navigate("/signin")
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro inesperado:', err.message)
       }
     }
   };

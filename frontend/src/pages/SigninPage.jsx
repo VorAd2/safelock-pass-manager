@@ -43,7 +43,7 @@ function SigninPage() {
       if (err.response) {
         const errorMsg = err.response.data.message
         const errorCode = err.response.data.code
-        errorCode === backCodes.INVALID_AUTH ? setMessage(errorMsg) : alert('Unknown error. Please, try again.')
+        errorCode === backCodes.INVALID_AUTH ? setMessage(errorMsg) : alert(backCodes.GENERIC_ERROR_FEEDBACK)
       } else if (err.request) {
         alert('Unable to communicate with the server. Please check your connection.')
       } else {

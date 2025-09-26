@@ -34,7 +34,7 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
         }
     }
 
-    if (credential == undefined) {
+    if (credential === undefined) {
         return null
     }
 
@@ -43,9 +43,9 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
         try {
             let authToken = localStorage.getItem('authToken')
             if (!authToken) {
-                console.warn("No token found. Redirecting to signin.");
-                navigate("/signin");
-                return;
+                alert('No token found. Redirecting to signin.')
+                navigate('/signin')
+                return
             }
             const route = `${BACK_URL}/dashboard/vaults/credentials`
             const config = {
@@ -61,19 +61,28 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
             onHide()
             notificationHandler(true, response.data.message, 'success')
         } catch (err) {
-            if (err.respoonse && err.response.data.code === backCodes.ACCESS_DENIED) {
-                alert('Access denied or session expired. Please log in again.')
-                navigate("/signin")
-            } else if (err.response && err.response.data.code === backCodes.CREDENTIAL_ACCESS_DENIED) {
-                const msg = err.response.data.message
-                alert(msg)
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
+                } else if (code === backCodes.CREDENTIAL_ACCESS_DENIED) {
+                    alert(message)
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
             } else {
-                alert('Unknow error. Please, try again')
-                console.warn(`Error desconhecido ao deletar credencial: ${err}`)
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
             }
         }
     }
-
 
     return (
         <Modal show={true} onHide={onHide} centered>
