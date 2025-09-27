@@ -7,6 +7,7 @@ import BellIcon from './bell.svg?react';
 import RefreshIcon from './refresh.svg?react';
 import RemoveIcon from './remove.svg?react';
 import InfoOutline from './info-outline.svg?react';
+import GitHubIcon from './github.svg?react';
 
 export {
   DashIcon,
@@ -17,5 +18,6 @@ export {
   BellIcon,
   RefreshIcon,
   RemoveIcon,
-  InfoOutline
+  InfoOutline,
+  GitHubIcon
 }

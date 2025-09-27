@@ -51,7 +51,7 @@ function SidebarSection(
                         {IconComponent ? <IconComponent className={styles.sidebarIcon} /> : <span>?</span>}
                       </span>
                       <span className={textClassName}>
-                        {option.name}
+                        {option.name === 'ContactUs' ? 'Contact Us' : option.name}
                       </span>
                     </>
                   )

@@ -3,8 +3,10 @@ import axios from 'axios'
 import backCodes from '../../../../back_codes'
 import { useState, useEffect } from 'react'
 import { useOutletContext, useNavigate } from 'react-router-dom'
-import { FloatingBox, VaultPanel, NewVaultModal, VaultTitleChangeModal, VaultPinModal,
-    VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal } from "../../../index"
+import {
+  FloatingBox, VaultPanel, NewVaultModal, VaultTitleChangeModal, VaultPinModal,
+  VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal
+} from "../../../index"
 import { useVaults } from '../../../context/useVaults'
 
 const backUrl = import.meta.env.VITE_BACKEND_URL;
@@ -15,10 +17,10 @@ function VaultsContent() {
   const [vaultPinModalVisible, setVaultPinModalVisible] = useState(false)
   const [vaultInfoModalVisible, setVaultInfoModalVisible] = useState(false)
   const [credentialInfoModalState, setCredentialInfoModalState] = useState(
-    {visible: false, credential: null}
+    { visible: false, credential: null }
   )
   const [newCredentialModalVisible, setNewCredentialModalVisible] = useState(false)
-  const [sendModalVisibleState, setSendModalVisibleState] = useState({visible: false, fromVaultInfoModal: null})
+  const [sendModalVisibleState, setSendModalVisibleState] = useState({ visible: false, fromVaultInfoModal: null })
   const [vaultTitleChangeModalVisible, setVaultTitleChangeVisible] = useState(false)
 
   const [currentVaultData, setCurrentVaultData] = useState(null)
@@ -27,7 +29,7 @@ function VaultsContent() {
   const navigate = useNavigate()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const { vaults, setAllVaults, getFavorites, getShared } = useVaults()
-  const [vaultsFilter, setVaultsFilter] = useState('all') 
+  const [vaultsFilter, setVaultsFilter] = useState('all')
 
   const getVaultData = (vaultId) => {
     for (let vault of vaults) {
@@ -44,7 +46,7 @@ function VaultsContent() {
       navigate('/signin')
       return
     }
-    let data =  getVaultData(vaultId)
+    let data = getVaultData(vaultId)
     setCurrentVaultData(data)
     if (data.pin) {
       setVaultPinModalVisible(true)
@@ -67,7 +69,7 @@ function VaultsContent() {
     }
     setIsRefreshing(true)
     try {
-      const config = {headers: {Authorization: `Bearer ${authToken}`}}
+      const config = { headers: { Authorization: `Bearer ${authToken}` } }
       const response = await axios.get(`${backUrl}/dashboard/${username}`, config)
       setAllVaults(response.data)
       setIsRefreshing(false)
@@ -122,7 +124,7 @@ function VaultsContent() {
         <FloatingBox setVaultsFilter={setVaultsFilter} />
       </div>
       <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
-        <VaultPanel 
+        <VaultPanel
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultId) => handleVaultClick(vaultId)}
           vaultEllipsisClick={handleVaultEllpsisClick}
@@ -133,22 +135,22 @@ function VaultsContent() {
           refreshVaults={refreshVaults}
           isRefreshing={isRefreshing}
         />
-        {newVaultModalVisible && <NewVaultModal 
-            onClose={onCloseNewVaultModal} 
-            onCreate={onConfirmNewVaultModal}
-          />
+        {newVaultModalVisible && <NewVaultModal
+          onClose={onCloseNewVaultModal}
+          onCreate={onConfirmNewVaultModal}
+        />
         }
         {vaultTitleChangeModalVisible && <VaultTitleChangeModal
           data={currentVaultData}
           onHide={(changed) => {
-              setVaultTitleChangeVisible(false)
-              setVaultInfoModalVisible(true)
-              if (changed === true) {
-                notificationHandler(true, 'Title changed successfully!', 'success')
-              }
+            setVaultTitleChangeVisible(false)
+            setVaultInfoModalVisible(true)
+            if (changed === true) {
+              notificationHandler(true, 'Title changed successfully!', 'success')
             }
           }
-          />
+          }
+        />
         }
 
         {vaultPinModalVisible && <VaultPinModal
@@ -160,45 +162,45 @@ function VaultsContent() {
         />
         }
 
-        {vaultInfoModalVisible && <VaultInfoModal 
-          data={currentVaultData} 
+        {vaultInfoModalVisible && <VaultInfoModal
+          data={currentVaultData}
           notificationHandler={notificationHandler}
           onHide={() => setVaultInfoModalVisible(false)}
-          onVaultTitleClick={() => {setVaultInfoModalVisible(false); setVaultTitleChangeVisible(true)}}
-          onNewCredentialModal={() => {setVaultInfoModalVisible(false); setNewCredentialModalVisible(true)} }
-          onSendModal={() => {setVaultInfoModalVisible(false); setSendModalVisibleState({visible: true, fromVaultInfoModal: true})} }
-          onCredentialClick={(credential) => {setVaultInfoModalVisible(false); setCredentialInfoModalState({visible: true, credential})} }
+          onVaultTitleClick={() => { setVaultInfoModalVisible(false); setVaultTitleChangeVisible(true) }}
+          onNewCredentialModal={() => { setVaultInfoModalVisible(false); setNewCredentialModalVisible(true) }}
+          onSendModal={() => { setVaultInfoModalVisible(false); setSendModalVisibleState({ visible: true, fromVaultInfoModal: true }) }}
+          onCredentialClick={(credential) => { setVaultInfoModalVisible(false); setCredentialInfoModalState({ visible: true, credential }) }}
         />
         }
-        
+
         {newCredentialModalVisible && <NewCredentialModal
           vaultId={currentVaultData && currentVaultData._id}
           vaultTitle={currentVaultData && currentVaultData.title}
           onHide={(added) => {
-              setNewCredentialModalVisible(false)
-              setVaultInfoModalVisible(true)
-              if (added === true) {
-                notificationHandler(true, 'Credential added successfully!', 'success')
-              }
+            setNewCredentialModalVisible(false)
+            setVaultInfoModalVisible(true)
+            if (added === true) {
+              notificationHandler(true, 'Credential added successfully!', 'success')
             }
           }
-        /> 
+          }
+        />
         }
         {credentialInfoModalState.visible && <CredentialInfoModal
           credential={credentialInfoModalState.credential}
           setModalState={setCredentialInfoModalState}
           notificationHandler={notificationHandler}
-          onHide={() => {setCredentialInfoModalState({visible: false, credential: null}); setVaultInfoModalVisible(true)} }
+          onHide={() => { setCredentialInfoModalState({ visible: false, credential: null }); setVaultInfoModalVisible(true) }}
         />
         }
-        {sendModalVisibleState.visible && <SendVaultModal 
+        {sendModalVisibleState.visible && <SendVaultModal
           vaultData={currentVaultData}
           notificationHandler={notificationHandler}
           fromVaultInfo={sendModalVisibleState.fromVaultInfoModal}
           onHide={(fromVaultInfo) => {
-              setSendModalVisibleState({visible: false, fromVaultInfoModal: null})
-              if (fromVaultInfo) setVaultInfoModalVisible(true);
-            } 
+            setSendModalVisibleState({ visible: false, fromVaultInfoModal: null })
+            if (fromVaultInfo) setVaultInfoModalVisible(true);
+          }
           }
         />
         }
