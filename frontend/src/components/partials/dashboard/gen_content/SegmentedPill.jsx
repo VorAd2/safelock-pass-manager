@@ -3,7 +3,7 @@ import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import styles from '../../../../styles/GeneratorContent.module.css';
 
 function SegmentedPill() {
-  const [selected, setSelected] = useState("1");
+  const [selected, setSelected] = useState("1")
 
   const options = [
     { name: "Password", value: "1" },

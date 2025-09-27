@@ -4,11 +4,11 @@ import { InfoOutline } from "../../../../assets/shared";
 import styles from "../../../../styles/GeneratorContent.module.css";
 
 export default function StrengthSlider() {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(0)
 
-    const labels = ["Weak", "Medium", "Strong", "Very strong"];
-    const colors = ["#28a745", "#4a2ab4ff", "#a78428", "#a74528"];
-    const percent = (value / 3) * 100;
+    const labels = ["Weak", "Medium", "Strong", "Very strong"]
+    const colors = ["#28a745", "#4a2ab4ff", "#a78428", "#a74528"]
+    const percent = (value / 3) * 100
 
     return (
         <div style={{ width: "45%" }} className="ms-4 mt-4">
@@ -53,5 +53,5 @@ export default function StrengthSlider() {
                 ))}
             </div>
         </div>
-    );
+    )
 }
