@@ -1,9 +1,8 @@
 function CardsContent() {
     return (
-        <>
-            <h1>My Cards</h1>
-            <p>Not implemented</p>
-        </>
+        <div className='d-flex flex-grow-1 justify-content-center align-items-center'>
+            <h1 style={{ color: 'white' }}>Not implemented</h1>
+        </div>
     )
 }
 

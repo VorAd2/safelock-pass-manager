@@ -9,7 +9,7 @@ import { useVaults } from "../components/context/useVaults";
 const backUrl = import.meta.env.VITE_BACKEND_URL;
 const titlesMap = {
   vaults: "Vaults",
-  tools: "Explore Our Tools",
+  generator: "Generator",
   send: "Share Your Credentials",
   cards: "Personal Cards",
   receipts: "Receipts",

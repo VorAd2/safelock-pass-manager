@@ -2,7 +2,7 @@ import { Nav } from 'react-bootstrap';
 import SidebarSection from '../../partials/dashboard/sidebar/SidebarSection';
 import SidebarFooter from '../../partials/dashboard/sidebar/SidebarFooter';
 import SiteIcon from '../../../assets/shared/site-icon.svg?react';
-import styles from '../../../styles/Sidebar.module.css'; 
+import styles from '../../../styles/Sidebar.module.css';
 
 function Sidebar({ isExpanded, toggleSidebar }) {
   const sidebarExpandClass = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
@@ -19,7 +19,7 @@ function Sidebar({ isExpanded, toggleSidebar }) {
           title="Manager"
           options={[
             { name: 'Vaults', href: 'vaults' },
-            { name: 'Tools', href: 'tools' },
+            { name: 'Generator', href: 'generator' },
             { name: 'Send', href: 'send' }
           ]}
           isExpanded={isExpanded}

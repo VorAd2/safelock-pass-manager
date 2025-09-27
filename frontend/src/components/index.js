@@ -1,5 +1,5 @@
-export { default as  Header } from './full/homepage/Header.jsx'
-export { default as  Footer } from './full/homepage/Footer'
+export { default as Header } from './full/homepage/Header.jsx'
+export { default as Footer } from './full/homepage/Footer'
 export { default as HeroSection } from './full/homepage/HeroSection.jsx'
 export { default as SponsorsContainer } from './full/homepage/SponsorsContainer.jsx'
 export { default as FeaturesSection } from './full/homepage/FeaturesSection.jsx'
@@ -8,17 +8,18 @@ export { default as PrincingSection } from './full/homepage/PrincingSection.jsx'
 export { default as ScrollTopBtn } from './full/homepage/ScrollTopBtn.jsx'
 
 
-export { default as  Sidebar } from './full/dashboard/Sidebar.jsx'
+export { default as Sidebar } from './full/dashboard/Sidebar.jsx'
 export { default as DashboardHeader } from './partials/dashboard/header/DashboardHeader'
 export { default as IndexContent } from './full/dashboard/contents/IndexContent.jsx'
 export { default as VaultsContent } from './full/dashboard/contents/VaultsContent'
+export { default as GeneratorContent } from './full/dashboard/contents/GeneratorContent.jsx'
 export { default as SendContent } from './full/dashboard/contents/SendContent'
 export { default as CardsContent } from './full/dashboard/contents/CardsContent'
 export { default as ReceiptsContent } from './full/dashboard/contents/ReceiptsContent'
 export { default as SettingsContent } from './full/dashboard/contents/SettingsContent'
 export { default as ContactUsContent } from './full/dashboard/contents/ContactUsContent'
 
-export { default as  FloatingBox} from './partials/dashboard/vaults_content/FloatingBox.jsx'
+export { default as FloatingBox } from './partials/dashboard/vaults_content/FloatingBox.jsx'
 export { default as VaultPanel } from './partials/dashboard/vaults_content/VaultPanel.jsx'
 export { default as VaultCard } from './partials/dashboard/vaults_content/VaultCard.jsx'
 export { default as NewVaultModal } from './partials/dashboard/vaults_content/modals/NewVaultModal.jsx'
@@ -29,6 +30,9 @@ export { default as NewCredentialModal } from './partials/dashboard/vaults_conte
 export { default as CredentialInfoModal } from './partials/dashboard/vaults_content/modals/CredentialInfoModal.jsx'
 export { default as SendVaultModal } from './partials/dashboard/vaults_content/modals/SendVaultModal.jsx'
 export { default as BellPopover } from './partials/dashboard/header/BellPopover.jsx'
+
+export { default as SegmentedPill } from './partials/dashboard/gen_content/SegmentedPill.jsx'
+export { default as StrengthSlider } from './partials/dashboard/gen_content/StrengthSlider.jsx'
 
 export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
 export { default as Notification } from './shared/Notification.jsx'

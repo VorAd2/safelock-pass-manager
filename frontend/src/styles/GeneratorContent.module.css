@@ -1,0 +1,78 @@
+.segmentedPillContainer {
+    display: inline-block;
+    width: auto;
+}
+
+.segmentedPill .pillBtn {
+    border: 1px solid #007bff;
+    border-radius: 50px;
+    background-color: transparent;
+    color: #007bff;
+    font-weight: 500;
+    transition: all 0.075s ease-in-out;
+    padding: 0.2rem 7rem 0.2rem 7rem;
+}
+
+.segmentedPill .pillBtn:checked,
+.segmentedPill .pillBtn.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+
+.stageButton {
+    border-radius: 50%;
+}
+
+.stageButton svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+}
+
+.stageButton:hover {
+    background-color: rgb(85, 85, 85);
+    cursor: pointer;
+}
+
+.stageLine {
+    height: 2px;
+    background-color: white;
+    border: none;
+    margin-top: 10px;
+}
+
+
+.slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    background: linear-gradient(to right,
+            var(--slider-color, #ddd) 0%,
+            var(--slider-color, #ddd) var(--percent, 0%),
+            #ddd var(--percent, 0%),
+            #ddd 100%);
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: var(--slider-color, #555);
+}
+
+.slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: var(--slider-color, #555);
+}

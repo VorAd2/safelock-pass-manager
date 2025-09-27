@@ -5,6 +5,7 @@ import CopyIcon from './copy.svg?react';
 import ArrowUpIcon from './arrow-up.svg?react';
 import BellIcon from './bell.svg?react';
 import RefreshIcon from './refresh.svg?react';
+import RefreshIcon2 from './refresh2.svg?react';
 import RemoveIcon from './remove.svg?react';
 import InfoOutline from './info-outline.svg?react';
 import GitHubIcon from './github.svg?react';
@@ -17,6 +18,7 @@ export {
   ArrowUpIcon,
   BellIcon,
   RefreshIcon,
+  RefreshIcon2,
   RemoveIcon,
   InfoOutline,
   GitHubIcon
