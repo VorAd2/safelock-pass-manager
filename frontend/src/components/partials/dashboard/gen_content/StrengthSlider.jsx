@@ -3,11 +3,11 @@ import { Form } from "react-bootstrap";
 import { InfoOutline } from "../../../../assets/shared";
 import styles from "../../../../styles/GeneratorContent.module.css";
 
-export default function StrengthSlider() {
+export default function StrengthSlider({ setStrength }) {
     const [value, setValue] = useState(0)
 
-    const labels = ["Weak", "Medium", "Strong", "Very strong"]
-    const colors = ["#28a745", "#4a2ab4ff", "#a78428", "#a74528"]
+    const labels = ["Weak", "Medium", "Strong", "Very Strong"]
+    const colors = ["#28a745", "#a78428", "#a74528", "#5936caff"]
     const percent = (value / 3) * 100
 
     return (
@@ -18,7 +18,7 @@ export default function StrengthSlider() {
                     max={3}
                     step={1}
                     value={value}
-                    onChange={(e) => setValue(Number(e.target.value))}
+                    onChange={(e) => { setValue(Number(e.target.value)); setStrength(labels[Number(e.target.value)]) }}
                     className={styles.slider}
                     style={{
                         "--slider-color": colors[value],

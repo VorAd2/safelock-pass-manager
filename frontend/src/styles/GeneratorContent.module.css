@@ -22,6 +22,8 @@
 
 .stageButton {
     border-radius: 50%;
+    border: none;
+    background-color: transparent;
 }
 
 .stageButton svg {
