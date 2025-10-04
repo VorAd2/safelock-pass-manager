@@ -1,10 +1,25 @@
 import { useState } from 'react'
 import { usePassphrase } from '../../../../hooks/usePassphrase.js'
-import { Button } from 'react-bootstrap'
-import { SegmentedPill, StrengthSlider } from '../../../index.js'
+import { SegmentedPill, StrengthSlider, KeywordInput } from '../../../index.js'
 import styles from '../../../../styles/GeneratorContent.module.css'
-import { CopyIcon, RefreshIcon2 } from '../../../../assets/shared/index.js'
+import styled from 'styled-components'
+import { CopyIcon, RefreshIcon2, InfoOutline } from '../../../../assets/shared/index.js'
 
+const TextButton = styled.button`
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        &:hover {
+            text-decoration: underline;
+        }
+        &:focus {
+            outline: none;
+        }
+    
+    `
 
 const GeneratorContent = () => {
     const [product, setProduct] = useState()
@@ -132,12 +147,16 @@ const GeneratorContent = () => {
                 <div className='d-flex flex-column'>
                     <SegmentedPill handleTypeChange={handleTypeChange} />
                     {getProductStage()}
+                    <div className='d-flex align-items-center px-4 mt-4 mb-2'>
+                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Password Strength</h2>
+                        <InfoOutline
+                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
+                            onClick={() => alert("Info sobre o nível de senha")}
+                        />
+                    </div>
                     <StrengthSlider setStrength={setStrength} />
-                    <div className='px-4'>
-                        <Button
-                            variant='primary'
-                            className='fs-5 text-white'
-                            style={{ marginTop: '7rem' }}>Generator History</Button>
+                    <div className='px-4 mt-5'>
+                        <TextButton>Generator History</TextButton>
                     </div>
                 </div>
             )
@@ -146,12 +165,16 @@ const GeneratorContent = () => {
                 <div className='d-flex flex-column'>
                     <SegmentedPill handleTypeChange={handleTypeChange} />
                     {getProductStage()}
+                    <div className='d-flex align-items-center px-4 mt-4 mb-2'>
+                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Phrase Strength</h2>
+                        <InfoOutline
+                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
+                            onClick={() => alert("Info sobre o nível de senha")}
+                        />
+                    </div>
                     <StrengthSlider setStrength={setStrength} />
-                    <div className='px-4'>
-                        <Button
-                            variant='primary'
-                            className='fs-5 text-white'
-                            style={{ marginTop: '7rem' }}>Generator History</Button>
+                    <div className='px-4 mt-5'>
+                        <TextButton>Generator History</TextButton>
                     </div>
                 </div>
             )
@@ -159,7 +182,18 @@ const GeneratorContent = () => {
             return (
                 <div className='d-flex flex-column'>
                     <SegmentedPill handleTypeChange={handleTypeChange} />
-                    <h1 style={{ color: 'white' }} >Not implemented[Username]</h1>
+                    {getProductStage()}
+                    <div className='d-flex align-items-center px-4 mt-4 mb-3'>
+                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Keywords</h2>
+                        <InfoOutline
+                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
+                            onClick={() => alert("Info sobre o nível de senha")}
+                        />
+                    </div>
+                    <KeywordInput />
+                    <div className='px-4 mt-5'>
+                        <TextButton>Generator History</TextButton>
+                    </div>
                 </div>
             )
     }

@@ -1,72 +1,72 @@
 import { useVaults } from "../../../../context/useVaults";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../assets/shared";
 import { PlusIcon, FingerprintIcon, UserAvatar, SendIcon, StarIcon, TrashIcon, UnstarIcon } from "../../../../../assets/dashboard";
 import { CustomCheckbox, MiniModal } from "../../../../shared";
 import styles from "../../../../../styles/VaultModal.module.css";
-import {AvatarColorManager} from "../../../../shared"; 
+import { AvatarColorManager } from "../../../../../lib/avatarColorManager.js";
 import backCodes from "../../../../../back_codes";
 
 const BACK_URL = import.meta.env.VITE_BACKEND_URL
 
 
-const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
+const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
   const username = jwtDecode(localStorage.getItem('authToken')).userData.username
-  data = data ?? {title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: ''}
+  data = data ?? { title: '', _id: '', credentials: [], favoritedBy: [], sharedUsers: [], ownerUser: '' }
   const avatarBackColor = data.ownerUser === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(data.ownerUser);
   const vaultTitle = data.title;
   const vaultId = data._id;
   const credentials = data ? data.credentials : [];
   const navigate = useNavigate();
   const { setFavoritism, deleteVault, deleteCredential } = useVaults()
-  const toFavorite = !(data && data.favoritedBy.some(u => u === username ))
+  const toFavorite = !(data && data.favoritedBy.some(u => u === username))
 
   const handleFavoriteAction = async (e, closePopover) => {
     e.stopPropagation()
     const reqData = {
-        toFavorite: toFavorite,
-        vaultId: data._id,
-        username: username
+      toFavorite: toFavorite,
+      vaultId: data._id,
+      username: username
     }
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
-        alert('No token found. Redirecting...')
-        navigate("/signin");
-        return;
+      alert('No token found. Redirecting...')
+      navigate("/signin");
+      return;
     }
     try {
-        await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
-            { headers: {Authorization: `Bearer ${authToken}` }}
-        )
-        setFavoritism(vaultId, username, toFavorite)
-        const message = toFavorite
-            ? 'Vault favorited successfully'
-            : 'Vault unfavorited successfully'
-        notificationHandler(true, message, 'success')
+      await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      )
+      setFavoritism(vaultId, username, toFavorite)
+      const message = toFavorite
+        ? 'Vault favorited successfully'
+        : 'Vault unfavorited successfully'
+      notificationHandler(true, message, 'success')
     } catch (err) {
-        if (err.response) {
-            const code = err.response.data?.code
-            const message = err.response.data?.message
-            if (code === backCodes.ACCESS_DENIED) {
-                alert(message)
-                localStorage.removeItem('authToken')
-                navigate('/signin')
-            } else {
-                alert(backCodes.GENERIC_ERROR_FEEDBACK)
-                console.warn('Erro na presença de response:', err.response)
-            }
-        } else if (err.request) {
-            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-            console.warn('Erro na presença de request:', err.request)
+      if (err.response) {
+        const code = err.response.data?.code
+        const message = err.response.data?.message
+        if (code === backCodes.ACCESS_DENIED) {
+          alert(message)
+          localStorage.removeItem('authToken')
+          navigate('/signin')
         } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro inesperado:', err.message)
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro na presença de response:', err.response)
         }
+      } else if (err.request) {
+        alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+        console.warn('Erro na presença de request:', err.request)
+      } else {
+        alert(backCodes.GENERIC_ERROR_FEEDBACK)
+        console.warn('Erro inesperado:', err.message)
+      }
     } finally {
-        closePopover(e)
+      closePopover(e)
     }
   }
 
@@ -88,63 +88,63 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
     try {
       let authToken = localStorage.getItem('authToken')
       if (!authToken) {
-          alert('No token found. Redirecting...')
-          navigate("/signin");
-          return;
+        alert('No token found. Redirecting...')
+        navigate("/signin");
+        return;
       }
       const route = `${BACK_URL}/dashboard/vaults`
       const config = {
-          headers: { Authorization: `Bearer ${authToken}` },
-          data: {
-              ownerUsername: data.ownerUser,
-              vaultId: vaultId,
-              vaultTitle
-          }
+        headers: { Authorization: `Bearer ${authToken}` },
+        data: {
+          ownerUsername: data.ownerUser,
+          vaultId: vaultId,
+          vaultTitle
+        }
       }
       await axios.delete(route, config)
       deleteVault(vaultId, data.ownerUser)
       notificationHandler(true, 'Vault deleted successfully', 'success')
     } catch (err) {
-        if (err.response) {
-          const code = err.response.data?.code
-          const message = err.response.data?.message
-          if (code === backCodes.ACCESS_DENIED) {
-            alert(message)
-            localStorage.removeItem('authToken')
-            navigate('/signin')
-          } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro na presença de response:', err.response)
-          }
-        } else if (err.request) {
-            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-            console.warn('Erro na presença de request:', err.request)
+      if (err.response) {
+        const code = err.response.data?.code
+        const message = err.response.data?.message
+        if (code === backCodes.ACCESS_DENIED) {
+          alert(message)
+          localStorage.removeItem('authToken')
+          navigate('/signin')
         } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro inesperado:', err.message)
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro na presença de response:', err.response)
         }
+      } else if (err.request) {
+        alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+        console.warn('Erro na presença de request:', err.request)
+      } else {
+        alert(backCodes.GENERIC_ERROR_FEEDBACK)
+        console.warn('Erro inesperado:', err.message)
+      }
     } finally {
-        closePopover(e)
-        onHide()
-    }   
+      closePopover(e)
+      onHide()
+    }
   }
 
   const handleRemoveSharing = (e, closePopover) => {
     e.stopPropagation()
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
-        alert('No token found. Redirecting...')
-        navigate("/signin");
-        return;
+      alert('No token found. Redirecting...')
+      navigate("/signin");
+      return;
     }
     const route = `${BACK_URL}/dashboard/vaults/sharing`
     const config = {
-        headers: { Authorization: `Bearer ${authToken}` },
-        data: {
-            vaultId: data._id,
-            vaultTitle,
-            username
-        }
+      headers: { Authorization: `Bearer ${authToken}` },
+      data: {
+        vaultId: data._id,
+        vaultTitle,
+        username
+      }
     }
     axios.delete(route, config)
       .then(() => {
@@ -160,20 +160,20 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
             localStorage.removeItem('authToken')
             navigate('/signin')
           } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
-              alert(message)
+            alert(message)
           } else {
-              alert(backCodes.GENERIC_ERROR_FEEDBACK)
-              console.warn('Erro na presença de response:', err.response)
+            alert(backCodes.GENERIC_ERROR_FEEDBACK)
+            console.warn('Erro na presença de response:', err.response)
           }
         } else if (err.request) {
-            alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-            console.warn('Erro na presença de request:', err.request)
+          alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+          console.warn('Erro na presença de request:', err.request)
         } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro inesperado:', err.message)
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro inesperado:', err.message)
         }
       })
-      .finally(() => { 
+      .finally(() => {
         closePopover(e)
         onHide()
       })
@@ -211,17 +211,17 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
           localStorage.removeItem('authToken')
           navigate('/signin')
         } else if (code === backCodes.CREDENTIAL_ACCESS_DENIED) {
-            alert(message)
+          alert(message)
         } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro na presença de response:', err.response)
+          alert(backCodes.GENERIC_ERROR_FEEDBACK)
+          console.warn('Erro na presença de response:', err.response)
         }
       } else if (err.request) {
-          alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-          console.warn('Erro na presença de request:', err.request)
+        alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+        console.warn('Erro na presença de request:', err.request)
       } else {
-          alert(backCodes.GENERIC_ERROR_FEEDBACK)
-          console.warn('Erro inesperado:', err.message)
+        alert(backCodes.GENERIC_ERROR_FEEDBACK)
+        console.warn('Erro inesperado:', err.message)
       }
     }
   }
@@ -234,42 +234,42 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
     const noHoverClassDelete = canDeleteCredential ? '' : 'noHoverClass'
     return (
       <MiniModal
-      ButtonIcon={VerticalEllipsisIcon}
-      buttonClass={styles.credentialEllipsisWrapper}
-      placement="right"
+        ButtonIcon={VerticalEllipsisIcon}
+        buttonClass={styles.credentialEllipsisWrapper}
+        placement="right"
       >
-        {({ closePopover, popoverItemClass}) => (
-            <>
-              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(email); closePopover(e); }}>
-                <div className="d-flex align-items-center">
-                  <CopyIcon className='me-2'/>
-                  <span>Copy email</span>
-                </div>
-              </button>
-              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(password); closePopover(e); }}>
-                <div className="d-flex align-items-center">
-                  <CopyIcon className='me-2'/>
-                  <span>Copy password</span>
-                </div>
-              </button>
-              <button type="button" className={popoverItemClass} onClick={(e) => {handleCredentialCopy(credential.credentialUsername); closePopover(e); }}>
-                <div className="d-flex align-items-center fs-9">
-                  <CopyIcon className='me-2'/>
-                  <span>Copy username</span>
-                </div>
-              </button>
-              <button type="button" 
-              className={`${popoverItemClass} text-danger ${noHoverClassDelete}`} 
+        {({ closePopover, popoverItemClass }) => (
+          <>
+            <button type="button" className={popoverItemClass} onClick={(e) => { handleCredentialCopy(email); closePopover(e); }}>
+              <div className="d-flex align-items-center">
+                <CopyIcon className='me-2' />
+                <span>Copy email</span>
+              </div>
+            </button>
+            <button type="button" className={popoverItemClass} onClick={(e) => { handleCredentialCopy(password); closePopover(e); }}>
+              <div className="d-flex align-items-center">
+                <CopyIcon className='me-2' />
+                <span>Copy password</span>
+              </div>
+            </button>
+            <button type="button" className={popoverItemClass} onClick={(e) => { handleCredentialCopy(credential.credentialUsername); closePopover(e); }}>
+              <div className="d-flex align-items-center fs-9">
+                <CopyIcon className='me-2' />
+                <span>Copy username</span>
+              </div>
+            </button>
+            <button type="button"
+              className={`${popoverItemClass} text-danger ${noHoverClassDelete}`}
               onClick={(e) => { e.stopPropagation(); if (canDeleteCredential) handleCredentialDelete(e, credential, closePopover) }}
-              style={{cursor: canDeleteCredential ? 'pointer' : 'not-allowed'}}
-              >
-                <div className='d-flex align-items-center'>
-                  <TrashIcon className={`me-2 ${deleteSpanStyle}`}/>
-                  <span className={deleteSpanStyle}>Delete</span>
-                </div>
-              </button>
-            </>
-          )
+              style={{ cursor: canDeleteCredential ? 'pointer' : 'not-allowed' }}
+            >
+              <div className='d-flex align-items-center'>
+                <TrashIcon className={`me-2 ${deleteSpanStyle}`} />
+                <span className={deleteSpanStyle}>Delete</span>
+              </div>
+            </button>
+          </>
+        )
         }
       </MiniModal>
     )
@@ -284,61 +284,61 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
     const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
     const canDeleteVault = data.ownerUser === username
     const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
-    const exclusionStyle = canDeleteVault 
-            ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
-            : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
+    const exclusionStyle = canDeleteVault
+      ? { color: 'var(--red-color)', fill: 'var(--red-color)' }
+      : { color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)' }
     return (
       <MiniModal
         ButtonIcon={VerticalEllipsisIcon}
         buttonClass={`${styles.ellipsisWrapper} ms-auto text-muted`}
         iconClass={styles.ellipsis}
         placement="left"
-        >
-          {({ closePopover, popoverItemClass}) => (
-              <>
-                <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
-                  <div className="d-flex align-items-center">
-                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}   
-                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
-                  </div>
-                </button>
-                <button type="button" 
-                className={`${popoverItemClass} ${noHoverClassSend}`} 
-                onClick={
-                  (e) => {
-                    e.stopPropagation()
-                    if (canShareVault) handleSendAction(e, closePopover); 
+      >
+        {({ closePopover, popoverItemClass }) => (
+          <>
+            <button type="button" className={popoverItemClass} onClick={(e) => handleFavoriteAction(e, closePopover)}>
+              <div className="d-flex align-items-center">
+                {toFavorite ? <StarIcon className='me-2' /> : <UnstarIcon className='me-2' />}
+                <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
+              </div>
+            </button>
+            <button type="button"
+              className={`${popoverItemClass} ${noHoverClassSend}`}
+              onClick={
+                (e) => {
+                  e.stopPropagation()
+                  if (canShareVault) handleSendAction(e, closePopover);
+                }
+              }
+              style={{ cursor: canShareVault ? 'pointer' : 'not-allowed' }}
+            >
+              <div className="d-flex align-items-center">
+                <SendIcon className={`me-2 ${sendSpanStyle}`} />
+                <span className={sendSpanStyle}>Share</span>
+              </div>
+            </button>
+            <button type="button"
+              className={popoverItemClass}
+              onClick={
+                (e) => {
+                  e.stopPropagation()
+                  if (canDeleteVault) {
+                    handleVaultDelete(e, closePopover)
+                  } else {
+                    handleRemoveSharing(e, closePopover)
                   }
                 }
-                style={{cursor: canShareVault ? 'pointer' : 'not-allowed'}}
-                >
-                  <div className="d-flex align-items-center">
-                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
-                    <span className={sendSpanStyle}>Share</span>
-                  </div>
-                </button>
-                <button type="button" 
-                            className={popoverItemClass}
-                            onClick={
-                                (e) => {
-                                    e.stopPropagation()
-                                    if (canDeleteVault) {
-                                        handleVaultDelete(e, closePopover)
-                                    } else {
-                                        handleRemoveSharing(e, closePopover)
-                                    }
-                                }
-                            }
-                            >
-                                <div className={`d-flex align-items-center`} style={exclusionStyle}>
-                                    {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
-                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
-                                </div>
-                            </button>
-              </>
-            )
-          }
-        </MiniModal>
+              }
+            >
+              <div className={`d-flex align-items-center`} style={exclusionStyle}>
+                {canDeleteVault ? <TrashIcon className='me-2' /> : <RemoveIcon className='me-2' />}
+                <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
+              </div>
+            </button>
+          </>
+        )
+        }
+      </MiniModal>
     )
   }
 
@@ -348,13 +348,13 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
     const hoverCursor = isChangeAllowed ? 'pointer' : 'not-allowed'
     return (
       <OverlayTrigger
-      placement="bottom"
-      overlay={<Tooltip id="vault-desc">{data.desc}</Tooltip>}
+        placement="bottom"
+        overlay={<Tooltip id="vault-desc">{data.desc}</Tooltip>}
       >
-        <Modal.Title 
-        onClick={onClick} 
-        style={{cursor: hoverCursor}} 
-        className={`mb-0 me-3 fs-3 fw-semibold ${styles.vaultTitle}`}
+        <Modal.Title
+          onClick={onClick}
+          style={{ cursor: hoverCursor }}
+          className={`mb-0 me-3 fs-3 fw-semibold ${styles.vaultTitle}`}
         >{vaultTitle}</Modal.Title>
       </OverlayTrigger>
     )
@@ -367,10 +367,10 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
           {getVaultEllipsisModal()}
           {getModalTitle()}
           <div className="d-flex align-items-center">
-            <UserAvatar className={styles.userAvatar} style={{backgroundColor: avatarBackColor}}/>
+            <UserAvatar className={styles.userAvatar} style={{ backgroundColor: avatarBackColor }} />
             {data.ownerUser}
           </div>
-        </div> 
+        </div>
       </Modal.Header>
 
       <Modal.Body className={styles.scrollPanel}>
@@ -386,7 +386,7 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
               onClick={() => onNewCredentialModal()}
               title="Adicionar credential"
             >
-              <PlusIcon style={{ width: 18, height: 18, fill:'white'}} />
+              <PlusIcon style={{ width: 18, height: 18, fill: 'white' }} />
             </button>
           </div>
         </div>
@@ -394,26 +394,27 @@ const VaultInfoModal = ({ data,notificationHandler, onHide, onVaultTitleClick, o
         <hr className="m-0" />
 
         <div className={styles.panelContent}>
-          {credentials.map((credential) => { 
+          {credentials.map((credential) => {
             const avatarBackColor = credential.credentialOwner === username ? 'var(--lessdark-blue-color)' : AvatarColorManager.getAvatarBgColor(credential.credentialOwner);
             return (
-            <div className={styles.gridRow} key={credential._id} 
-            onClick={() => onCredentialClick(credential)}
-            >
-              <div><CustomCheckbox onClick={(e) => e.stopPropagation()}/></div>
-              <div><FingerprintIcon style={{width:'20px', height:'20px'}} /></div>
-              <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
-              <div className={`${styles.truncate} fs-6`}>
-                <div>
-                  <UserAvatar className={styles.userAvatar} style={{ backgroundColor: avatarBackColor }}/>
+              <div className={styles.gridRow} key={credential._id}
+                onClick={() => onCredentialClick(credential)}
+              >
+                <div><CustomCheckbox onClick={(e) => e.stopPropagation()} /></div>
+                <div><FingerprintIcon style={{ width: '20px', height: '20px' }} /></div>
+                <div className={`${styles.truncate} fs-6`}>{credential.credentialTitle}</div>
+                <div className={`${styles.truncate} fs-6`}>
+                  <div>
+                    <UserAvatar className={styles.userAvatar} style={{ backgroundColor: avatarBackColor }} />
+                  </div>
+                  {credential.credentialOwner}
                 </div>
-                {credential.credentialOwner}
+                <div className={styles.actionColumn}>
+                  {getCredentialEllipsisModal(credential)}
+                </div>
               </div>
-              <div className={styles.actionColumn}>
-                {getCredentialEllipsisModal(credential)}
-              </div>
-            </div>
-          )})}
+            )
+          })}
         </div>
       </Modal.Body>
     </Modal>

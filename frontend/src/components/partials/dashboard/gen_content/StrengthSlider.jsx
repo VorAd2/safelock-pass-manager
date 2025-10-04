@@ -25,11 +25,6 @@ export default function StrengthSlider({ setStrength }) {
                         "--percent": `${percent}%`,
                     }}
                 />
-
-                <InfoOutline
-                    style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
-                    onClick={() => alert("Info sobre o nível de senha")}
-                />
             </div>
 
             <div

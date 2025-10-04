@@ -45,4 +45,4 @@ const AvatarColorManager = (() => {
   }
 })();
 
-export default AvatarColorManager;
+export { AvatarColorManager };

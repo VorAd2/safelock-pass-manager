@@ -33,6 +33,7 @@ export { default as BellPopover } from './partials/dashboard/header/BellPopover.
 
 export { default as SegmentedPill } from './partials/dashboard/gen_content/SegmentedPill.jsx'
 export { default as StrengthSlider } from './partials/dashboard/gen_content/StrengthSlider.jsx'
+export { default as KeywordInput } from './partials/dashboard/gen_content/KeywordInput.jsx'
 
 export { default as CustomCheckBox } from './shared/CustomCheckbox.jsx'
 export { default as Notification } from './shared/Notification.jsx'

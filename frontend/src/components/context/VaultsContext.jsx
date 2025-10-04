@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState } from "react";
-import { AvatarColorManager } from "../shared";
+import { AvatarColorManager } from "../../lib/avatarColorManager.js";
 
 export const VaultsContext = createContext();
 
@@ -8,10 +8,10 @@ export function VaultsProvider({ children }) {
   const [vaults, setVaults] = useState([])
 
   const changeVaultTitle = (vaultId, newTitle) => {
-    setVaults((prev) => 
+    setVaults((prev) =>
       prev.map(vault =>
         vault._id === vaultId
-          ? {...vault, title: newTitle}
+          ? { ...vault, title: newTitle }
           : vault
       )
     )
@@ -51,7 +51,7 @@ export function VaultsProvider({ children }) {
       return prev.map(vault => {
         if (vault._id !== vaultId) return vault;
         const updatedCredentials = vault.credentials.filter(c => c.credentialTitle !== credential.credentialTitle)
-        return {...vault, credentials: updatedCredentials}
+        return { ...vault, credentials: updatedCredentials }
       })
     })
   }
@@ -101,12 +101,12 @@ export function VaultsProvider({ children }) {
     return vaults.filter(vault => vault.sharedUsers.length !== 0)
   }
 
-  
+
   return (
-    <VaultsContext.Provider 
-    value={
-      { vaults, changeVaultTitle, addVault, deleteVault, isDuplicateVault, setAllVaults, addCredential, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
-    }>
+    <VaultsContext.Provider
+      value={
+        { vaults, changeVaultTitle, addVault, deleteVault, isDuplicateVault, setAllVaults, addCredential, deleteCredential, setFavoritism, getFavorites, setSharing, getShared }
+      }>
       {children}
     </VaultsContext.Provider>
   );

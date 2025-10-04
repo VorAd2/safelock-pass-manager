@@ -1,24 +1,24 @@
 import { useVaults } from '../../../context/useVaults';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import backCodes  from '../../../../back_codes';
+import backCodes from '../../../../back_codes';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { VaultIcon2, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import { RemoveIcon } from '../../../../assets/shared';
 import styles from '../../../../styles/VaultsContent.module.css';
-import { AvatarColorManager } from '../../../shared';
+import { AvatarColorManager } from '../../../../lib/avatarColorManager.js';
 const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 function VaultCard({
-    vault, vaultCardClick, username, 
+    vault, vaultCardClick, username,
     ellipsisClick, notificationHandler, setSendModalVisibleState
 }) {
-    const avatarBackColor = vault.ownerUser === username 
-        ? 'var(--lessdark-blue-color)' 
+    const avatarBackColor = vault.ownerUser === username
+        ? 'var(--lessdark-blue-color)'
         : AvatarColorManager.getAvatarBgColor(vault.ownerUser)
     const vaultTitle = vault.title
-    const toFavorite = !(vault.favoritedBy.some(u => u === username ))
+    const toFavorite = !(vault.favoritedBy.some(u => u === username))
     const { setFavoritism, deleteVault } = useVaults()
     const navigate = useNavigate()
 
@@ -41,7 +41,7 @@ function VaultCard({
         }
         try {
             await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, data,
-                { headers: {Authorization: `Bearer ${authToken}` }}
+                { headers: { Authorization: `Bearer ${authToken}` } }
             )
             setFavoritism(vault._id, username, toFavorite)
             const message = toFavorite
@@ -74,7 +74,7 @@ function VaultCard({
 
     const handleSendAction = (e, closePopover) => {
         closePopover(e)
-        setSendModalVisibleState({visible: true, fromVaultInfoModal: false})
+        setSendModalVisibleState({ visible: true, fromVaultInfoModal: false })
     }
 
     const handleDelete = async (e, closePopover) => {
@@ -119,7 +119,7 @@ function VaultCard({
             }
         } finally {
             closePopover(e)
-        }   
+        }
     }
 
     const handleRemoveSharing = (e, closePopover) => {
@@ -167,7 +167,7 @@ function VaultCard({
                     console.warn('Erro inesperado:', err.message)
                 }
             })
-            .finally(() => { 
+            .finally(() => {
                 closePopover(e)
             })
     }
@@ -177,9 +177,9 @@ function VaultCard({
         const canDeleteVault = vault.ownerUser === username
         const sendSpanStyle = canShareVault ? '' : 'text-decoration-line-through text-secondary'
         const noHoverClassSend = canShareVault ? '' : 'noHoverClass'
-        const exclusionStyle = canDeleteVault 
-            ? {color: 'var(--red-color)', fill: 'var(--red-color)'}
-            : {color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)'}
+        const exclusionStyle = canDeleteVault
+            ? { color: 'var(--red-color)', fill: 'var(--red-color)' }
+            : { color: 'var(--action-yellow-color)', fill: 'var(--action-yellow-color)' }
         const modalClick = () => ellipsisClick(vault._id)
 
         return (
@@ -188,30 +188,30 @@ function VaultCard({
                 buttonClass={styles.vaultCardEllipsisWrapper}
                 iconClass={styles.vaultCardEllipsis}
                 onClick={modalClick}
-                >
-                    {({ closePopover, popoverItemClass}) => (
-                        <>
-                            <button type="button" className={popoverItemClass} onClick={(e) => { handleFavoriteAction(e, closePopover) }}>
-                                <div className="d-flex align-items-center">
-                                    {toFavorite ? <StarIcon className='me-2'/> : <UnstarIcon className='me-2'/>}
-                                    <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
-                                </div>
-                            </button>
-                            <button type="button" className={`${popoverItemClass} ${noHoverClassSend}`} 
+            >
+                {({ closePopover, popoverItemClass }) => (
+                    <>
+                        <button type="button" className={popoverItemClass} onClick={(e) => { handleFavoriteAction(e, closePopover) }}>
+                            <div className="d-flex align-items-center">
+                                {toFavorite ? <StarIcon className='me-2' /> : <UnstarIcon className='me-2' />}
+                                <span>{toFavorite ? 'Favorite' : 'Unfavorite'}</span>
+                            </div>
+                        </button>
+                        <button type="button" className={`${popoverItemClass} ${noHoverClassSend}`}
                             onClick={
                                 (e) => {
                                     e.stopPropagation()
-                                    if (canShareVault) handleSendAction(e, closePopover); 
+                                    if (canShareVault) handleSendAction(e, closePopover);
                                 }
                             }
                             style={{ cursor: canShareVault ? 'pointer' : 'not-allowed' }}
-                            >
-                                <div className="d-flex align-items-center">
-                                    <SendIcon className={`me-2 ${sendSpanStyle}`}/>
-                                    <span className={sendSpanStyle}>Share</span>
-                                </div>
-                            </button>
-                            <button type="button" 
+                        >
+                            <div className="d-flex align-items-center">
+                                <SendIcon className={`me-2 ${sendSpanStyle}`} />
+                                <span className={sendSpanStyle}>Share</span>
+                            </div>
+                        </button>
+                        <button type="button"
                             className={popoverItemClass}
                             onClick={
                                 (e) => {
@@ -223,14 +223,14 @@ function VaultCard({
                                     }
                                 }
                             }
-                            >
-                                <div className={`d-flex align-items-center`} style={exclusionStyle}>
-                                    {canDeleteVault ? <TrashIcon className='me-2'/> : <RemoveIcon className='me-2'/>}
-                                    <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
-                                </div>
-                            </button>
-                        </>
-                    )
+                        >
+                            <div className={`d-flex align-items-center`} style={exclusionStyle}>
+                                {canDeleteVault ? <TrashIcon className='me-2' /> : <RemoveIcon className='me-2' />}
+                                <span>{canDeleteVault ? 'Delete' : 'Leave'}</span>
+                            </div>
+                        </button>
+                    </>
+                )
                 }
             </MiniModal>
         )
@@ -239,7 +239,7 @@ function VaultCard({
     return (
         <div className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>
             <div className={styles.topBar}>
-                <CustomCheckbox onClick={handleCheckboxClick}/>
+                <CustomCheckbox onClick={handleCheckboxClick} />
                 {getEllipsisModal()}
             </div>
             <div className={styles.iconArea}>

@@ -13,7 +13,7 @@ function genPrompt(contextWords) {
         4.  O username deve ser criativo e relacionado às palavras-chave.
 
         Você deve pesquisar as palavras-chave para entender o contexto delas e relacioná-las de
-        maneira criativa. Evite simplesmente fazer um rearranjo das letras
+        maneira criativa. Evite simplesmente fazer um rearranjo das letras.
 
         Agora, gere um username para as seguintes palavras-chave: ${contextWords}
     `
@@ -34,7 +34,6 @@ module.exports = (gemini) => {
             return res.status(200).json({ output: response.text.trim() })
         } catch (err) {
             if (err.httpStatus === 429) {
-                console.log('Limite atingido')
                 return res.status(429).json({ message: 'Generation limit reached. Please wait a few minutes and try again.' })
             }
             console.log(`Erro inesperado na consulta ao gemini: ${err}`)

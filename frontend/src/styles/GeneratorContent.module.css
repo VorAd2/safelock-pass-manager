@@ -19,6 +19,7 @@
     color: #fff;
 }
 
+/*//////////////*/
 
 .stageButton {
     border-radius: 50%;
@@ -44,6 +45,7 @@
     margin-top: 10px;
 }
 
+/*//////////////*/
 
 .slider {
     appearance: none;
@@ -77,4 +79,55 @@
     border: none;
     cursor: pointer;
     background: var(--slider-color, #555);
+}
+
+/*//////////////*/
+
+.tagInputWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #888;
+    border-radius: 1rem;
+    background: transparent;
+}
+
+.tagInputWrapper input {
+    flex: 1;
+    min-width: 120px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+}
+
+.tagInputWrapper input::placeholder {
+    color: white;
+    opacity: 0.6;
+}
+
+.tagBadge {
+    display: inline-flex;
+    align-items: center;
+    background: #444;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+}
+
+.tagRemove {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 0.4rem;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.tagRemove:hover {
+    color: #ff6b6b;
 }
