@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import styles from '../../../../styles/GeneratorContent.module.css';
 
-function SegmentedPill({ setType }) {
+function SegmentedPill({ handleTypeChange }) {
   const [selected, setSelected] = useState("1")
 
   const options = [
@@ -23,7 +23,7 @@ function SegmentedPill({ setType }) {
             name="radio"
             value={option.value}
             checked={selected === option.value}
-            onChange={(e) => { setSelected(e.currentTarget.value); setType(option.name) }}
+            onChange={(e) => { setSelected(e.currentTarget.value); handleTypeChange(option.name) }}
             className={styles.pillBtn}
           >
             {option.name}

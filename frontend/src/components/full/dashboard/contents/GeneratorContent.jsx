@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Spinner } from 'react-bootstrap'
 import { usePassphrase } from '../../../../hooks/usePassphrase.js'
 import { Button } from 'react-bootstrap'
 import { SegmentedPill, StrengthSlider } from '../../../index.js'
@@ -8,10 +7,10 @@ import { CopyIcon, RefreshIcon2 } from '../../../../assets/shared/index.js'
 
 
 const GeneratorContent = () => {
-    const [product, setProduct] = useState('sasasaaAjjasASa')
+    const [product, setProduct] = useState()
     const [type, setType] = useState('Password')
     const [strength, setStrength] = useState('Weak')
-    const { generate, loading } = usePassphrase()
+    const { generate } = usePassphrase()
 
     const separator = '-'
     const capitalizeEach = false
@@ -96,11 +95,6 @@ const GeneratorContent = () => {
             <div className="d-flex flex-column mt-5 px-4">
                 <div className="d-flex flex-column align-items-start" style={{ width: "45%" }}>
                     <div className="d-flex align-items-center w-100 fs-5 text-white">
-                        {loading &&
-                            <Spinner animation='border' role='status' variant='light'>
-                                <span className='visually-hidden'>Loading...</span>
-                            </Spinner>
-                        }
                         <span>{product}</span>
                         <div className="d-flex justify-content-center align-items-center ms-auto">
                             <button
@@ -127,11 +121,16 @@ const GeneratorContent = () => {
         );
     }
 
+    const handleTypeChange = (type) => {
+        setProduct()
+        setType(type)
+    }
+
     switch (type) {
         case 'Password':
             return (
                 <div className='d-flex flex-column'>
-                    <SegmentedPill setType={setType} />
+                    <SegmentedPill handleTypeChange={handleTypeChange} />
                     {getProductStage()}
                     <StrengthSlider setStrength={setStrength} />
                     <div className='px-4'>
@@ -145,7 +144,7 @@ const GeneratorContent = () => {
         case 'Secret Phrase':
             return (
                 <div className='d-flex flex-column'>
-                    <SegmentedPill setType={setType} />
+                    <SegmentedPill handleTypeChange={handleTypeChange} />
                     {getProductStage()}
                     <StrengthSlider setStrength={setStrength} />
                     <div className='px-4'>
@@ -159,7 +158,7 @@ const GeneratorContent = () => {
         case 'Username':
             return (
                 <div className='d-flex flex-column'>
-                    <SegmentedPill setType={setType} />
+                    <SegmentedPill handleTypeChange={handleTypeChange} />
                     <h1 style={{ color: 'white' }} >Not implemented[Username]</h1>
                 </div>
             )
