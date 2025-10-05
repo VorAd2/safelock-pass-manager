@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { usePassphrase } from '../../../../hooks/usePassphrase.js'
 import { Spinner } from 'react-bootstrap'
 import { SegmentedPill, StrengthSlider, KeywordInput } from '../../../index.js'
@@ -31,6 +31,7 @@ const GeneratorContent = () => {
     const contextWordsRef = useRef([])
     const [isGenerating, setIsGenerating] = useState(false)
     const [type, setType] = useState('Password')
+    const typeRef = useRef(type)
     const [strength, setStrength] = useState('Weak')
     const { generate } = usePassphrase()
     const { username } = useOutletContext()
@@ -39,6 +40,10 @@ const GeneratorContent = () => {
     const separator = '-'
     const capitalizeEach = false
     const allowRepeats = false
+
+    useEffect(() => {
+        typeRef.current = type
+    }, [type])
 
     function generatePassword() {
         const lowercase = "abcdefghijklmnopqrstuvwxyz"
@@ -108,7 +113,10 @@ const GeneratorContent = () => {
                     Authorization: `Bearer ${authToken}`
                 }
             });
-            setProduct(response.data.output)
+            if (typeRef.current === 'Username') {
+                setProduct(response.data.output)
+                console.log('Executou')
+            }
         } catch (err) {
             if (err.response) {
                 const status = err.response.status
@@ -167,7 +175,7 @@ const GeneratorContent = () => {
         return (
             <span className='text-secondary'>
                 <Spinner className='me-4' as='span' variant='secondary' animation='border' role='status' />
-                Consulting Gemini...
+                Consulting Google Gemini...
             </span>
         )
     }
@@ -178,7 +186,7 @@ const GeneratorContent = () => {
                 <div className="d-flex flex-column align-items-start" style={{ width: "45%" }}>
                     <div className="d-flex align-items-center w-100 fs-5 text-white">
                         <span>
-                            {isGenerating
+                            {isGenerating && type === 'Username'
                                 ? getSpinner()
                                 : product
                             }
@@ -210,65 +218,39 @@ const GeneratorContent = () => {
 
     const handleTypeChange = (type) => {
         setProduct()
+        contextWordsRef.current = []
         setType(type)
+        console.log(`Type atual: ${type}`)
     }
 
-    switch (type) {
-        case 'Password':
-            return (
-                <div className='d-flex flex-column'>
-                    <SegmentedPill handleTypeChange={handleTypeChange} />
-                    {getProductStage()}
-                    <div className='d-flex align-items-center px-4 mt-4 mb-2'>
-                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Password Strength</h2>
-                        <InfoOutline
-                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
-                            onClick={() => alert("Info sobre o nível de senha")}
-                        />
-                    </div>
-                    <StrengthSlider setStrength={setStrength} />
-                    <div className='px-4 mt-5'>
-                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
-                    </div>
-                </div>
-            )
-        case 'Secret Phrase':
-            return (
-                <div className='d-flex flex-column'>
-                    <SegmentedPill handleTypeChange={handleTypeChange} />
-                    {getProductStage()}
-                    <div className='d-flex align-items-center px-4 mt-4 mb-2'>
-                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Phrase Strength</h2>
-                        <InfoOutline
-                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
-                            onClick={() => alert("Info sobre o nível de senha")}
-                        />
-                    </div>
-                    <StrengthSlider setStrength={setStrength} />
-                    <div className='px-4 mt-5'>
-                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
-                    </div>
-                </div>
-            )
-        case 'Username':
-            return (
-                <div className='d-flex flex-column'>
-                    <SegmentedPill handleTypeChange={handleTypeChange} />
-                    {getProductStage()}
-                    <div className='d-flex align-items-center px-4 mt-4 mb-3'>
-                        <h2 className='text-white fs-4' style={{ margin: 0 }}>Keywords</h2>
-                        <InfoOutline
-                            style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
-                            onClick={() => alert("Info sobre o nível de senha")}
-                        />
-                    </div>
-                    <KeywordInput contextWordsRef={contextWordsRef} />
-                    <div className='px-4 mt-5'>
-                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
-                    </div>
-                </div>
-            )
+    function getSubComponent() {
+        switch (type) {
+            case 'Password':
+            case 'Secret Phrase':
+                return <StrengthSlider setStrength={setStrength} />
+            case 'Username':
+                return <KeywordInput contextWordsRef={contextWordsRef} />
+        }
     }
+
+    return (
+        <div className='d-flex flex-column'>
+            <SegmentedPill handleTypeChange={handleTypeChange} />
+            {getProductStage()}
+            <div className='d-flex align-items-center px-4 mt-4 mb-2'>
+                <h2 className='text-white fs-4' style={{ margin: 0 }}>{type}</h2>
+                <InfoOutline
+                    style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
+                    onClick={() => alert("Info sobre o subcomponent")}
+                />
+            </div>
+            {getSubComponent()}
+            <div className='px-4 mt-5'>
+                <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
+            </div>
+        </div>
+    )
+
 }
 
 export default GeneratorContent

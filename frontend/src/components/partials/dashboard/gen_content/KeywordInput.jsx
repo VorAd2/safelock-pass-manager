@@ -21,7 +21,7 @@ export default function KeywordInput({ contextWordsRef }) {
     }
 
     return (
-        <div className="px-4" style={{ width: '45%' }}>
+        <div className="px-4 mt-2" style={{ width: '45%' }}>
             <div className={styles.tagInputWrapper}>
                 {tags.map((tag, index) => (
                     <span key={index} className={styles.tagBadge}>
