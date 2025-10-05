@@ -220,7 +220,6 @@ const GeneratorContent = () => {
         setProduct()
         contextWordsRef.current = []
         setType(type)
-        console.log(`Type atual: ${type}`)
     }
 
     function getSubComponent() {
