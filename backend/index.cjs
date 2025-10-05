@@ -74,7 +74,6 @@ module.exports = { io, connectedUsers };
     app.use('/dashboard/vaults', authenticateToken, vaultsRouter);
     app.use('/dashboard/vaults/credentials', authenticateToken, credentialsRouter);
     app.use('/dashboard/generator/username', authenticateToken, genUsernameRouter);
-    //app.use('/test/gemini', genUsernameRouter);
     app.use('/', homeRouter);
     app.get('/', (req, res) => res.send('API funcionando!'));
     server.listen(port, () => console.log('Servidor na porta ' + port));

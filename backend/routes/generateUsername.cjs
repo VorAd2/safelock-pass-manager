@@ -21,6 +21,35 @@ function genPrompt(contextWords) {
 
 module.exports = (gemini) => {
     router.get('/', async (req, res) => {
+        const { ownerUser } = req.query
+        if (req.userData.username !== ownerUser) {
+            return res.status(403).json({ message: errorFeedbacks.ACCESS_DENIED, code: errorCodes.ACCESS_DENIED });
+        }
+        const { contextWords } = req.query
+        const parsedContextWords = JSON.parse(contextWords)
+        if (!parsedContextWords || parsedContextWords.length === 0) {
+            return res.status(400).json({ message: 'Invalid input data' })
+        }
+        try {
+            const response = await gemini.models.generateContent({
+                model: 'gemini-2.5-flash',
+                config: {
+                    systemInstruction: 'Retorne apenas o username, nada mais',
+                    temperature: 2
+                },
+                contents: genPrompt(parsedContextWords)
+            })
+            return res.status(200).json({ output: response.text.trim() })
+        } catch (err) {
+            if (err.httpStatus === 429) {
+                return res.status(429).json({ message: 'Generation limit reached. Please, wait a few minutes and try again.' })
+            }
+            console.log(`Erro inesperado na consulta ao gemini: ${err}`)
+            return res.status(500).send()
+        }
+    })
+
+    /*router.get('/teste', async (req, res) => {
         const { contextWords } = req.body
         try {
             const response = await gemini.models.generateContent({
@@ -34,11 +63,12 @@ module.exports = (gemini) => {
             return res.status(200).json({ output: response.text.trim() })
         } catch (err) {
             if (err.httpStatus === 429) {
-                return res.status(429).json({ message: 'Generation limit reached. Please wait a few minutes and try again.' })
+                return res.status(429).json({ message: 'Generation limit reached. Please, wait a few minutes and try again.' })
             }
             console.log(`Erro inesperado na consulta ao gemini: ${err}`)
             return res.status(500).send()
         }
-    })
+    })*/
+
     return router
 }

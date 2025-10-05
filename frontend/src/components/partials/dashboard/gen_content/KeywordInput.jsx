@@ -2,14 +2,16 @@ import { useState } from "react";
 import { XIcon } from "../../../../assets/shared";
 import styles from "../../../../styles/GeneratorContent.module.css";
 
-export default function TagInput() {
+export default function KeywordInput({ contextWordsRef }) {
     const [tags, setTags] = useState([])
     const [inputValue, setInputValue] = useState("")
 
     const handleKeyDown = (e) => {
-        if (e.key === "Enter" && inputValue.trim() !== "") {
+        const newWord = inputValue.trim()
+        if (e.key === "Enter" && newWord !== "") {
             e.preventDefault()
-            setTags([...tags, inputValue.trim()])
+            setTags([...tags, newWord])
+            contextWordsRef.current.push(newWord)
             setInputValue("")
         }
     }

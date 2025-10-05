@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { usePassphrase } from '../../../../hooks/usePassphrase.js'
+import { Spinner } from 'react-bootstrap'
 import { SegmentedPill, StrengthSlider, KeywordInput } from '../../../index.js'
 import styles from '../../../../styles/GeneratorContent.module.css'
 import styled from 'styled-components'
 import { CopyIcon, RefreshIcon2, InfoOutline } from '../../../../assets/shared/index.js'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import axios from 'axios'
+import backCodes from '../../../../back_codes.js'
+const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 
 const TextButton = styled.button`
         background: none;
@@ -23,9 +28,13 @@ const TextButton = styled.button`
 
 const GeneratorContent = () => {
     const [product, setProduct] = useState()
+    const contextWordsRef = useRef([])
+    const [isGenerating, setIsGenerating] = useState(false)
     const [type, setType] = useState('Password')
     const [strength, setStrength] = useState('Weak')
     const { generate } = usePassphrase()
+    const { username } = useOutletContext()
+    const navigate = useNavigate()
 
     const separator = '-'
     const capitalizeEach = false
@@ -80,6 +89,54 @@ const GeneratorContent = () => {
         }
     }
 
+    async function handleUsernameGen() {
+        const authToken = localStorage.getItem("authToken")
+        if (!authToken) {
+            alert('No token found. Redirecting...')
+            navigate("/signin")
+            return
+        }
+        setIsGenerating(true)
+        try {
+            const route = `${BACK_URL}/dashboard/generator/username`
+            const response = await axios.get(route, {
+                params: {
+                    ownerUser: username,
+                    contextWords: JSON.stringify(contextWordsRef.current)
+                },
+                headers: {
+                    Authorization: `Bearer ${authToken}`
+                }
+            });
+            setProduct(response.data.output)
+        } catch (err) {
+            if (err.response) {
+                const status = err.response.status
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if ([400, 429].includes(status)) {
+                    alert(message)
+                } else if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    console.log('entrou')
+                    navigate('/signin')
+                } else {
+                    alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                    console.warn('Erro na presença de response:', err.response)
+                }
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
+            } else {
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
+            }
+        } finally {
+            setIsGenerating(false)
+        }
+    }
+
     const handleRefresh = () => {
         switch (type) {
             case 'Password':
@@ -90,7 +147,8 @@ const GeneratorContent = () => {
                 break
             }
             case 'Username':
-                console.log('Username')
+                if (isGenerating) return
+                handleUsernameGen()
                 break
             default:
                 throw new Error('Invalid generator type')
@@ -105,12 +163,26 @@ const GeneratorContent = () => {
         }
     }
 
+    function getSpinner() {
+        return (
+            <span className='text-secondary'>
+                <Spinner className='me-4' as='span' variant='secondary' animation='border' role='status' />
+                Consulting Gemini...
+            </span>
+        )
+    }
+
     function getProductStage() {
         return (
             <div className="d-flex flex-column mt-5 px-4">
                 <div className="d-flex flex-column align-items-start" style={{ width: "45%" }}>
                     <div className="d-flex align-items-center w-100 fs-5 text-white">
-                        <span>{product}</span>
+                        <span>
+                            {isGenerating
+                                ? getSpinner()
+                                : product
+                            }
+                        </span>
                         <div className="d-flex justify-content-center align-items-center ms-auto">
                             <button
                                 title='Refresh'
@@ -156,7 +228,7 @@ const GeneratorContent = () => {
                     </div>
                     <StrengthSlider setStrength={setStrength} />
                     <div className='px-4 mt-5'>
-                        <TextButton>Generator History</TextButton>
+                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
                     </div>
                 </div>
             )
@@ -174,7 +246,7 @@ const GeneratorContent = () => {
                     </div>
                     <StrengthSlider setStrength={setStrength} />
                     <div className='px-4 mt-5'>
-                        <TextButton>Generator History</TextButton>
+                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
                     </div>
                 </div>
             )
@@ -190,9 +262,9 @@ const GeneratorContent = () => {
                             onClick={() => alert("Info sobre o nível de senha")}
                         />
                     </div>
-                    <KeywordInput />
+                    <KeywordInput contextWordsRef={contextWordsRef} />
                     <div className='px-4 mt-5'>
-                        <TextButton>Generator History</TextButton>
+                        <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
                     </div>
                 </div>
             )
