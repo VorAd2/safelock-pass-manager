@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { InfoOutline } from "../../../../assets/shared";
 import styles from "../../../../styles/GeneratorContent.module.css";
 
 export default function StrengthSlider({ setStrength }) {
