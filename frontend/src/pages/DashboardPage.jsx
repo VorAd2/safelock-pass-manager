@@ -14,7 +14,7 @@ const titlesMap = {
   receipts: "Receipts",
   settings: "Settings",
   contactus: "Contact Us",
-};
+}
 
 
 function DashboardPage({ username }) {

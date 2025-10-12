@@ -6,9 +6,8 @@ import styles from '../../../../styles/GeneratorContent.module.css'
 import styled from 'styled-components'
 import { CopyIcon, RefreshIcon2, InfoOutline } from '../../../../assets/shared/index.js'
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import axios from 'axios'
 import backCodes from '../../../../back_codes.js'
-const BACK_URL = import.meta.env.VITE_BACKEND_URL;
+import generatorService from '../../../../services/generatorService.js'
 
 const TextButton = styled.button`
         background: none;
@@ -103,19 +102,13 @@ const GeneratorContent = () => {
         }
         setIsGenerating(true)
         try {
-            const route = `${BACK_URL}/dashboard/generator/username`
-            const response = await axios.get(route, {
-                params: {
-                    ownerUser: username,
-                    contextWords: JSON.stringify(contextWordsRef.current)
-                },
-                headers: {
-                    Authorization: `Bearer ${authToken}`
-                }
-            });
+            const params = {
+                ownerUser: username,
+                contextWords: JSON.stringify(contextWordsRef.current)
+            }
+            const response = await generatorService.genUsername(authToken, params)
             if (typeRef.current === 'Username') {
                 setProduct(response.data.output)
-                console.log('Executou')
             }
         } catch (err) {
             if (err.response) {

@@ -13,7 +13,6 @@ import {
   ArrowRightIcon2,
 } from '../../../../assets/dashboard';
 import styles from '../../../../styles/Sidebar.module.css';
-import sectionStyles from '../../../../styles/SidebarSection.module.css';
 
 const iconMap = {
   'vaults': VaultIcon2,
@@ -30,41 +29,46 @@ const iconMap = {
 function SidebarSection(
   { title, options, isExpanded, iconWrapperClassName, textClassName }) {
   return (
-    <div className="mb-3">
-      {isExpanded && <h5 className={`px-3  text-white ${sectionStyles.sectionTitle}`}>{title}</h5>}
+    <section className="mb-4">
+      {isExpanded && <h5 className={`px-3  text-white ${styles.sectionTitle}`}>{title}</h5>}
       <Nav className="flex-column">
-        {options.map((option, _) => {
-          const iconName = option.name.toLowerCase()
-          const IconComponent = iconMap[iconName]
-          const toPath = option.href
-          return (
-            <RouterNavLink
-              key={toPath}
-              to={toPath}
-              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeNavLink : ''}`}
-            >
-              {({ isActive }) => {
-                return (
-                  <>
-                    {isActive && <div className={styles.activeRectangle}></div>}
-                    <span className={iconWrapperClassName}>
-                      {IconComponent ? <IconComponent className={styles.sidebarIcon} /> : <span>?</span>}
-                    </span>
-                    <span className={textClassName}>
-                      {option.name === 'ContactUs' ? 'Contact Us' : option.name}
-                    </span>
-                  </>
-                )
-              }
-              }
-            </RouterNavLink>
-          )
-        })
-        }
+        <ul style={{ listStyleType: 'none', margin: '0', padding: '0' }}>
+          {options.map((option, _) => {
+            const iconName = option.name.toLowerCase()
+            const IconComponent = iconMap[iconName]
+            const toPath = option.href
+            return (
+              <li key={toPath}>
+                <RouterNavLink
+                  key={toPath}
+                  to={toPath}
+                  className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeNavLink : ''}`}
+                >
+                  {({ isActive }) => {
+                    return (
+                      <>
+                        {isActive && <div className={styles.activeRectangle}></div>}
+                        <span className={iconWrapperClassName}>
+                          {IconComponent ? <IconComponent className={styles.sidebarIcon} /> : <span>?</span>}
+                        </span>
+                        <span className={textClassName}>
+                          {option.name === 'ContactUs' ? 'Contact Us' : option.name}
+                        </span>
+                      </>
+                    )
+                  }
+                  }
+                </RouterNavLink>
+              </li>
+            )
+          })
+          }
+        </ul>
+
       </Nav>
       {(!isExpanded && title != 'Support') && <hr className={styles.sectionDividerCollapsed} />}
-    </div>
-  );
+    </section>
+  )
 }
 
 export default SidebarSection;

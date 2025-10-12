@@ -8,11 +8,11 @@ function Sidebar({ isExpanded, toggleSidebar }) {
   const sidebarExpandClass = isExpanded ? styles.sidebarExpanded : styles.sidebarCollapsed;
 
   return (
-    <div className={`${styles.sidebarContainer} ${sidebarExpandClass}`}>
-      <div className={styles.logoSection}>
+    <aside className={`${styles.sidebarContainer} ${sidebarExpandClass}`}>
+      <header className={styles.logoSection}>
         <SiteIcon className={styles.siteIcon} />
         <span className={styles.siteNameText}>SafeLock</span>
-      </div>
+      </header>
 
       <Nav className="flex-column flex-grow-1">
         <SidebarSection
@@ -49,8 +49,8 @@ function Sidebar({ isExpanded, toggleSidebar }) {
       </Nav>
 
       <SidebarFooter isExpanded={isExpanded} onClick={toggleSidebar} />
-    </div>
-  );
+    </aside>
+  )
 }
 
 export default Sidebar;
