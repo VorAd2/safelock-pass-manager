@@ -9,28 +9,36 @@ function SegmentedPill({ handleTypeChange }) {
     { name: "Password", value: "1" },
     { name: "Secret Phrase", value: "2" },
     { name: "Username", value: "3" },
-  ];
+  ]
 
   return (
-    <div className={`${styles.segmentedPillContainer} px-4 mt-4 mb-3`}>
-      <ButtonGroup className={styles.segmentedPill}>
+    <fieldset
+      className={`${styles.segmentedPillContainer} px-4 mt-4 mb-3`}
+      aria-label="Generation Type"
+    >
+      <legend className="visually-hidden">Choose the generator type</legend>
+      <ButtonGroup role="radiogroup" aria-label="Generator Type" className={styles.segmentedPill}>
         {options.map((option, idx) => (
           <ToggleButton
             key={idx}
             id={`radio-${idx}`}
             type="radio"
             variant="outline-primary"
-            name="radio"
+            name="generator-type"
             value={option.value}
             checked={selected === option.value}
-            onChange={(e) => { setSelected(e.currentTarget.value); handleTypeChange(option.name) }}
+            aria-checked={selected === option.value}
+            onChange={(e) => {
+              setSelected(e.currentTarget.value);
+              handleTypeChange(option.name);
+            }}
             className={styles.pillBtn}
           >
             {option.name}
           </ToggleButton>
         ))}
       </ButtonGroup>
-    </div>
+    </fieldset>
   )
 }
 

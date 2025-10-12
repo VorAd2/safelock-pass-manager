@@ -175,15 +175,15 @@ const GeneratorContent = () => {
 
     function getProductStage() {
         return (
-            <div className="d-flex flex-column mt-5 px-4">
+            <section className="d-flex flex-column mt-5 px-4">
                 <div className="d-flex flex-column align-items-start" style={{ width: "45%" }}>
                     <div className="d-flex align-items-center w-100 fs-5 text-white">
-                        <span>
+                        <output aria-live='polite'>
                             {isGenerating && type === 'Username'
                                 ? getSpinner()
                                 : product
                             }
-                        </span>
+                        </output>
                         <div className="d-flex justify-content-center align-items-center ms-auto">
                             <button
                                 title='Refresh'
@@ -205,8 +205,8 @@ const GeneratorContent = () => {
                     </div>
                     <hr className={styles.stageLine} style={{ width: "100%" }} />
                 </div>
-            </div>
-        );
+            </section>
+        )
     }
 
     const handleTypeChange = (type) => {
@@ -229,14 +229,20 @@ const GeneratorContent = () => {
         <div className='d-flex flex-column'>
             <SegmentedPill handleTypeChange={handleTypeChange} />
             {getProductStage()}
-            <div className='d-flex align-items-center px-4 mt-4 mb-2'>
-                <h2 className='text-white fs-4' style={{ margin: 0 }}>{type}</h2>
-                <InfoOutline
-                    style={{ marginLeft: "15px", cursor: "pointer", fill: "white" }}
-                    onClick={() => alert("Info sobre o subcomponent")}
-                />
-            </div>
-            {getSubComponent()}
+            <section className='d-flex flex-column'>
+                <header className='d-flex align-items-center px-4 mt-4 mb-2'>
+                    <h2 className='text-white fs-4' style={{ margin: 0 }}>{type}</h2>
+                    <button
+                        type='button'
+                        aria-label={`Info about ${type}`}
+                        className='ms-3 bg-transparent border-0'
+                        onClick={() => alert('Not implemented')}
+                    >
+                        <InfoOutline style={{ fill: 'white', cursor: 'pointer' }} />
+                    </button>
+                </header>
+                {getSubComponent()}
+            </section>
             <div className='px-4 mt-5'>
                 <TextButton onClick={() => alert('Not implemented')}>Generator History</TextButton>
             </div>

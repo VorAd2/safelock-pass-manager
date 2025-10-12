@@ -116,10 +116,10 @@ function DashboardPage({ username }) {
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
 
-      <div className="d-flex flex-column flex-grow-1" style={{ minHeight: 0 }}>
+      <main className="d-flex flex-column flex-grow-1" style={{ minHeight: 0 }}>
         <DashboardHeader title={headerTitle} username={username} />
         <Outlet context={{ username, notificationHandler }} />
-      </div>
+      </main>
 
       <Notification
         show={notification.show}

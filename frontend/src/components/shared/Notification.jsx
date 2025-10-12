@@ -6,11 +6,14 @@ const Notification = ({ show, variant, message }) => {
 
   return (
     <div className={styles.notificationWrapper}>
-      <Alert variant={variant} className="mb-0 text-center fs-5">
+      <Alert variant={variant} className="mb-0 text-center fs-5"
+        role={variant === 'success' ? 'status' : 'alert'}
+        aria-live='polite'
+      >
         {message}
       </Alert>
     </div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification
