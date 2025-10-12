@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom"
 import { useVaults } from "../../../../context/useVaults"
-import axios from 'axios'
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import { Modal, Form } from "react-bootstrap"
 import { useState } from "react"
 import styles from '../../../../../styles/VaultModal.module.css'
 import backCodes from "../../../../../back_codes"
-const BACK_URL = import.meta.env.VITE_BACKEND_URL
+import vaultService from "../../../../../services/vaultService"
 
 
 function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide }) {
@@ -50,10 +49,7 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
             vaultTitle
         }
         try {
-            await axios.patch(`${BACK_URL}/dashboard/vaults/sharing`,
-                reqBody,
-                { headers: { Authorization: `Bearer ${authToken}` }}
-            )
+            await vaultService.sendVault(authToken, reqBody)
             setSharing(vaultId, recipientUsername)
             handleClose()
             notificationHandler(true, 'Vault shared successfully', 'success')
@@ -79,7 +75,7 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
                 alert(backCodes.GENERIC_ERROR_FEEDBACK)
                 console.warn(`Erro: ${err}`)
             }
-            
+
         }
     }
 
@@ -87,34 +83,34 @@ function SendVaultModal({ vaultData, notificationHandler, fromVaultInfo, onHide 
         <Modal show={true} onHide={handleClose} centered>
             <Modal.Header>
                 <Modal.Title>
-                    <span>Share Your Vault</span> 
+                    <span>Share Your Vault</span>
                     <span className="ms-3">
-                        [<span className="p-1" style={{color:'var(--lessdark-blue-color)'}}>{vaultData?.title}</span>]
-                    </span> 
+                        [<span className="p-1" style={{ color: 'var(--lessdark-blue-color)' }}>{vaultData?.title}</span>]
+                    </span>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form id="sendVault" onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label className="fs-5">Recipient Username</Form.Label>
-                        <Form.Control 
-                        type="text"
-                        value={recipientUsername}
-                        placeholder="Type the name of the recipient user"
-                        onChange={(e) => setRecipientUsername(e.target.value)}
-                        isInvalid={!!errMsg}
-                        required
+                        <Form.Control
+                            type="text"
+                            value={recipientUsername}
+                            placeholder="Type the name of the recipient user"
+                            onChange={(e) => setRecipientUsername(e.target.value)}
+                            isInvalid={!!errMsg}
+                            required
                         />
-                        {errMsg && ( <Form.Text className="text-danger">{errMsg}</Form.Text> )}
+                        {errMsg && (<Form.Text className="text-danger">{errMsg}</Form.Text>)}
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
                 <button className="btn btn-secondary" onClick={handleClose}>Cancel</button>
                 <button
-                type="submit"
-                form="sendVault"
-                className={styles.confirmCredentialModalBtn}
+                    type="submit"
+                    form="sendVault"
+                    className={styles.confirmCredentialModalBtn}
                 >
                     Send
                 </button>

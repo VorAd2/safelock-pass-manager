@@ -1,6 +1,5 @@
 import { useVaults } from "../../../../context/useVaults";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { VerticalEllipsisIcon, CopyIcon, RemoveIcon } from "../../../../../assets/shared";
@@ -9,8 +8,8 @@ import { CustomCheckbox, MiniModal } from "../../../../shared";
 import styles from "../../../../../styles/VaultModal.module.css";
 import { AvatarColorManager } from "../../../../../lib/avatarColorManager.js";
 import backCodes from "../../../../../back_codes";
-
-const BACK_URL = import.meta.env.VITE_BACKEND_URL
+import vaultService from "../../../../../services/vaultService.js";
+import credentialService from "../../../../../services/credentialService.js";
 
 
 const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, onCredentialClick, onNewCredentialModal, onSendModal }) => {
@@ -38,9 +37,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
       return;
     }
     try {
-      await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, reqData,
-        { headers: { Authorization: `Bearer ${authToken}` } }
-      )
+      await vaultService.favoriteVault(authToken, reqData)
       setFavoritism(vaultId, username, toFavorite)
       const message = toFavorite
         ? 'Vault favorited successfully'
@@ -92,16 +89,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
         navigate("/signin");
         return;
       }
-      const route = `${BACK_URL}/dashboard/vaults`
-      const config = {
-        headers: { Authorization: `Bearer ${authToken}` },
-        data: {
-          ownerUsername: data.ownerUser,
-          vaultId: vaultId,
-          vaultTitle
-        }
-      }
-      await axios.delete(route, config)
+      await vaultService.deleteVault(authToken, data)
       deleteVault(vaultId, data.ownerUser)
       notificationHandler(true, 'Vault deleted successfully', 'success')
     } catch (err) {
@@ -129,7 +117,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
     }
   }
 
-  const handleRemoveSharing = (e, closePopover) => {
+  const handleRemoveSharing = async (e, closePopover) => {
     e.stopPropagation()
     const authToken = localStorage.getItem('authToken')
     if (!authToken) {
@@ -137,46 +125,35 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
       navigate("/signin");
       return;
     }
-    const route = `${BACK_URL}/dashboard/vaults/sharing`
-    const config = {
-      headers: { Authorization: `Bearer ${authToken}` },
-      data: {
-        vaultId: data._id,
-        vaultTitle,
-        username
-      }
-    }
-    axios.delete(route, config)
-      .then(() => {
-        deleteVault(data._id, data.ownerUser)
-        notificationHandler(true, 'Vault sharing removed successfully', 'success')
-      })
-      .catch(err => {
-        if (err.response) {
-          const code = err.response.data?.code
-          const message = err.response.data?.message
-          if (code === backCodes.ACCESS_DENIED) {
-            alert(message)
-            localStorage.removeItem('authToken')
-            navigate('/signin')
-          } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
-            alert(message)
-          } else {
-            alert(backCodes.GENERIC_ERROR_FEEDBACK)
-            console.warn('Erro na presença de response:', err.response)
-          }
-        } else if (err.request) {
-          alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-          console.warn('Erro na presença de request:', err.request)
+    try {
+      await vaultService.deleteSharing(authToken, data, username)
+      deleteVault(data._id, data.ownerUser)
+      notificationHandler(true, 'Vault sharing removed successfully', 'success')
+    } catch (err) {
+      if (err.response) {
+        const code = err.response.data?.code
+        const message = err.response.data?.message
+        if (code === backCodes.ACCESS_DENIED) {
+          alert(message)
+          localStorage.removeItem('authToken')
+          navigate('/signin')
+        } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
+          alert(message)
         } else {
           alert(backCodes.GENERIC_ERROR_FEEDBACK)
-          console.warn('Erro inesperado:', err.message)
+          console.warn('Erro na presença de response:', err.response)
         }
-      })
-      .finally(() => {
-        closePopover(e)
-        onHide()
-      })
+      } else if (err.request) {
+        alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+        console.warn('Erro na presença de request:', err.request)
+      } else {
+        alert(backCodes.GENERIC_ERROR_FEEDBACK)
+        console.warn('Erro inesperado:', err.message)
+      }
+    } finally {
+      closePopover(e)
+      onHide()
+    }
   }
 
   const handleCredentialDelete = async (e, credential, closePopover) => {
@@ -188,17 +165,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
         navigate("/signin")
         return
       }
-      const route = `${BACK_URL}/dashboard/vaults/credentials`
-      const config = {
-        headers: { Authorization: `Bearer ${authToken}` },
-        data: {
-          vaultId,
-          vaultTitle,
-          credential,
-          username
-        }
-      }
-      const response = await axios.delete(route, config)
+      const response = await credentialService.deleteCredential(authToken, data, credential, username)
       deleteCredential(vaultId, credential)
       closePopover(e)
       notificationHandler(true, response.data.message, 'success')
@@ -342,7 +309,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
     )
   }
 
-  function getModalTitle() {
+  function getTitleModal() {
     const isChangeAllowed = data.ownerUser === username
     const onClick = isChangeAllowed ? onVaultTitleClick : null
     const hoverCursor = isChangeAllowed ? 'pointer' : 'not-allowed'
@@ -365,7 +332,7 @@ const VaultInfoModal = ({ data, notificationHandler, onHide, onVaultTitleClick, 
       <Modal.Header closeButton>
         <div className="d-flex align-items-center gap-2">
           {getVaultEllipsisModal()}
-          {getModalTitle()}
+          {getTitleModal()}
           <div className="d-flex align-items-center">
             <UserAvatar className={styles.userAvatar} style={{ backgroundColor: avatarBackColor }} />
             {data.ownerUser}

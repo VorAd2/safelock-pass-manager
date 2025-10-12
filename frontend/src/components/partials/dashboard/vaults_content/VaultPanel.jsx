@@ -1,18 +1,17 @@
-import { jwtDecode } from 'jwt-decode'; 
-import { Container, Row, Col, Spinner} from 'react-bootstrap';
+import { jwtDecode } from 'jwt-decode';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { PlusIcon } from '../../../../assets/dashboard';
 import { RefreshIcon } from '../../../../assets/shared';
 import { CustomCheckBox, VaultCard } from '../../../index'
-import  NoVaultsIcon  from '../../../icons/NoVaultsIcon';
+import NoVaultsIcon from '../../../icons/NoVaultsIcon';
 import styles from '../../../../styles/VaultsContent.module.css';
 
 
-function VaultPanel({ 
-    modalVisibleCallback, vaultCardClick, 
+function VaultPanel({
+    modalVisibleCallback, vaultCardClick,
     vaultEllipsisClick, notificationHandler, vaultsFilter,
     vaultsSubgroup, setSendModalVisibleState, refreshVaults,
-    isRefreshing }) 
-{
+    isRefreshing }) {
     const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     let emptyPanelText
     switch (vaultsFilter) {
@@ -39,7 +38,7 @@ function VaultPanel({
         } else if (vaultsSubgroup.length === 0) {
             return (
                 <div className={styles.emptyStateContainer}>
-                    <NoVaultsIcon className={styles.emptyIcon} size={128}/>
+                    <NoVaultsIcon className={styles.emptyIcon} size={128} />
                     <p className={`${styles.emptyText} fs-5`}>{emptyPanelText}</p>
                 </div>
             )
@@ -48,16 +47,16 @@ function VaultPanel({
                 <Container fluid>
                     <Row className='g-4'>
                         {vaultsSubgroup.map((vault, i) => (
-                        <Col md={3} key={i}>
-                            <VaultCard 
-                            vault={vault} 
-                            vaultCardClick={vaultCardClick}
-                            ellipsisClick={vaultEllipsisClick} 
-                            username={username} 
-                            notificationHandler={notificationHandler}
-                            setSendModalVisibleState={setSendModalVisibleState}
-                            />
-                        </Col>
+                            <Col md={3} key={i}>
+                                <VaultCard
+                                    vault={vault}
+                                    vaultCardClick={vaultCardClick}
+                                    ellipsisClick={vaultEllipsisClick}
+                                    username={username}
+                                    notificationHandler={notificationHandler}
+                                    setSendModalVisibleState={setSendModalVisibleState}
+                                />
+                            </Col>
                         ))}
                     </Row>
                 </Container>
@@ -66,30 +65,30 @@ function VaultPanel({
     }
 
     return (
-        <div className={`d-flex flex-column flex-grow-1 ${styles.panelParent}`} style={{minHeight: 0}}>
+        <div className={`d-flex flex-column flex-grow-1 ${styles.panelParent}`} style={{ minHeight: 0 }}>
             <div className='d-flex justify-content-between align-items-center p-1'>
-                <div className='text-light ms-3 mt-3'> <CustomCheckBox label='All'/></div>
+                <div className='text-light ms-3 mt-3'> <CustomCheckBox label='All' /></div>
                 <div className='d-flex justify-content-betwenn align-items-center'>
-                    <button type='button' 
-                    onClick={refreshVaults} 
-                    className={`${styles.panelHeaderBtn} fs-5 me-3 mt-3`}
-                    >
-                        <RefreshIcon className='me-1' style={{width: '20px', height:'20px'}}/> Refresh 
-                    </button>
-                    <button type='button' 
-                        onClick={() => modalVisibleCallback(true)} 
+                    <button type='button'
+                        onClick={refreshVaults}
                         className={`${styles.panelHeaderBtn} fs-5 me-3 mt-3`}
                     >
-                        <PlusIcon className='me-1' style={{width: '20px', height:'20px'}}/> Vault 
+                        <RefreshIcon className='me-1' style={{ width: '20px', height: '20px' }} /> Refresh
+                    </button>
+                    <button type='button'
+                        onClick={() => modalVisibleCallback(true)}
+                        className={`${styles.panelHeaderBtn} fs-5 me-3 mt-3`}
+                    >
+                        <PlusIcon className='me-1' style={{ width: '20px', height: '20px' }} /> Vault
                     </button>
                 </div>
             </div>
-            <hr className='mb-2'/>
+            <hr className='mb-2' />
             <div className={styles.vaultPanelContainer}>
                 {getPanelBody()}
             </div>
         </div>
-    );
+    )
 }
 
-export default VaultPanel;
+export default VaultPanel

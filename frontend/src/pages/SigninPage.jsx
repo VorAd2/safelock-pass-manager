@@ -1,44 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SIGNUP_ROUTE } from '../routes';
 import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import backCodes from '../back_codes';
-
-const backUrl = import.meta.env.VITE_BACKEND_URL;
+import authService from '../services/authService';
 
 
 function SigninPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    axios.get(backUrl + '/signin')
-      .then(response => {
-        console.log('Mensagem do back: ' + response)
-      })
-      .catch(err => {
-        alert(err)
-      })
-    }, []);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Login attempt with:', { email, password });
     setMessage()
-    const form = {email, password}
+    const form = { email, password }
     try {
-      const res = await axios.post(backUrl + '/signin', form)
-      const {token} = res.data
+      const token = await authService.signin(form)
       localStorage.setItem('authToken', token)
-      const payload = jwtDecode(token);      
+      const payload = jwtDecode(token)
       const userData = payload.userData
       const username = userData.username
-      navigate(`/dashboard/${username}`);
+      navigate(`/dashboard/${username}`)
     } catch (err) {
       if (err.response) {
         const errorMsg = err.response.data.message
@@ -50,12 +35,12 @@ function SigninPage() {
         alert('Error while attempting to send request. Please, try again.')
       }
     }
-  };
+  }
 
   return (
-    <Container 
-    className="d-flex justify-content-center align-items-center" 
-    style={{ minHeight: '100vh' }}>
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '100vh' }}>
       <Card style={{ width: '25rem' }}>
         <Card.Body>
           <Card.Title className="text-center mb-4 fs-3">Login</Card.Title>
@@ -87,7 +72,7 @@ function SigninPage() {
             <Button variant="primary" type="submit" className="w-100 fs-5">
               Login
             </Button>
-            <p style={{color: 'var(--red-color)'}}>{message}</p>
+            <p style={{ color: 'var(--red-color)' }}>{message}</p>
           </Form>
           <div className="mt-3 text-center">
             Don't have an account? <Link to={SIGNUP_ROUTE}>Register here</Link>
@@ -95,7 +80,7 @@ function SigninPage() {
         </Card.Body>
       </Card>
     </Container>
-  );
+  )
 }
 
 export default SigninPage;

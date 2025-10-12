@@ -1,18 +1,15 @@
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import {Modal, Form} from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import { EyeIcon, EyeSlashIcon, TrashIcon } from '../../../../../assets/dashboard';
 import { CopyIcon } from '../../../../../assets/shared';
 import styles from '../../../../../styles/CredentialInfoModal.module.css';
-
-const BACK_URL = import.meta.env.VITE_BACKEND_URL;
 import { useVaults } from '../../../../context/useVaults';
 import backCodes from '../../../../../back_codes';
+import credentialService from '../../../../../services/credentialService';
 
-
-function CredentialInfoModal({credential, notificationHandler, onHide}) {
+function CredentialInfoModal({ credential, vault, notificationHandler, onHide }) {
     const username = jwtDecode(localStorage.getItem('authToken')).userData.username
     const title = credential && credential.credentialTitle
     const owner = credential && credential.credentialOwner
@@ -47,16 +44,7 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
                 navigate('/signin')
                 return
             }
-            const route = `${BACK_URL}/dashboard/vaults/credentials`
-            const config = {
-                headers: { Authorization: `Bearer ${authToken}` },
-                data: {
-                vaultId: credential.vaultId,
-                credential,
-                username
-                }
-            }
-            const response = await axios.delete(route, config)
+            const response = await credentialService.deleteCredential(authToken, vault, credential, username)
             deleteCredential(credential.vaultId, credential)
             onHide()
             notificationHandler(true, response.data.message, 'success')
@@ -88,62 +76,62 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
         <Modal show={true} onHide={onHide} centered>
             <Modal.Header closeButton>
                 <Modal.Title className='fs-3 d-flex align-items-center'>
-                    <span>{title}</span> 
+                    <span>{title}</span>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className={`d-flex justify-content-betweem align-items-center mb-3 ${styles.actionBar}`}>
                     <div
-                    role='button'
-                    tabIndex={0}
-                    onClick={() => handleCredentialCopy(email)}
+                        role='button'
+                        tabIndex={0}
+                        onClick={() => handleCredentialCopy(email)}
                     >
-                        <CopyIcon/>
+                        <CopyIcon />
                         <span>Copy email</span>
                     </div>
                     <div
-                    role='button'
-                    tabIndex={0}
-                    onClick={() => {handleCredentialCopy(credUsername)}}
+                        role='button'
+                        tabIndex={0}
+                        onClick={() => { handleCredentialCopy(credUsername) }}
                     >
-                        <CopyIcon/>
+                        <CopyIcon />
                         <span>Copy username</span>
                     </div>
                     <div
-                    role='button'
-                    tabIndex={0}
-                    onClick={() => handleCredentialCopy(password)}
-                    >
-                        <CopyIcon/>
-                        <span>Copy password</span>
-                    </div>
-                    {canDeleteCredential && 
-                        <div
                         role='button'
                         tabIndex={0}
-                        onClick={(e) => {e.stopPropagation(); if(canDeleteCredential) handleDeleteCredential(e) }}
+                        onClick={() => handleCredentialCopy(password)}
+                    >
+                        <CopyIcon />
+                        <span>Copy password</span>
+                    </div>
+                    {canDeleteCredential &&
+                        <div
+                            role='button'
+                            tabIndex={0}
+                            onClick={(e) => { e.stopPropagation(); if (canDeleteCredential) handleDeleteCredential(e) }}
                         >
-                            <TrashIcon style={{fill:'red', marginRight:'0px',}}/>
+                            <TrashIcon style={{ fill: 'red', marginRight: '0px', }} />
                         </div>
                     }
-                    
+
                 </div>
-                <Form style={{pointerEvents:'none'}}>
+                <Form style={{ pointerEvents: 'none' }}>
                     <Form.Group>
                         <Form.Label className='fs-5'>Email</Form.Label>
                         <Form.Control
-                        type='email'
-                        value={email}
-                        readOnly
+                            type='email'
+                            value={email}
+                            readOnly
                         />
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label className='fs-5'>Username</Form.Label>
                         <Form.Control
-                        type='text'
-                        value={credUsername || ""}
-                        readOnly
+                            type='text'
+                            value={credUsername || ""}
+                            readOnly
                         />
                     </Form.Group>
 
@@ -160,9 +148,9 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
                             <span
                                 onClick={() => setShowPassword((prev) => !prev)}
                                 style={{
-                                cursor: 'pointer',
-                                color: '#666',
-                                pointerEvents:'auto'
+                                    cursor: 'pointer',
+                                    color: '#666',
+                                    pointerEvents: 'auto'
                                 }}
                             >
                                 {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
@@ -173,9 +161,9 @@ function CredentialInfoModal({credential, notificationHandler, onHide}) {
                     <Form.Group>
                         <Form.Label className='fs-5'>Links</Form.Label>
                         <Form.Control
-                        as="textarea"
-                        value={links || ""}
-                        readOnly
+                            as="textarea"
+                            value={links || ""}
+                            readOnly
                         />
                     </Form.Group>
                 </Form>

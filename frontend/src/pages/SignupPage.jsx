@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate} from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; 
-import axios from 'axios';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import { Form, Button, Container, Card } from 'react-bootstrap';
 import { SIGNIN_ROUTE } from '../routes';
 import backCodes from '../back_codes';
-
-const backUrl = import.meta.env.VITE_BACKEND_URL;
+import authService from '../services/authService';
 
 
 function SignupPage() {
@@ -17,20 +15,11 @@ function SignupPage() {
   const [invalidation, setInvalidation] = useState({})
   const navigate = useNavigate()
 
-  useEffect(() => {
-    axios.get(backUrl + '/signup')
-      .then(response => {
-        console.log('Mensagem do back: ' + response)
-      })
-      .catch(err => {
-        alert(err)
-      })
-  }, []);
-  
+
   function getSubmitInvalidation(err) {
     const errorSource = err.response.data.source
     const invalidation = {}
-    invalidation.msg = err.response.data.message 
+    invalidation.msg = err.response.data.message
     switch (errorSource) {
       case 'username':
         invalidation.username = true
@@ -46,13 +35,12 @@ function SignupPage() {
     event.preventDefault();
     setInvalidation({})
     if (password !== confirmPassword) {
-      setInvalidation({password: true, msg: 'Passwords must be the same'})
-      return;
+      setInvalidation({ password: true, msg: 'Passwords must be the same' })
+      return
     }
-    const form = {username: username, email: email, password: password}
+    const form = { username: username, email: email, password: password }
     try {
-      const res = await axios.post(backUrl + '/signup', form)
-      const {token} = res.data
+      const token = await authService.signup(form)
       localStorage.setItem('authToken', token)
       const payload = jwtDecode(token)
       const userData = payload.userData
@@ -61,16 +49,16 @@ function SignupPage() {
     } catch (err) {
       if (err.response) {
         const errorCode = err.response.data.code
-        errorCode === backCodes.INVALID_AUTH 
-          ? setInvalidation(getSubmitInvalidation(err)) 
+        errorCode === backCodes.INVALID_AUTH
+          ? setInvalidation(getSubmitInvalidation(err))
           : alert(backCodes.GENERIC_ERROR_FEEDBACK)
-      } else if (err.request){
+      } else if (err.request) {
         alert('Unable to communicate with the server. Please check your connection.')
       } else {
         alert('Error sending request')
       }
     }
-  };
+  }
 
 
   return (
@@ -130,7 +118,7 @@ function SignupPage() {
             <Button variant="success" type="submit" className="w-100 fs-5">
               Register
             </Button>
-            <p style={{color: 'var(--red-color)'}}>{invalidation.msg}</p>
+            <p style={{ color: 'var(--red-color)' }}>{invalidation.msg}</p>
           </Form>
           <div className="mt-3 text-center">
             Already have an account? <Link to={SIGNIN_ROUTE}>Login here</Link>

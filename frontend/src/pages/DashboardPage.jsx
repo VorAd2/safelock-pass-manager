@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { socket, registerSocket } from '../socket'
 import { Sidebar, DashboardHeader, Notification } from "../components";
-import axios from "axios";
 import backCodes from "../back_codes";
 import { useVaults } from "../components/context/useVaults";
+import { fetchDataService } from "../services/dashboardService";
 
-const backUrl = import.meta.env.VITE_BACKEND_URL;
 const titlesMap = {
   vaults: "Vaults",
   generator: "Generator",
@@ -63,13 +62,9 @@ function DashboardPage({ username }) {
       return;
     }
     try {
-      const response = await axios.get(backUrl + "/dashboard/" + username, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetchDataService(authToken, username)
       response.status === 200 && setAllVaults(response.data)
-      setLoading(false);
+      setLoading(false)
       registerSocket(username)
     } catch (err) {
       setLoading(false);
@@ -94,7 +89,7 @@ function DashboardPage({ username }) {
         console.warn('Erro inesperado:', err.message)
       }
     }
-  };
+  }
 
   useEffect(() => {
     window.addEventListener('storage', handleStorageChange)

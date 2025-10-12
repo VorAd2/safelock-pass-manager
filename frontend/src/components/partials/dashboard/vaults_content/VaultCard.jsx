@@ -1,13 +1,12 @@
 import { useVaults } from '../../../context/useVaults';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import backCodes from '../../../../back_codes';
 import { CustomCheckbox, MiniModal } from '../../../shared';
 import { VaultIcon2, EllipsisIcon, UserAvatar, StarIcon, UnstarIcon, SendIcon, TrashIcon } from '../../../../assets/dashboard';
 import { RemoveIcon } from '../../../../assets/shared';
 import styles from '../../../../styles/VaultsContent.module.css';
 import { AvatarColorManager } from '../../../../lib/avatarColorManager.js';
-const BACK_URL = import.meta.env.VITE_BACKEND_URL;
+import vaultService from '../../../../services/vaultService.js';
 
 
 function VaultCard({
@@ -24,7 +23,7 @@ function VaultCard({
 
     const handleCheckboxClick = (e) => {
         e.stopPropagation();
-    };
+    }
 
     const handleFavoriteAction = async (e, closePopover) => {
         e.stopPropagation()
@@ -40,9 +39,7 @@ function VaultCard({
             return
         }
         try {
-            await axios.patch(`${BACK_URL}/dashboard/vaults/favoritism`, data,
-                { headers: { Authorization: `Bearer ${authToken}` } }
-            )
+            await vaultService.favoriteVault(authToken, data)
             setFavoritism(vault._id, username, toFavorite)
             const message = toFavorite
                 ? 'Vault favorited successfully'
@@ -86,16 +83,7 @@ function VaultCard({
                 navigate("/signin")
                 return
             }
-            const route = `${BACK_URL}/dashboard/vaults`
-            const config = {
-                headers: { Authorization: `Bearer ${authToken}` },
-                data: {
-                    ownerUsername: vault.ownerUser,
-                    vaultId: vault._id,
-                    vaultTitle
-                }
-            }
-            await axios.delete(route, config)
+            await vaultService.deleteVault(authToken, vault)
             deleteVault(vault._id, vault.ownerUser)
             notificationHandler(true, 'Vault deleted successfully', 'success')
         } catch (err) {
@@ -122,54 +110,42 @@ function VaultCard({
         }
     }
 
-    const handleRemoveSharing = (e, closePopover) => {
+    const handleRemoveSharing = async (e, closePopover) => {
         e.stopPropagation()
-        console.log(`Removing sharing: ${vault._id} for user ${username}`)
         const authToken = localStorage.getItem('authToken')
         if (!authToken) {
             alert('No token found. Redirecting...')
             navigate("/signin")
             return
         }
-        const route = `${BACK_URL}/dashboard/vaults/sharing`
-        const config = {
-            headers: { Authorization: `Bearer ${authToken}` },
-            data: {
-                vaultId: vault._id,
-                vaultTitle,
-                username
-            }
-        }
-        axios.delete(route, config)
-            .then(() => {
-                deleteVault(vault._id, vault.ownerUser)
-                notificationHandler(true, 'Vault sharing removed successfully', 'success')
-            })
-            .catch(err => {
-                if (err.response) {
-                    const code = err.response.data?.code
-                    const message = err.response.data?.message
-                    if (code === backCodes.ACCESS_DENIED) {
-                        alert(message)
-                        localStorage.removeItem('authToken')
-                        navigate('/signin')
-                    } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
-                        alert(message)
-                    } else {
-                        alert(backCodes.GENERIC_ERROR_FEEDBACK)
-                        console.warn('Erro na presença de response:', err.response)
-                    }
-                } else if (err.request) {
-                    alert(backCodes.RESPONSE_ERROR_FEEDBACK)
-                    console.warn('Erro na presença de request:', err.request)
+        try {
+            await vaultService.deleteSharing(authToken, vault, username)
+            deleteVault(vault._id, vault.ownerUser)
+            notificationHandler(true, 'Vault sharing removed successfully', 'success')
+        } catch (err) {
+            if (err.response) {
+                const code = err.response.data?.code
+                const message = err.response.data?.message
+                if (code === backCodes.ACCESS_DENIED) {
+                    alert(message)
+                    localStorage.removeItem('authToken')
+                    navigate('/signin')
+                } else if (code === backCodes.VAULT_SHARING_NOT_FOUND) {
+                    alert(message)
                 } else {
                     alert(backCodes.GENERIC_ERROR_FEEDBACK)
-                    console.warn('Erro inesperado:', err.message)
+                    console.warn('Erro na presença de response:', err.response)
                 }
-            })
-            .finally(() => {
-                closePopover(e)
-            })
+            } else if (err.request) {
+                alert(backCodes.RESPONSE_ERROR_FEEDBACK)
+                console.warn('Erro na presença de request:', err.request)
+            } else {
+                alert(backCodes.GENERIC_ERROR_FEEDBACK)
+                console.warn('Erro inesperado:', err.message)
+            }
+        } finally {
+            closePopover(e)
+        }
     }
 
     function getEllipsisModal() {
@@ -252,7 +228,7 @@ function VaultCard({
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default VaultCard;

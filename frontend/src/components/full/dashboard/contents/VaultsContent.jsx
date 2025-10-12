@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios'
 import backCodes from '../../../../back_codes'
 import { useState, useEffect } from 'react'
 import { useOutletContext, useNavigate } from 'react-router-dom'
@@ -8,8 +6,7 @@ import {
   VaultInfoModal, CredentialInfoModal, NewCredentialModal, SendVaultModal
 } from "../../../index"
 import { useVaults } from '../../../context/useVaults'
-
-const backUrl = import.meta.env.VITE_BACKEND_URL;
+import { fetchDataService } from '../../../../services/dashboardService'
 
 
 function VaultsContent() {
@@ -69,8 +66,7 @@ function VaultsContent() {
     }
     setIsRefreshing(true)
     try {
-      const config = { headers: { Authorization: `Bearer ${authToken}` } }
-      const response = await axios.get(`${backUrl}/dashboard/${username}`, config)
+      const response = await fetchDataService(authToken, username)
       setAllVaults(response.data)
       setIsRefreshing(false)
     } catch (err) {
@@ -188,7 +184,7 @@ function VaultsContent() {
         }
         {credentialInfoModalState.visible && <CredentialInfoModal
           credential={credentialInfoModalState.credential}
-          setModalState={setCredentialInfoModalState}
+          vault={currentVaultData}
           notificationHandler={notificationHandler}
           onHide={() => { setCredentialInfoModalState({ visible: false, credential: null }); setVaultInfoModalVisible(true) }}
         />
