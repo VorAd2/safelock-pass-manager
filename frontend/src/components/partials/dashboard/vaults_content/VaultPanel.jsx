@@ -31,15 +31,15 @@ function VaultPanel({
     const getPanelBody = () => {
         if (isRefreshing) {
             return (
-                <div className={styles.emptyStateContainer}>
-                    <Spinner animation="border" variant="light" />
+                <div className={styles.emptyStateContainer} role='status' aria-busy='true'>
+                    <Spinner animation='border' variant='light' />
                 </div>
             )
         } else if (vaultsSubgroup.length === 0) {
             return (
                 <div className={styles.emptyStateContainer}>
                     <NoVaultsIcon className={styles.emptyIcon} size={128} />
-                    <p className={`${styles.emptyText} fs-5`}>{emptyPanelText}</p>
+                    <p className={`${styles.emptyText} fs-5`} role='status'>{emptyPanelText}</p>
                 </div>
             )
         } else {
@@ -66,27 +66,27 @@ function VaultPanel({
 
     return (
         <div className={`d-flex flex-column flex-grow-1 ${styles.panelParent}`} style={{ minHeight: 0 }}>
-            <div className='d-flex justify-content-between align-items-center p-1'>
-                <div className='text-light ms-3 mt-3'> <CustomCheckBox label='All' /></div>
+            <header className='d-flex justify-content-between align-items-center p-1'>
+                <span className='text-light ms-3 mt-3'> <CustomCheckBox label='All' /></span>
                 <div className='d-flex justify-content-betwenn align-items-center'>
                     <button type='button'
                         onClick={refreshVaults}
                         className={`${styles.panelHeaderBtn} fs-5 me-3 mt-3`}
                     >
-                        <RefreshIcon className='me-1' style={{ width: '20px', height: '20px' }} /> Refresh
+                        <RefreshIcon className='me-1' style={{ width: '20px', height: '20px' }} ariaHidden='true' />
+                        Refresh
                     </button>
                     <button type='button'
                         onClick={() => modalVisibleCallback(true)}
                         className={`${styles.panelHeaderBtn} fs-5 me-3 mt-3`}
                     >
-                        <PlusIcon className='me-1' style={{ width: '20px', height: '20px' }} /> Vault
+                        <PlusIcon className='me-1' style={{ width: '20px', height: '20px' }} ariaHidden='true' />
+                        Vault
                     </button>
                 </div>
-            </div>
+            </header>
             <hr className='mb-2' />
-            <div className={styles.vaultPanelContainer}>
-                {getPanelBody()}
-            </div>
+            <section className={styles.vaultPanelContainer}>{getPanelBody()}</section>
         </div>
     )
 }

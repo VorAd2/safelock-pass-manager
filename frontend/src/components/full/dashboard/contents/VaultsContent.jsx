@@ -96,14 +96,6 @@ function VaultsContent() {
     }
   }
 
-  useEffect(() => {
-    if (currentVaultData && vaults.length > 0) {
-      const updated = vaults.find(v => v._id === currentVaultData._id)
-      if (updated) setCurrentVaultData(updated)
-    }
-  }, [vaults])
-
-
   const onCloseNewVaultModal = () => {
     setNewVaultModalVisible(false)
   }
@@ -113,13 +105,20 @@ function VaultsContent() {
     notificationHandler(true, 'Vault created successfully!', 'success')
   }
 
+  useEffect(() => {
+    if (currentVaultData && vaults.length > 0) {
+      const updated = vaults.find(v => v._id === currentVaultData._id)
+      if (updated) setCurrentVaultData(updated)
+    }
+  }, [vaults])
+
 
   return (
     <div className="d-flex flex-grow-1" style={{ minHeight: 0 }}>
-      <div className="p-3" style={{ width: '25%', minWidth: '250px' }}>
+      <aside className="p-3" style={{ width: '25%', minWidth: '250px' }}>
         <FloatingBox setVaultsFilter={setVaultsFilter} />
-      </div>
-      <div className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
+      </aside>
+      <section className='p-3 flex-grow-1 d-flex flex-column' style={{ minHeight: 0 }}>
         <VaultPanel
           modalVisibleCallback={(visible) => setNewVaultModalVisible(visible)}
           vaultCardClick={(vaultId) => handleVaultClick(vaultId)}
@@ -200,9 +199,9 @@ function VaultsContent() {
           }
         />
         }
-      </div>
+      </section>
     </div>
-  );
+  )
 }
 
 export default VaultsContent;

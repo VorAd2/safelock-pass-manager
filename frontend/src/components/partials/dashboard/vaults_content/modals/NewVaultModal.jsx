@@ -67,7 +67,7 @@ const NewVaultModal = ({ onClose, onCreate }) => {
 
     return (
         <div className={styles.backdrop}>
-            <div className={styles.modalBox}>
+            <section className={styles.modalBox}>
                 <h5 className='mb-3 fs-3'>Create New Vault</h5>
                 <Form id='newVaultForm'>
                     <Form.Group className="mb-1">
@@ -157,7 +157,7 @@ const NewVaultModal = ({ onClose, onCreate }) => {
                         </div>
                     </Form.Group>
 
-                    <div className="d-flex justify-content-end gap-2">
+                    <footer className="d-flex justify-content-end gap-2">
                         <Button type='button' variant="secondary" onClick={onClose}>
                             Cancel
                         </Button>
@@ -169,9 +169,9 @@ const NewVaultModal = ({ onClose, onCreate }) => {
                         >
                             Create
                         </button>
-                    </div>
+                    </footer>
                 </Form>
-            </div>
+            </section>
         </div>
     )
 }

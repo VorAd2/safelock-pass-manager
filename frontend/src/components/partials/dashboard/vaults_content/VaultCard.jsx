@@ -213,21 +213,21 @@ function VaultCard({
     }
 
     return (
-        <div className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>
-            <div className={styles.topBar}>
+        <article className={styles.vaultCard} onClick={() => vaultCardClick(vault._id)}>
+            <header className={styles.topBar}>
                 <CustomCheckbox onClick={handleCheckboxClick} />
                 {getEllipsisModal()}
-            </div>
+            </header>
             <div className={styles.iconArea}>
                 <VaultIcon2 className={styles.vaultIcon} />
             </div>
-            <div className={styles.bottomRow}>
+            <footer className={styles.bottomRow}>
                 <span className={styles.vaultName}>{vaultTitle}</span>
                 <div className={styles.avatarCircle} style={{ backgroundColor: avatarBackColor }}>
                     <UserAvatar />
                 </div>
-            </div>
-        </div>
+            </footer>
+        </article>
     )
 }
 

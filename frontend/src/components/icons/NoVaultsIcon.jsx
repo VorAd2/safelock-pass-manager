@@ -1,9 +1,9 @@
 import { BoxesIcon } from '../../assets/dashboard';
 import { XIcon } from '../../assets/shared';
 
-const NoVaultsIcon = ({ className = '', style = {}, size = 64 }) => { 
+const NoVaultsIcon = ({ className = '', style = {}, size = 64 }) => {
   const xIconSize = size * (48 / 64);
-  const xIconTopLeft = size * (8 / 64); 
+  const xIconTopLeft = size * (8 / 64);
 
   return (
     <div
@@ -15,6 +15,7 @@ const NoVaultsIcon = ({ className = '', style = {}, size = 64 }) => {
         display: 'inline-block',
         ...style,
       }}
+      aria-hidden='true'
     >
       <BoxesIcon
         style={{
