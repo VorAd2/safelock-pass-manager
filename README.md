@@ -10,7 +10,7 @@
 <br/>
 
 
-# Shortcuts 🎯
+# 🎯 Shortcuts 
   - [Backend Routes](backend/routes)
   - [Backend Models](backend/models)
   - [Frontend Services](frontend/src/services)
@@ -20,7 +20,7 @@
   - [Frontend Partial Components](frontend/src/components/partials)
 <br/>
 
-# Previews and Features 🕹️
+# 🧩 Previews and Features
 
 ## Home Page
 <p align="center">
@@ -36,18 +36,52 @@
 <p align="center">
   <img src="docs/vault-info.png" alt="Logo do Projeto" width="900">
 </p>
+<br/>
 
 ## Dashboard -> Generate Username
 <p align="center">
   <img src="docs/gen-username.png" alt="Logo do Projeto" width="900">
 </p>
 
-# Toolbox
-
+# 🧰 Toolbox
 <p align="center">
   <a href="https://skillicons.dev">
     <img src="https://skillicons.dev/icons?i=express,nodejs,mongodb,javascript,react,bootstrap,html,css,git,postman," />
   </a>
 </p>
+<br/>
 
-# How to Run
+# 🚀 How to Run
+<p>To run this project, you need to have <a target='_blank' href='https://nodejs.org/'>NodeJS</a> installed on your machine, an account with <a target='_blank' href='https://www.mongodb.com/products/platform/atlas-database'>MongoDB Atlas</a> and
+a Gemini API Key.</p>
+
+## 1. Clone the repository
+
+```
+ git clone https://github.com/VorAd2/safelock-pass-manager
+ cd safelock-pass-manager
+```
+
+## 2. Install dependencies
+```
+cd backend
+npm install
+```
+```
+cd frontend
+npm install
+```
+
+## 3. Create the .env files
+Check the .env.template files in [backend](/backend/.env.template) and [frontend](/frontend/.env.template) and fill in the variables.
+
+## 4. Run !!
+```
+  cd backend
+  npm run dev
+```
+
+```
+  cd frontend
+  npm run dev
+```
