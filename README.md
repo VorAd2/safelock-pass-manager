@@ -52,8 +52,8 @@
 <br/>
 
 # 🚀 How to Run
-<p>To run this project, you need to have <a target='_blank' href='https://nodejs.org/'>NodeJS</a> installed on your machine, an account with <a target='_blank' href='https://www.mongodb.com/products/platform/atlas-database'>MongoDB Atlas</a> and
-a Gemini API Key.</p>
+<p>To run this project, you need to have <a href='https://nodejs.org/'>NodeJS</a> installed on your machine, an account with <a href='https://www.mongodb.com/products/platform/atlas-database'>MongoDB Atlas</a> and
+a <a href='https://ai.google.dev/gemini-api/docs'>Gemini API Key</a>.</p>
 
 ## 1. Clone the repository
 
