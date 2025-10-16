@@ -8,8 +8,8 @@ function genPrompt(contextWords) {
 
         Siga estas regras OBRIGATORIAMENTE:
         1.  O username deve ter exatamente 6 a 14 caracteres.
-        2.  O username deve conter apenas letras minúsculas e, opcionalmente, números.
-        3.  O username NÃO PODE conter espaços, caracteres especiais, ou letras maiúsculas.
+        2.  O username pode conter ou não letra(s) maiúscula(s) e, opcionalmente, números.
+        3.  O username NÃO PODE conter espaços e caracteres especiais.
         4.  O username deve ser criativo e relacionado às palavras-chave.
 
         Você deve pesquisar as palavras-chave para entender o contexto delas e relacioná-las de
