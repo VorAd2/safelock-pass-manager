@@ -16,8 +16,7 @@
   - [Frontend Services](frontend/src/services)
   - [Frontend Assets](frontend/src/assets)
   - [Frontend Pages](frontend/src/pages)
-  - [Frontend Full Components](frontend/src/components/full)
-  - [Frontend Partial Components](frontend/src/components/partials)
+  - [Frontend Components](frontend/src/components)
 <br/>
 
 # 🧩 Previews and Features
