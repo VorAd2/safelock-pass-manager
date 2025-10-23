@@ -33,13 +33,13 @@
 
 ## Vault Modal
 <p align="center">
-  <img src="docs/vault-info.png" alt="Logo do Projeto" width="900">
+  <img src="docs/vault-info.png" alt="Vault modal" width="900">
 </p>
 <br/>
 
 ## Dashboard -> Generate Username
 <p align="center">
-  <img src="docs/gen-username.png" alt="Vault modal" width="900">
+  <img src="docs/gen-username.png" alt="Username generation" width="900">
 </p>
 
 # 🧰 Toolbox
