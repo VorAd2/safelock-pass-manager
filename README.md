@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" alt="Logo do Projeto" width="900">
+  <img src="docs/logo.png" alt="Logo" width="900">
 </p>
 
 <h1 align='center'>Safelock - Credential Manager</h1> 
@@ -16,20 +16,19 @@
   - [Frontend Services](frontend/src/services)
   - [Frontend Assets](frontend/src/assets)
   - [Frontend Pages](frontend/src/pages)
-  - [Frontend Full Components](frontend/src/components/full)
-  - [Frontend Partial Components](frontend/src/components/partials)
+  - [Frontend Components](frontend/src/components)
 <br/>
 
 # 🧩 Previews and Features
 
 ## Home Page
 <p align="center">
-  <img src="docs/home.png" alt="Logo do Projeto" width="900">
+  <img src="docs/home.png" alt="Home page" width="900">
 </p>
 
 ## Dashboard -> Vaults
 <p align="center">
-  <img src="docs/vaults.png" alt="Logo do Projeto" width="900">
+  <img src="docs/vaults.png" alt="Vaults page" width="900">
 </p>
 
 ## Vault Modal
@@ -40,7 +39,7 @@
 
 ## Dashboard -> Generate Username
 <p align="center">
-  <img src="docs/gen-username.png" alt="Logo do Projeto" width="900">
+  <img src="docs/gen-username.png" alt="Vault modal" width="900">
 </p>
 
 # 🧰 Toolbox
