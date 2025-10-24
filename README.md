@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VorAd2/safelock-pass-manager/main/docs/logo.png" alt="Logo" width="900">
+  <img src="docs/logo.png" alt="Logo" width="900">
 </p>
 
 <h1 align='center'>Safelock - Credential Manager</h1> 
@@ -23,23 +23,23 @@
 
 ## Home Page
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VorAd2/safelock-pass-manager/main/docs/home.png" alt="Home page" width="900">
+  <img src="docs/home.png" alt="Home page" width="900">
 </p>
 
 ## Dashboard -> Vaults
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VorAd2/safelock-pass-manager/main/docs/vaults.png" alt="Vaults page" width="900">
+  <img src="docs/vaults.png" alt="Vaults page" width="900">
 </p>
 
 ## Vault Modal
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VorAd2/safelock-pass-manager/main/docs/vault-info.png" alt="Vault modal" width="900">
+  <img src="docs/vault-info.png" alt="Vault modal" width="900">
 </p>
 <br/>
 
 ## Dashboard -> Generate Username
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VorAd2/safelock-pass-manager/main/docs/gen-username.png" alt="Username generation" width="900">
+  <img src="docs/gen-username.png" alt="Username generation" width="900">
 </p>
 
 # 🧰 Toolbox
