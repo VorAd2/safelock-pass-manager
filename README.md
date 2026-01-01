@@ -7,16 +7,6 @@
 <p align='center'>A website based on Express + React, created with the goal of practicing web knowledge. The project is based on a shared credential manager. Users are free to create vaults to store credentials and share them with whomever they want. In addition (not yet implemented), users can also store credit card information and documents, such as receipts and proof of purchase, with the same freedom to share them. Finally, the application provides a generator for passwords, secret phrases and usernames.</p>
 <br/>
 
-
-# 🎯 Shortcuts 
-  - [Backend Routes](backend/routes)
-  - [Backend Models](backend/models)
-  - [Frontend Services](frontend/src/services)
-  - [Frontend Assets](frontend/src/assets)
-  - [Frontend Pages](frontend/src/pages)
-  - [Frontend Components](frontend/src/components)
-<br/>
-
 # 🧩 Previews and Features
 
 ## Home Page
